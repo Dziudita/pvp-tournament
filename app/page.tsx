@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import NicknameModal from "../components/NicknameModal";
+import { MessageCircle } from "lucide-react";
 
 export default function HomePage() {
   const [nickname, setNickname] = useState("");
+  const [chatOpen, setChatOpen] = useState(false);
 
   useEffect(() => {
     const stored = typeof window !== "undefined" ? localStorage.getItem("cherzi-nickname") : null;
@@ -17,7 +19,9 @@ export default function HomePage() {
 
       {/* Header */}
       <header className="flex justify-between items-center p-6 border-b border-zinc-800">
-        <h1 className="text-xl font-bold tracking-wide">CHERZI ARENA 🍒</h1>
+        <h1 className="text-xl font-bold tracking-wide flex items-center gap-2">
+          CHERZI ARENA <span className="text-2xl">🍒</span>
+        </h1>
         <div className="space-x-4">
           {nickname ? (
             <span className="text-pink-400 font-semibold">Welcome, {nickname}!</span>
@@ -47,15 +51,26 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* Side chat mockup (left) */}
-      <div className="fixed left-0 bottom-0 bg-zinc-800 text-white text-sm w-64 h-64 rounded-tr-xl shadow-xl p-4 overflow-y-auto hidden md:block">
-        <p className="text-pink-400 font-bold mb-2">🍒 Cherry Chat</p>
-        <p><strong>slapper22:</strong> who's ready to duel? 😎</p>
-        <p><strong>boomcherry:</strong> i got 100ms record 🍒🔥</p>
-        <p><strong>you:</strong> Let's gooo</p>
-      </div>
+      {/* Chat Toggle Button */}
+      <button
+        onClick={() => setChatOpen(!chatOpen)}
+        className="fixed bottom-6 left-6 bg-pink-600 hover:bg-pink-700 text-white p-3 rounded-full shadow-lg z-50"
+        aria-label="Toggle Chat"
+      >
+        <MessageCircle size={24} />
+      </button>
 
-      {/* Sign-in reminder (top-right placeholder) */}
+      {/* Side chat toggleable */}
+      {chatOpen && (
+        <div className="fixed bottom-20 left-6 bg-zinc-800 text-white text-sm w-72 h-64 rounded-xl shadow-2xl p-4 overflow-y-auto z-40">
+          <p className="text-pink-400 font-bold mb-2">🍒 Cherry Chat</p>
+          <p><strong>slapper22:</strong> who's ready to duel? 😎</p>
+          <p><strong>boomcherry:</strong> i got 100ms record 🍒🔥</p>
+          <p><strong>you:</strong> Let's gooo</p>
+        </div>
+      )}
+
+      {/* Sign-in reminder */}
       <div className="fixed top-4 right-4">
         {nickname ? null : (
           <button className="text-sm bg-pink-600 hover:bg-pink-700 px-4 py-2 rounded-lg font-medium">
