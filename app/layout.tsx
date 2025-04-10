@@ -1,3 +1,4 @@
+import './globals.css';
 export const metadata = {
   title: 'Daily PvP Tournament',
   description: 'Compete daily and win USDC + exclusive rewards.',
