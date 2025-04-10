@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import NicknameModal from "@/components/NicknameModal";
+import NicknameModal from "../components/NicknameModal";
 
 export default function HomePage() {
   const [nickname, setNickname] = useState("");
