@@ -7,7 +7,7 @@ export default function HomePage() {
   const [nickname, setNickname] = useState("");
 
   useEffect(() => {
-    const stored = localStorage.getItem("cherzi-nickname");
+    const stored = typeof window !== "undefined" ? localStorage.getItem("cherzi-nickname") : null;
     if (stored) setNickname(stored);
   }, []);
 
