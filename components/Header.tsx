@@ -7,7 +7,7 @@ export default function Header() {
     <header className="w-full flex items-center justify-between px-6 py-4 border-b border-pink-500 bg-black/60">
       {/* Kairėje – pasisveikinimas */}
       <div className="flex items-center gap-2 text-pink-400 font-bold text-lg">
-        🍒 Welcome back, Cherry!
+        🍒 Welcome back, CherZi!
       </div>
 
       {/* Dešinėje – paieška + avataras */}
