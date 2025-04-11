@@ -9,12 +9,6 @@ export default function MainContent() {
       <h1 className="text-5xl font-extrabold text-pink-500 mb-6 drop-shadow-[0_0_15px_#ff4dd6] flex items-center justify-center gap-4">
   Welcome to the Cherry Arena
   <span className="relative w-[52px] h-[52px] inline-block">
-    <Image
-      src="/avatars/hammer-cherry.png"
-      alt="Hammer Cherry"
-      fill
-      className="object-contain animate-swing"
-    />
   </span>
 </h1>
 
