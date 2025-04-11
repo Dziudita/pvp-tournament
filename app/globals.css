@@ -6,3 +6,8 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* 🎆 Neoninis gradientas fone */
+body {
+  background: radial-gradient(circle, #1a1a1a, #000000);
+}
