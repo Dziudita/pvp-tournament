@@ -1,22 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginModal() {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [existingUsers, setExistingUsers] = useState<{ [key: string]: string }>({});
 
-  // Load all registered users from localStorage
+  // Load existing users
   useEffect(() => {
     const users = localStorage.getItem("cherzi-users");
     if (users) setExistingUsers(JSON.parse(users));
   }, []);
 
   const validatePassword = (pw: string) => {
-    return pw.length >= 6 && /\d/.test(pw); // at least one number
+    return pw.length >= 6 && /\d/.test(pw);
   };
 
   const handleAuth = () => {
@@ -34,14 +36,12 @@ export default function LoginModal() {
         return setError("Password must be at least 6 characters and include a number.");
       }
 
-      // Register new user
       const updatedUsers = { ...existingUsers, [nickname]: password };
       localStorage.setItem("cherzi-users", JSON.stringify(updatedUsers));
       localStorage.setItem("cherzi-nick", nickname);
       localStorage.setItem("cherzi-pass", password);
       location.reload();
     } else {
-      // Login flow
       if (!(nickname in existingUsers)) {
         return setError("User not found.");
       }
@@ -73,13 +73,24 @@ export default function LoginModal() {
           onChange={(e) => setNickname(e.target.value)}
           className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-6 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
-        />
+
+        {/* Password field + toggle icon */}
+        <div className="relative mb-6">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
 
         <button
           onClick={handleAuth}
