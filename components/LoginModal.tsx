@@ -12,6 +12,7 @@ export default function LoginModal() {
   const [existingUsers, setExistingUsers] = useState<{ [key: string]: string }>({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Load existing users and check if user already logged in
   useEffect(() => {
     const users = localStorage.getItem("cherzi-users");
     if (users) setExistingUsers(JSON.parse(users));
@@ -20,7 +21,7 @@ export default function LoginModal() {
     const savedPass = localStorage.getItem("cherzi-pass");
 
     if (savedNick && savedPass) {
-      setIsLoggedIn(true); // user already logged in
+      setIsLoggedIn(true); // Hide modal if already logged in
     }
   }, []);
 
@@ -56,10 +57,11 @@ export default function LoginModal() {
 
     localStorage.setItem("cherzi-nick", nickname);
     localStorage.setItem("cherzi-pass", password);
-    setIsLoggedIn(true); // to hide modal without reload
+    setIsLoggedIn(true); // Close modal
+    location.reload(); // Optional: reload page after login
   };
 
-  if (isLoggedIn) return null; // don’t show modal if logged in
+  if (isLoggedIn) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
@@ -88,7 +90,7 @@ export default function LoginModal() {
           />
           <button
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-3 text-pink-300"
+            className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
