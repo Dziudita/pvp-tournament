@@ -35,7 +35,7 @@ export default function CherryChat() {
           </h2>
 
           {/* Chat messages */}
-          <div className="max-h-64 overflow-y-auto space-y-2">
+          <div className="w-6 h-6">
             {chat.map((msg, i) => (
               <div key={i} className="flex items-start gap-2">
                <img
