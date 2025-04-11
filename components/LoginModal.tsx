@@ -10,10 +10,18 @@ export default function LoginModal() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [existingUsers, setExistingUsers] = useState<{ [key: string]: string }>({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const users = localStorage.getItem("cherzi-users");
     if (users) setExistingUsers(JSON.parse(users));
+
+    const savedNick = localStorage.getItem("cherzi-nick");
+    const savedPass = localStorage.getItem("cherzi-pass");
+
+    if (savedNick && savedPass) {
+      setIsLoggedIn(true); // user already logged in
+    }
   }, []);
 
   const validatePassword = (pw: string) => {
@@ -48,8 +56,10 @@ export default function LoginModal() {
 
     localStorage.setItem("cherzi-nick", nickname);
     localStorage.setItem("cherzi-pass", password);
-    location.reload();
+    setIsLoggedIn(true); // to hide modal without reload
   };
+
+  if (isLoggedIn) return null; // don’t show modal if logged in
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
