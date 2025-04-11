@@ -5,11 +5,13 @@ import Header from "../components/Header";
 import CherryChat from "../components/CherryChat";
 import WalletInfo from "../components/WalletInfo";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
+import LoginModal from "../components/LoginModal";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <div className="flex h-screen w-full overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-black">
+      <LoginModal />
       {/* Sidebar */}
       <Sidebar />
 
