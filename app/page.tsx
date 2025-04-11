@@ -23,12 +23,12 @@ export default function Home() {
         <img
           src="/avatars/cool-cherry.png"
           alt="Cool Cherry"
-          className="w-20 h-20 absolute bottom-4 left-4 z-10"
+          className="w-130 h-130 absolute bottom-4 left-4 z-10"
         />
         <img
           src="/avatars/angry-cherry.png"
           alt="Angry Cherry"
-          className="w-20 h-20 absolute bottom-4 right-4 z-10"
+          className="w-130 h-130 absolute bottom-4 right-4 z-10"
         />
 
         {/* Chat */}
