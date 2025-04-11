@@ -1,11 +1,14 @@
 "use client";
 
+import { FaCoins } from "react-icons/fa";
+
 export default function WalletInfo() {
-  const balance = 12.5; // Pakeisk tikru balansu, jei integruota su pinigine
+  const balance = 12.5; // Galima vėliau padaryti dinamiškai
 
   return (
-    <div className="bg-black/70 px-4 py-2 rounded-xl shadow-lg border border-pink-500 text-right text-yellow-300 font-extrabold text-lg w-fit ml-auto mr-6 mt-4">
-      {balance.toFixed(2)} USDC
+    <div className="flex items-center gap-2 px-4 py-2 bg-black/80 rounded-xl border border-pink-500 text-yellow-300 font-extrabold text-lg shadow-lg ml-auto mr-6 mt-4 w-fit">
+      <FaCoins className="text-yellow-400" />
+      <span>{balance.toFixed(2)} USDC</span>
     </div>
   );
 }
