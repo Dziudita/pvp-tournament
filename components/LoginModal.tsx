@@ -17,11 +17,10 @@ export default function LoginModal() {
   const handleLogin = () => {
     if (!nickname || !password) return alert("Fill in all fields");
 
-    // Save to localStorage (could be validated later)
     const userData = { nickname, password };
     localStorage.setItem("cherzi-user", JSON.stringify(userData));
     setShowModal(false);
-    window.location.reload(); // Reload to update state globally (optional)
+    window.location.reload();
   };
 
   if (!showModal) return null;
