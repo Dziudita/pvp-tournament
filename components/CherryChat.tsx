@@ -60,10 +60,10 @@ export default function CherryChat() {
                   alt="avatar"
                   className="w-6 h-6 rounded-full"
                 />
-                <p>
-                  <span className="font-bold text-pink-300">{msg.user}:</span>{" "}
-                  <span>{msg.text}</span>
-                </p>
+                <p className="break-words w-full">
+  <span className="font-bold text-pink-300">{msg.user}:</span>{" "}
+  <span>{msg.text}</span>
+</p>
               </div>
             ))}
           </div>
