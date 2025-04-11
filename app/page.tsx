@@ -2,60 +2,73 @@
 
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import Leaderboard from "../components/Leaderboard";
 import WalletInfo from "../components/WalletInfo";
+import Leaderboard from "../components/Leaderboard";
 import CherryChat from "../components/CherryChat";
+import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-full bg-gradient-to-b from-[#1a1a1a] to-black text-white">
-      {/* Sidebar kairėje */}
+    <div className="flex h-screen w-full bg-gradient-to-b from-[#1a1a1a] to-black overflow-hidden">
+      {/* Sidebar */}
       <Sidebar />
 
-      {/* Pagrindinis turinys */}
-      <div className="flex flex-col flex-grow relative px-6 py-4 overflow-hidden">
-
-        {/* Header su CHERZI ARENA ir vyšnia */}
-        <Header />
-
-        {/* Viršutinis dešinys kampas: Wallet Info */}
-        <div className="absolute top-4 right-6 z-50">
+      {/* Main Area */}
+      <div className="flex flex-col flex-grow relative p-6">
+        {/* Top Section: Header & Wallet */}
+        <div className="flex justify-between items-start border-b border-pink-500 pb-4">
+          <Header />
           <WalletInfo />
         </div>
 
-        {/* Paieška */}
-        <div className="mt-8">
+        {/* Search Bar */}
+        <div className="mt-6 mb-10">
           <input
             type="text"
-            placeholder="Search..."
-            className="px-6 py-3 w-full max-w-md rounded-xl bg-zinc-900/80 text-pink-300 placeholder-pink-400 text-lg shadow-inner outline-none"
+            placeholder="Search games or players..."
+            className="w-full px-5 py-3 rounded-xl bg-zinc-800 text-white placeholder-pink-300 outline-none shadow-inner text-lg"
           />
         </div>
 
-        {/* Mygtukai */}
-        <div className="flex gap-10 justify-center mt-16">
-          <button className="px-12 py-5 text-xl font-bold rounded-xl bg-gradient-to-r from-pink-600 to-purple-500 hover:opacity-90">
+        {/* Game Buttons */}
+        <div className="flex justify-center gap-10 mb-10">
+          <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90 shadow-lg">
             PLAY DUEL
           </button>
-          <button className="px-12 py-5 text-xl font-bold rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 hover:opacity-90">
+          <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-xl hover:opacity-90 shadow-lg">
             JOIN TOURNAMENT
           </button>
         </div>
 
-        {/* Lyderių lentelė dešinėje */}
-        <div className="absolute right-6 top-[200px] z-30">
-          <Leaderboard />
+        {/* Bottom Section: Leaderboard & Chat */}
+        <div className="flex flex-grow gap-10">
+          {/* Left Column */}
+          <div className="flex flex-col justify-end">
+            <Image
+              src="/avatars/cool-cherry.png"
+              alt="Cool Cherry"
+              width={130}
+              height={130}
+              className="drop-shadow-[0_0_10px_#ff4dd6]"
+            />
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col flex-grow items-end gap-6">
+            <Leaderboard />
+            <TopPlayerOfDay />
+            <Image
+              src="/avatars/angry-cherry.png"
+              alt="Angry Cherry"
+              width={130}
+              height={130}
+              className="drop-shadow-[0_0_10px_#ff4dd6]"
+            />
+          </div>
         </div>
 
-        {/* Apatiniai avatarai ir Chat */}
-        <div className="absolute bottom-4 left-4">
-          <Image src="/avatars/cool-cherry.png" alt="Cool Cherry" width={100} height={100} />
-        </div>
-        <div className="absolute bottom-4 right-4">
-          <Image src="/avatars/angry-cherry.png" alt="Angry Cherry" width={100} height={100} />
-        </div>
-
+        {/* Chat */}
         <CherryChat />
       </div>
     </div>
