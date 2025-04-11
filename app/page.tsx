@@ -18,21 +18,16 @@ export default function Home() {
         <MainContent />
         <CherryChat />
 
-        {/* Avatar Decorations */}
-        <Image
-          src="/avatars/cool-cherry.png"
-          alt="Cool Cherry"
-          width={120}
-          height={120}
-          className="absolute bottom-4 left-4 z-40 drop-shadow-[0_0_10px_#ff4dd6]"
-        />
+        {/* Optional: leave only one decoration if needed */}
+        {/* 
         <Image
           src="/avatars/angry-cherry.png"
           alt="Angry Cherry"
           width={120}
           height={120}
           className="absolute bottom-4 right-4 z-40 drop-shadow-[0_0_10px_#ff4dd6]"
-        />
+        /> 
+        */}
       </div>
     </div>
   );
