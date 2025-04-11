@@ -35,14 +35,14 @@ export default function CherryChat() {
           </h2>
 
           {/* Chat messages */}
-          <div className="w-6 h-6">
+          <div className="max-h-64 overflow-y-auto space-y-2">
             {chat.map((msg, i) => (
               <div key={i} className="flex items-start gap-2">
-               <img
-  src="/avatars/default.png"
-  alt="avatar"
-  className="w-6 h-6 rounded-full border-2 border-pink-400 shadow-sm"
-/>
+                <img
+                  src="/avatars/default.png
+                  alt="avatar"
+                  className="w-6 h-6 rounded-full"
+                />
                 <p>
                   <span className="font-bold text-pink-300">{msg.user}:</span>{" "}
                   <span>{msg.text}</span>
@@ -71,4 +71,4 @@ export default function CherryChat() {
       )}
     </div>
   );
-}
+} 
