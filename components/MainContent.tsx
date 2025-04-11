@@ -34,12 +34,12 @@ export default function MainContent() {
 
       {/* Hammer Cherry on Right */}
       <Image
-        src="/avatars/hammer-cherry.png"
-        alt="Hammer Cherry"
-        width={180}
-        height={180}
-        className="absolute right-0 bottom-12 animate-bounce drop-shadow-[0_0_20px_#ff4dd6]"
-      />
+  src="/avatars/angry-cherry.png"
+  alt="Angry Cherry"
+  width={120}
+  height={120}
+  className="absolute bottom-0 right-0 mb-4 mr-4 drop-shadow-[0_0_20px_#ff4dd6]"
+/>
 
       {/* Game Buttons */}
       <div className="flex justify-center gap-6 z-10 relative">
