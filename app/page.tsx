@@ -3,6 +3,7 @@
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import CherryChat from "../components/CherryChat";
+import Leaderboard from "../components/Leaderboard"; // 👈 pridėta
 import Image from "next/image";
 
 export default function Home() {
@@ -26,6 +27,9 @@ export default function Home() {
             />
           </h1>
         </div>
+
+        {/* 🏆 Leaderboard */}
+        <Leaderboard />
 
         {/* Search bar + Welcome */}
         <div className="flex items-center justify-between px-8 py-4 border-b border-pink-500">
