@@ -1,22 +1,32 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NicknameAuthModal from "../components/NicknameAuthModal";
 import CherryChat from "../components/CherryChat";
 
 export default function Home() {
+  const [nickname, setNickname] = useState("Cherry");
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("nickname");
+    if (storedName) {
+      setNickname(storedName);
+    }
+  }, []);
+
   return (
     <>
       <NicknameAuthModal />
-      <CherryChat />
-
       <div className="relative min-h-screen bg-gradient-to-b from-black to-zinc-900 text-white">
         {/* Header */}
         <header className="flex items-center justify-between p-6">
           <div className="text-2xl font-bold">
             CHERZI ARENA <span className="inline-block">🍒</span>
           </div>
-          <button className="text-pink-400 hover:text-pink-300">Welcome, CherZilla</button>
+          <div className="flex items-center gap-2 text-pink-400">
+            <img src="/avatars/default.png" alt="avatar" className="w-6 h-6 rounded-full" />
+            <span>Welcome, {nickname}</span>
+          </div>
         </header>
 
         {/* Main Content */}
@@ -36,11 +46,6 @@ export default function Home() {
           </div>
         </main>
 
-        {/* Chat Button */}
-        <button className="fixed bottom-4 left-4 w-12 h-12 rounded-full bg-pink-600 text-white flex items-center justify-center shadow-lg hover:bg-pink-500">
-          💬
-        </button>
-
         {/* Cool Cherry Avatar (bottom-left) */}
         <img
           src="/cool-cherry.png"
@@ -54,6 +59,9 @@ export default function Home() {
           alt="Angry Cherry"
           className="absolute bottom-4 right-4 w-20 h-20 animate-pulse"
         />
+
+        {/* Chat */}
+        <CherryChat />
       </div>
     </>
   );
