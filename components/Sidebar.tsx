@@ -1,24 +1,45 @@
 "use client";
 
-import React from "react";
-import { Cherry } from "lucide-react";
+import { FaGamepad, FaScroll, FaBrain, FaLifeRing, FaLock } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 import Link from "next/link";
+import Image from "next/image";
 
-export default function Sidebar() {
+const Sidebar = () => {
   return (
-    <aside className="fixed top-0 left-0 h-full w-56 bg-zinc-900 border-r border-pink-500 p-4 z-40">
-      <div className="text-pink-400 text-2xl font-bold flex items-center gap-2 mb-6">
-        <Cherry className="w-6 h-6" />
-        CHERZI ARENA
+    <aside className="bg-zinc-900 text-white w-64 h-screen p-6 border-r border-pink-500 flex flex-col justify-between">
+      <div>
+        {/* Logo */}
+        <div className="flex items-center gap-2 text-2xl font-bold text-pink-400 mb-10">
+          <Image src="/avatars/hammer-cherry.png" alt="logo" width={32} height={32} />
+          CHERZI ARENA
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex flex-col gap-6 text-lg">
+          <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
+            <FaGamepad /> Games
+          </Link>
+          <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
+            <FaScroll /> Rules
+          </Link>
+          <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
+            <FaBrain /> About
+          </Link>
+          <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
+            <FaLifeRing /> Support
+          </Link>
+        </nav>
       </div>
 
-      <nav className="flex flex-col gap-4 text-white">
-        <Link href="#" className="hover:text-pink-400 transition">🎮 Games</Link>
-        <Link href="#" className="hover:text-pink-400 transition">📜 Rules</Link>
-        <Link href="#" className="hover:text-pink-400 transition">🧠 About</Link>
-        <Link href="#" className="hover:text-pink-400 transition">🆘 Support</Link>
-        <Link href="#" className="hover:text-pink-400 transition">🔐 Login / Logout</Link>
-      </nav>
+      {/* Auth */}
+      <div className="flex flex-col gap-4">
+        <button className="flex items-center gap-2 text-left hover:text-pink-400">
+          <FaLock /> Login / Logout
+        </button>
+      </div>
     </aside>
   );
-}
+};
+
+export default Sidebar;
