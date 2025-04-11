@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import CherryChat from "../components/CherryChat";
 import Leaderboard from "../components/Leaderboard"; // 👈 pridėta
+import WalletInfo from "../components/WalletInfo";
 import Image from "next/image";
 
 export default function Home() {
@@ -50,7 +51,11 @@ export default function Home() {
             Welcome, CherZi!
           </div>
         </div>
-
+{/* Wallet + Leaderboard */}
+<div className="flex justify-end items-start gap-4 px-8 mt-4">
+  <WalletInfo />
+  <Leaderboard />
+</div>
         {/* Game Buttons */}
         <div className="flex justify-center gap-10 mt-20">
           <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90">
