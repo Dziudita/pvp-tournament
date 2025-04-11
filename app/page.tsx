@@ -15,23 +15,16 @@ export default function Home() {
     <div className="relative min-h-screen bg-gradient-to-b from-black to-zinc-900 text-white flex">
       {/* Sidebar */}
       <aside className="w-64 bg-zinc-950 border-r border-pink-500 p-6 hidden md:flex flex-col gap-6 text-left text-lg">
-        <h1 className="text-2xl font-bold text-pink-400">CHERZI ARENA 🍒</h1>
+        <h1 className="text-2xl font-bold text-pink-400 flex items-center gap-2">
+          <img src="/images/hammer-cherry.png" alt="Logo" className="w-8 h-8" />
+          CHERZI ARENA
+        </h1>
         <nav className="flex flex-col gap-4 text-pink-200">
-          <a href="#" className="flex items-center gap-2 hover:text-white">
-            🎮 Games
-          </a>
-          <a href="#" className="flex items-center gap-2 hover:text-white">
-            📜 Rules
-          </a>
-          <a href="#" className="flex items-center gap-2 hover:text-white">
-            🧠 About
-          </a>
-          <a href="#" className="flex items-center gap-2 hover:text-white">
-            🆘 Support
-          </a>
-          <a href="#" className="flex items-center gap-2 hover:text-white">
-            🔐 Login / Logout
-          </a>
+          <a href="#" className="flex items-center gap-2 hover:text-white">🎮 Games</a>
+          <a href="#" className="flex items-center gap-2 hover:text-white">📜 Rules</a>
+          <a href="#" className="flex items-center gap-2 hover:text-white">🧠 About</a>
+          <a href="#" className="flex items-center gap-2 hover:text-white">🆘 Support</a>
+          <a href="#" className="flex items-center gap-2 hover:text-white">🔐 Login / Logout</a>
         </nav>
       </aside>
 
@@ -45,8 +38,8 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <input
               type="text"
-              placeholder="Search..."
-              className="px-4 py-2 rounded-lg bg-zinc-800 text-white outline-none"
+              placeholder="Search games or players..."
+              className="px-4 py-2 rounded-full bg-zinc-800 text-white outline-none w-64"
             />
             <img
               src="/avatars/default.png"
@@ -58,7 +51,7 @@ export default function Home() {
 
         {/* Hero */}
         <div className="text-center mt-16">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-pink-500 mb-4">
+          <h1 className="text-5xl font-extrabold text-pink-500 mb-4">
             Welcome to the Cherry Arena 🍒
           </h1>
           <p className="text-zinc-300 mb-8">
@@ -77,14 +70,14 @@ export default function Home() {
 
       {/* Cool Cherry (bottom left) */}
       <img
-        src="/cool-cherry.png"
+        src="/images/cool-cherry.png"
         alt="Cool Cherry"
         className="absolute bottom-4 left-4 w-20 h-20 animate-bounce z-40"
       />
 
       {/* Angry Cherry (bottom right) */}
       <img
-        src="/angry-cherry.png"
+        src="/images/angry-cherry.png"
         alt="Angry Cherry"
         className="absolute bottom-4 right-4 w-20 h-20 animate-pulse z-40"
       />
