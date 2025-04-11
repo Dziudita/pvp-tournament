@@ -37,22 +37,15 @@ export default function Sidebar() {
             <FaScroll size={26} /> Rules
           </Link>
           <Link href="/about" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-  <FaQuestionCircle size={26} /> About
-</Link>
+            <FaQuestionCircle size={26} /> About
+          </Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
             <FaLifeRing size={26} /> Support
           </Link>
+          <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
+            <FaSignInAlt size={26} /> Login / Logout
+          </Link>
         </nav>
-      </div>
-
-      {/* Login / Logout */}
-      <div className="mt-10">
-        <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-          <div className="w-10 h-10 bg-pink-500/80 hover:bg-pink-400 transition rounded-full flex items-center justify-center shadow-md">
-            <FaSignInAlt size={22} />
-          </div>
-          Login / Logout
-        </Link>
       </div>
     </aside>
   );
