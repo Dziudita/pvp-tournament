@@ -1,12 +1,11 @@
 "use client";
 
 export default function WalletInfo() {
+  const balance = 12.5; // Pakeisk tikru balansu, jei integruota su pinigine
+
   return (
-    <div className="bg-zinc-900/70 p-4 rounded-xl shadow-md text-white w-60">
-      <div className="text-sm text-zinc-400 mb-1">Balance:</div>
-      <div className="text-2xl font-bold text-yellow-400">12.50 USDC</div>
-      <div className="mt-3 text-sm text-zinc-300">Logged in as:</div>
-      <div className="text-pink-400 font-semibold">CherryBoss</div>
+    <div className="bg-black/70 px-4 py-2 rounded-xl shadow-lg border border-pink-500 text-right text-yellow-300 font-extrabold text-lg w-fit ml-auto mr-6 mt-4">
+      {balance.toFixed(2)} USDC
     </div>
   );
 }
