@@ -1,74 +1,58 @@
 "use client";
 
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
-import CherryChat from "../components/CherryChat";
-import WalletInfo from "../components/WalletInfo";
-import TopPlayerOfDay from "../components/TopPlayerOfDay";
-import LoginModal from "../components/LoginModal";
-import Image from "next/image";
+import { useState } from "react";
 
-export default function Home() {
+export default function LoginModal() {
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  const handleAuth = () => {
+    if (!nickname || !password) return alert("Please fill both fields.");
+    localStorage.setItem("cherzi-nick", nickname);
+    localStorage.setItem("cherzi-pass", password);
+    location.reload(); // reload to close modal
+  };
+
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-black">
-      <LoginModal />
-      {/* Sidebar */}
-      <Sidebar />
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
+      <div className="bg-zinc-900 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl">
+        <h2 className="text-2xl font-bold text-center mb-6 text-pink-400">
+          {isSignUp ? "Sign Up" : "Login"}
+        </h2>
 
-      {/* Main Content Area */}
-      <div className="flex flex-col flex-grow relative">
-        {/* Header */}
-        <Header />
-
-        {/* Wallet Info */}
-        <div className="absolute top-4 right-6 z-50">
-          <WalletInfo />
-        </div>
-
-        {/* Search Bar */}
-        <div className="px-8 mt-8">
-          <input
-            type="text"
-            placeholder="Search games or players..."
-            className="w-full px-6 py-3 rounded-xl bg-zinc-800 text-white outline-none placeholder-pink-300 shadow-inner border border-pink-500"
-          />
-        </div>
-
-        {/* Main Buttons + Leaderboard */}
-        <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10">
-          {/* Game Buttons */}
-          <div className="flex flex-col gap-6">
-            <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90 shadow-md">
-              PLAY DUEL
-            </button>
-            <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-xl hover:opacity-90 shadow-md">
-              JOIN TOURNAMENT
-            </button>
-          </div>
-
-          {/* Leaderboard */}
-          <div className="mt-10 md:mt-0 md:ml-10">
-            <TopPlayerOfDay />
-          </div>
-        </div>
-
-        {/* Bottom Avatars */}
-        <Image
-          src="/avatars/cool-cherry.png"
-          alt="Cool Cherry"
-          width={130}
-          height={130}
-          className="absolute bottom-6 left-6 drop-shadow-[0_0_10px_#ff4dd6]"
+        <input
+          type="text"
+          placeholder="Nickname"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
         />
-        <Image
-          src="/avatars/angry-cherry.png"
-          alt="Angry Cherry"
-          width={130}
-          height={130}
-          className="absolute bottom-6 right-6 drop-shadow-[0_0_10px_#ff4dd6]"
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full mb-6 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
         />
 
-        <CherryChat />
+        <button
+          onClick={handleAuth}
+          className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-lg transition"
+        >
+          {isSignUp ? "Create Account" : "Enter Arena"}
+        </button>
+
+        <div className="mt-4 text-center">
+          <button
+            className="text-sm text-pink-300 hover:underline"
+            onClick={() => setIsSignUp(!isSignUp)}
+          >
+            {isSignUp
+              ? "Already have an account? Login"
+              : "Don't have an account? Sign Up"}
+          </button>
+        </div>
       </div>
     </div>
   );
