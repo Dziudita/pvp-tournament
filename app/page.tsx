@@ -32,13 +32,21 @@ export default function Home() {
           />
         </div>
 
-        {/* Game Buttons */}
-        <div className="flex justify-center gap-10 mb-10">
-          <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90 shadow-lg">
-            PLAY DUEL
-          </button>
-          <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-xl hover:opacity-90 shadow-lg">
-            JOIN TOURNAMENT
+       {/* Game Buttons + Leaderboard */}
+<div className="flex flex-col md:flex-row justify-between items-start gap-10 px-8 mt-20">
+  {/* Kairėje – žaidimo mygtukai */}
+  <div className="flex flex-col gap-6 w-full md:w-auto">
+    <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90">
+      PLAY DUEL
+    </button>
+    <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-xl hover:opacity-90">
+      JOIN TOURNAMENT
+    </button>
+  </div>
+
+  {/* Dešinėje – Top žaidėjų sąrašas */}
+  <TopPlayerOfDay />
+</div>
           </button>
         </div>
 
