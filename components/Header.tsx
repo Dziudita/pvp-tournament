@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { Input } from '@/components/ui/input';
 
 export default function Header() {
   return (
@@ -10,10 +9,10 @@ export default function Header() {
         🍒 Welcome back, Cherry!
       </div>
       <div className="flex items-center gap-4">
-        <Input
+        <input
           type="text"
           placeholder="Search games or players..."
-          className="bg-zinc-800 text-white border-none focus:ring-2 focus:ring-pink-500 w-64"
+          className="px-4 py-2 rounded-lg bg-zinc-800 text-white border-none focus:ring-2 focus:ring-pink-500 w-64 outline-none"
         />
         <Image
           src="/avatars/hammer-cherry.png"
