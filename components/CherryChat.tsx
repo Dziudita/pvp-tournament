@@ -1,49 +1,74 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function CherryChat() {
   const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [chat, setChat] = useState([
+    { user: "CherryNoob", text: "hey guys... am I late? 😳" },
+    { user: "BoomCherry", text: "bro you always late 😩" },
+    { user: "CoolSlapz", text: "who tryna duel rn 🍒💥" },
+  ]);
 
-  const messages = [
-    { username: "CherryNoob", text: "hey guys... am I late? 😳" },
-    { username: "BoomCherry", text: "bro you always late 😩" },
-    { username: "CoolSlapz", text: "who tryna duel rn 🍒💥" },
-  ];
+  const handleSendMessage = () => {
+    if (message.trim() === "") return;
+    setChat([...chat, { user: "You", text: message }]);
+    setMessage("");
+  };
 
   return (
-    <>
-      {/* Chat Toggle Button */}
+    <div className="fixed bottom-4 left-4 z-50">
+      {/* Chat toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 left-4 w-14 h-14 rounded-full bg-pink-600 text-white flex items-center justify-center text-xl shadow-lg hover:bg-pink-500 z-50"
+        className="w-12 h-12 rounded-full bg-pink-600 text-white flex items-center justify-center shadow-lg hover:bg-pink-500"
       >
         💬
       </button>
 
-      {/* Chat Box */}
+      {/* Chat box */}
       {isOpen && (
-        <div className="fixed bottom-24 left-4 w-80 bg-zinc-900 border-2 border-pink-500 rounded-xl p-4 text-white shadow-xl z-40">
-          <h2 className="text-pink-400 font-bold text-lg mb-2 flex items-center gap-2">
+        <div className="w-80 bg-zinc-900 border border-pink-500 text-white p-4 rounded-xl mt-2">
+          <h2 className="text-lg font-bold text-pink-400 mb-4">
             🍒 Cherry Chat
           </h2>
-          <div className="space-y-4 max-h-72 overflow-y-auto pr-1">
-            {messages.map((msg, index) => (
-              <div key={index} className="flex items-start gap-2">
+
+          {/* Chat messages */}
+          <div className="max-h-64 overflow-y-auto space-y-2">
+            {chat.map((msg, i) => (
+              <div key={i} className="flex items-start gap-2">
                 <img
-                  src="/avatars/default.png"
+                  src="/avatars/default-cherry.png"
                   alt="avatar"
-                  className="w-8 h-8 rounded-full"
+                  className="w-6 h-6 rounded-full"
                 />
-                <div>
-                  <p className="text-pink-300 font-semibold">{msg.username}:</p>
-                  <p>{msg.text}</p>
-                </div>
+                <p>
+                  <span className="font-bold text-pink-300">{msg.user}:</span>{" "}
+                  <span>{msg.text}</span>
+                </p>
               </div>
             ))}
           </div>
+
+          {/* Message input */}
+          <div className="flex items-center gap-2 mt-4">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-grow px-3 py-2 rounded-lg bg-zinc-800 text-white outline-none"
+            />
+            <button
+              onClick={handleSendMessage}
+              className="px-3 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-500"
+            >
+              Send
+            </button>
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
