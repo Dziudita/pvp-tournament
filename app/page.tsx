@@ -2,11 +2,14 @@
 
 import React from "react";
 import NicknameAuthModal from "../components/NicknameAuthModal";
+import CherryChat from "../components/CherryChat";
 
 export default function Home() {
   return (
     <>
       <NicknameAuthModal />
+      <CherryChat />
+
       <div className="relative min-h-screen bg-gradient-to-b from-black to-zinc-900 text-white">
         {/* Header */}
         <header className="flex items-center justify-between p-6">
