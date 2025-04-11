@@ -28,7 +28,7 @@ export default function Home() {
         <img
           src="/avatars/angry-cherry.png"
           alt="Angry Cherry"
-          className="w-130 h-130 absolute bottom-4 right-4 z-10"
+          className="w-110 h-110 absolute bottom-4 right-4 z-10"
         />
 
         {/* Chat */}
