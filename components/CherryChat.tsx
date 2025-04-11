@@ -39,7 +39,7 @@ export default function CherryChat() {
             {chat.map((msg, i) => (
               <div key={i} className="flex items-start gap-2">
                 <img
-                  src="/avatars/default.png
+                  src="/avatars/default.png"
                   alt="avatar"
                   className="w-6 h-6 rounded-full"
                 />
@@ -71,4 +71,4 @@ export default function CherryChat() {
       )}
     </div>
   );
-} 
+}
