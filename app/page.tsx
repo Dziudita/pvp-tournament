@@ -4,7 +4,14 @@ import React from "react";
 import NicknameAuthModal from "../components/NicknameAuthModal";
 
 export default function Home() {
-  return (<NicknameAuthModal />
+  return (
+     <>
+    <NicknameAuthModal />
+    <div className="relative min-h-screen bg-gradient-to-b from-black to-zinc-900 text-white">
+      ...
+    </div>
+  </>
+);
     <div className="relative min-h-screen bg-gradient-to-b from-black to-zinc-900 text-white">
       {/* Header */}
       <header className="flex items-center justify-between p-6">
