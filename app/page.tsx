@@ -2,85 +2,59 @@
 
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import CherryChat from "../components/CherryChat";
-import Leaderboard from "../components/Leaderboard"; // 👈 pridėta
+import Leaderboard from "../components/Leaderboard";
 import WalletInfo from "../components/WalletInfo";
+import CherryChat from "../components/CherryChat";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-black">
-      {/* Sidebar */}
+    <div className="flex h-screen w-full bg-gradient-to-b from-[#1a1a1a] to-black text-white">
+      {/* Sidebar kairėje */}
       <Sidebar />
 
-      {/* Main Content Area */}
-      <div className="flex flex-col flex-grow relative">
-        {/* Header with CHERZI ARENA + hammer cherry */}
-        <div className="flex justify-between items-center px-8 py-6 border-b border-pink-500 bg-black/80">
-          <h1 className="text-6xl font-extrabold text-pink-500 drop-shadow-[0_0_15px_#ff4dd6] flex items-center gap-4">
-            CHERZI ARENA
-            <Image
-              src="/avatars/hammer-cherry.png"
-              alt="Hammer Cherry"
-              width={60}
-              height={60}
-              className="animate-bounce"
-            />
-          </h1>
+      {/* Pagrindinis turinys */}
+      <div className="flex flex-col flex-grow relative px-6 py-4 overflow-hidden">
+
+        {/* Header su CHERZI ARENA ir vyšnia */}
+        <Header />
+
+        {/* Viršutinis dešinys kampas: Wallet Info */}
+        <div className="absolute top-4 right-6 z-50">
+          <WalletInfo />
         </div>
 
-        {/* 🏆 Leaderboard */}
-        <Leaderboard />
-
-        {/* Search bar + Welcome */}
-        <div className="flex items-center justify-between px-8 py-4 border-b border-pink-500">
+        {/* Paieška */}
+        <div className="mt-8">
           <input
             type="text"
-            placeholder="Search games or players..."
-            className="px-4 py-2 rounded-xl bg-zinc-800 text-white outline-none w-96 placeholder-pink-300 shadow-inner"
+            placeholder="Search..."
+            className="px-6 py-3 w-full max-w-md rounded-xl bg-zinc-900/80 text-pink-300 placeholder-pink-400 text-lg shadow-inner outline-none"
           />
-
-          <div className="flex items-center gap-2 text-pink-400 font-bold text-lg">
-            <Image
-              src="/avatars/cool-cherry.png"
-              alt="User Avatar"
-              width={40}
-              height={40}
-              className="rounded-full border border-pink-500"
-            />
-            Welcome, CherZi!
-          </div>
         </div>
-{/* Wallet + Leaderboard */}
-<div className="flex justify-end items-start gap-4 px-8 mt-4">
-  <WalletInfo />
-  <Leaderboard />
-</div>
-        {/* Game Buttons */}
-        <div className="flex justify-center gap-10 mt-20">
-          <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90">
+
+        {/* Mygtukai */}
+        <div className="flex gap-10 justify-center mt-16">
+          <button className="px-12 py-5 text-xl font-bold rounded-xl bg-gradient-to-r from-pink-600 to-purple-500 hover:opacity-90">
             PLAY DUEL
           </button>
-          <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-xl hover:opacity-90">
+          <button className="px-12 py-5 text-xl font-bold rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 hover:opacity-90">
             JOIN TOURNAMENT
           </button>
         </div>
 
-        {/* Bottom Avatars */}
-        <Image
-          src="/avatars/cool-cherry.png"
-          alt="Cool Cherry"
-          width={130}
-          height={130}
-          className="absolute bottom-6 left-6 drop-shadow-[0_0_10px_#ff4dd6]"
-        />
-        <Image
-          src="/avatars/angry-cherry.png"
-          alt="Angry Cherry"
-          width={130}
-          height={130}
-          className="absolute bottom-6 right-6 drop-shadow-[0_0_10px_#ff4dd6]"
-        />
+        {/* Lyderių lentelė dešinėje */}
+        <div className="absolute right-6 top-[200px] z-30">
+          <Leaderboard />
+        </div>
+
+        {/* Apatiniai avatarai ir Chat */}
+        <div className="absolute bottom-4 left-4">
+          <Image src="/avatars/cool-cherry.png" alt="Cool Cherry" width={100} height={100} />
+        </div>
+        <div className="absolute bottom-4 right-4">
+          <Image src="/avatars/angry-cherry.png" alt="Angry Cherry" width={100} height={100} />
+        </div>
 
         <CherryChat />
       </div>
