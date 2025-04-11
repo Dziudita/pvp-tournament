@@ -2,7 +2,7 @@
 
 export default function MainContent() {
   return (
-    <main className="flex-grow px-8 py-10 text-center">
+    <main className="flex-grow px-8 py-10 text-center border border-pink-500 rounded-2xl bg-zinc-900/30 shadow-xl max-w-4xl mx-auto mt-10">
       {/* Welcome Title */}
       <h1 className="text-5xl font-extrabold text-pink-500 mb-6">
         Welcome to the Cherry Arena 🍒
