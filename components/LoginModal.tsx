@@ -11,7 +11,6 @@ export default function LoginModal() {
   const [error, setError] = useState("");
   const [existingUsers, setExistingUsers] = useState<{ [key: string]: string }>({});
 
-  // Load existing users
   useEffect(() => {
     const users = localStorage.getItem("cherzi-users");
     if (users) setExistingUsers(JSON.parse(users));
@@ -38,9 +37,6 @@ export default function LoginModal() {
 
       const updatedUsers = { ...existingUsers, [nickname]: password };
       localStorage.setItem("cherzi-users", JSON.stringify(updatedUsers));
-      localStorage.setItem("cherzi-nick", nickname);
-      localStorage.setItem("cherzi-pass", password);
-      location.reload();
     } else {
       if (!(nickname in existingUsers)) {
         return setError("User not found.");
@@ -48,11 +44,11 @@ export default function LoginModal() {
       if (existingUsers[nickname] !== password) {
         return setError("Incorrect password.");
       }
-
-      localStorage.setItem("cherzi-nick", nickname);
-      localStorage.setItem("cherzi-pass", password);
-      location.reload();
     }
+
+    localStorage.setItem("cherzi-nick", nickname);
+    localStorage.setItem("cherzi-pass", password);
+    location.reload();
   };
 
   return (
@@ -62,9 +58,7 @@ export default function LoginModal() {
           {isSignUp ? "Sign Up" : "Login"}
         </h2>
 
-        {error && (
-          <p className="mb-4 text-center text-red-400 font-semibold">{error}</p>
-        )}
+        {error && <p className="text-center text-red-400 mb-4">{error}</p>}
 
         <input
           type="text"
@@ -74,7 +68,6 @@ export default function LoginModal() {
           className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
         />
 
-        {/* Password field + toggle icon */}
         <div className="relative mb-6">
           <input
             type={showPassword ? "text" : "password"}
@@ -84,9 +77,8 @@ export default function LoginModal() {
             className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
           />
           <button
-            type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-3 text-pink-300"
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
