@@ -3,54 +3,56 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Gamepad,
-  ScrollText,
-  BrainCircuit,
-  LifeBuoy,
-  Lock,
-  LogOut,
-} from "lucide-react";
+  FaGamepad,
+  FaScroll,
+  FaQuestionCircle,
+  FaLifeRing,
+  FaSignInAlt,
+} from "react-icons/fa";
 
-const Sidebar = () => {
+export default function Sidebar() {
   return (
-    <aside className="bg-zinc-900 text-white w-64 h-screen p-6 border-r border-pink-500 flex flex-col justify-between">
+    <aside className="bg-zinc-900 text-white w-64 min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between">
       <div>
-        {/* Logo */}
-        <div className="flex items-center gap-2 text-2xl font-bold text-pink-400 mb-10">
+        {/* Logo + Title */}
+        <div className="flex items-center gap-3 mb-10">
           <Image
             src="/avatars/hammer-cherry.png"
-            alt="logo"
-            width={32}
-            height={32}
+            alt="Cherry Logo"
+            width={40}
+            height={40}
+            className="rounded-full"
           />
-          CHERZI ARENA
+          <h1 className="text-2xl font-bold text-pink-400 leading-tight">
+            CHERZI
+            <br />
+            ARENA
+          </h1>
         </div>
 
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-lg">
           <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
-            <Gamepad size={18} /> Games
+            <FaGamepad /> Games
           </Link>
           <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
-            <ScrollText size={18} /> Rules
+            <FaScroll /> Rules
           </Link>
           <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
-            <BrainCircuit size={18} /> About
+            <FaQuestionCircle /> About
           </Link>
           <Link href="#" className="flex items-center gap-2 hover:text-pink-400">
-            <LifeBuoy size={18} /> Support
+            <FaLifeRing /> Support
           </Link>
         </nav>
       </div>
 
-      {/* Auth */}
-      <div className="flex flex-col gap-4">
-        <button className="flex items-center gap-2 text-left hover:text-pink-400">
-          <Lock size={18} /> Login / Logout
+      {/* Login/Logout */}
+      <div className="pt-10">
+        <button className="flex items-center gap-2 hover:text-pink-400 text-lg">
+          <FaSignInAlt /> Login / Logout
         </button>
       </div>
     </aside>
   );
-};
-
-export default Sidebar;
+}
