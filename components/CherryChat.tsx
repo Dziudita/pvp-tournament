@@ -1,19 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CherryChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([
-    { user: "CherryNoob", text: "hey guys... am I late? 😳" },
-    { user: "BoomCherry", text: "bro you always late 😩" },
-    { user: "CoolSlapz", text: "who tryna duel rn 🍒💥" },
-  ]);
+  const [chat, setChat] = useState<{ user: string; text: string }[]>([]);
+
+  // Load chat from localStorage
+  useEffect(() => {
+    const storedChat = localStorage.getItem("cherzi-chat");
+    if (storedChat) {
+      setChat(JSON.parse(storedChat));
+    } else {
+      // default messages
+      setChat([
+        { user: "CherryNoob", text: "hey guys... am I late? 😳" },
+        { user: "BoomCherry", text: "bro you always late 😩" },
+        { user: "CoolSlapz", text: "who tryna duel rn 🍒💥" },
+      ]);
+    }
+  }, []);
+
+  // Save chat to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("cherzi-chat", JSON.stringify(chat));
+  }, [chat]);
 
   const handleSendMessage = () => {
     if (message.trim() === "") return;
-    setChat([...chat, { user: "You", text: message }]);
+    const newMessage = { user: "You", text: message };
+    setChat((prev) => [...prev, newMessage]);
     setMessage("");
   };
 
@@ -29,17 +46,17 @@ export default function CherryChat() {
 
       {/* Chat box */}
       {isOpen && (
-        <div className="w-80 bg-zinc-900 border border-pink-500 text-white p-4 rounded-xl mt-2">
+        <div className="w-80 bg-zinc-900 border border-pink-500 text-white p-4 rounded-xl mt-2 max-h-[400px] flex flex-col">
           <h2 className="text-lg font-bold text-pink-400 mb-4">
             🍒 Cherry Chat
           </h2>
 
-          {/* Chat messages */}
-          <div className="max-h-64 overflow-y-auto space-y-2">
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto space-y-2 mb-4 pr-1">
             {chat.map((msg, i) => (
               <div key={i} className="flex items-start gap-2">
                 <img
-                  src="/avatars/default.png"
+                  src="/avatars/default-cherry.png"
                   alt="avatar"
                   className="w-6 h-6 rounded-full"
                 />
@@ -51,8 +68,8 @@ export default function CherryChat() {
             ))}
           </div>
 
-          {/* Message input */}
-          <div className="flex items-center gap-2 mt-4">
+          {/* Input */}
+          <div className="flex gap-2">
             <input
               type="text"
               value={message}
