@@ -6,6 +6,7 @@ import WalletInfo from "../components/WalletInfo";
 import Leaderboard from "../components/Leaderboard";
 import CherryChat from "../components/CherryChat";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
+import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import Image from "next/image";
 
 export default function Home() {
