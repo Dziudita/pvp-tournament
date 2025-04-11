@@ -36,9 +36,9 @@ export default function Sidebar() {
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
             <FaScroll size={26} /> Rules
           </Link>
-          <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            <FaQuestionCircle size={26} /> About
-          </Link>
+          <Link href="/about" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
+  <FaQuestionCircle size={26} /> About
+</Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
             <FaLifeRing size={26} /> Support
           </Link>
