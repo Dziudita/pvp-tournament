@@ -71,12 +71,17 @@ export default function CherryChat() {
           {/* Input */}
           <div className="flex gap-2">
             <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-grow px-3 py-2 rounded-lg bg-zinc-800 text-white outline-none"
-            />
+  type="text"
+  value={message}
+  onChange={(e) => setMessage(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  }}
+  placeholder="Type your message..."
+  className="flex-grow px-3 py-2 rounded-lg bg-zinc-800 text-white outline-none"
+/>
             <button
               onClick={handleSendMessage}
               className="px-3 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-500"
