@@ -2,12 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Papildomi stiliai (jei norėsi vėliau) */
 html {
   scroll-behavior: smooth;
 }
 
-/* 🎆 Neoninis gradientas fone */
-body {
-  background: radial-gradient(circle, #1a1a1a, #000000);
+@layer utilities {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
 }
