@@ -2,8 +2,8 @@
 
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import WalletInfo from "../components/WalletInfo";
 import CherryChat from "../components/CherryChat";
+import WalletInfo from "../components/WalletInfo";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import Image from "next/image";
 
@@ -16,46 +16,41 @@ export default function Home() {
       {/* Main Content Area */}
       <div className="flex flex-col flex-grow relative">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-4 border-b border-pink-500 bg-black/80">
-          <h1 className="text-6xl font-extrabold text-pink-500 drop-shadow-[0_0_15px_#ff4dd6] flex items-center gap-4">
-            CHERZI ARENA
-            <Image
-              src="/avatars/hammer-cherry.png"
-              alt="Hammer Cherry"
-              width={60}
-              height={60}
-              className="animate-bounce"
-            />
-          </h1>
+        <Header />
+
+        {/* Wallet Info */}
+        <div className="absolute top-4 right-6 z-50">
           <WalletInfo />
         </div>
 
-        {/* Search bar */}
-        <div className="flex justify-center px-8 py-4">
+        {/* Search Bar */}
+        <div className="px-8 mt-8">
           <input
             type="text"
             placeholder="Search games or players..."
-            className="px-4 py-2 rounded-xl bg-zinc-800 text-white outline-none w-full md:w-1/2 placeholder-pink-300 shadow-inner"
+            className="w-full px-6 py-3 rounded-xl bg-zinc-800 text-white outline-none placeholder-pink-300 shadow-inner border border-pink-500"
           />
         </div>
 
-        {/* Game Buttons + Leaderboard */}
-        <div className="flex flex-col md:flex-row justify-between items-start gap-10 px-8 mt-10">
-          {/* Kairėje – mygtukai */}
-          <div className="flex flex-col gap-6 w-full md:w-auto">
-            <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90">
+        {/* Main Buttons + Leaderboard */}
+        <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10">
+          {/* Game Buttons */}
+          <div className="flex flex-col gap-6">
+            <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-90 shadow-md">
               PLAY DUEL
             </button>
-            <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-xl hover:opacity-90">
+            <button className="px-10 py-4 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-xl hover:opacity-90 shadow-md">
               JOIN TOURNAMENT
             </button>
           </div>
 
-          {/* Dešinėje – lyderių lentelė */}
-          <TopPlayerOfDay />
+          {/* Leaderboard */}
+          <div className="mt-10 md:mt-0 md:ml-10">
+            <TopPlayerOfDay />
+          </div>
         </div>
 
-        {/* Apatiniai avatarai */}
+        {/* Bottom Avatars */}
         <Image
           src="/avatars/cool-cherry.png"
           alt="Cool Cherry"
@@ -71,7 +66,6 @@ export default function Home() {
           className="absolute bottom-6 right-6 drop-shadow-[0_0_10px_#ff4dd6]"
         />
 
-        {/* Chat komponentas */}
         <CherryChat />
       </div>
     </div>
