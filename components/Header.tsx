@@ -4,27 +4,17 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="w-full flex items-center justify-between px-6 py-4 border-b border-pink-500 bg-black/60">
-      {/* Kairėje – pasisveikinimas */}
-      <div className="flex items-center gap-2 text-pink-400 font-bold text-lg">
-        🍒 Welcome back, CherZi!
-      </div>
-
-      {/* Dešinėje – paieška + avataras */}
-      <div className="flex items-center gap-4">
-        <input
-          type="text"
-          placeholder="Search games or players..."
-          className="px-3 py-2 rounded-lg bg-zinc-800 text-white outline-none w-64 placeholder-pink-300"
-        />
+    <header className="w-full px-8 py-6 border-b border-pink-500 bg-black/80 flex justify-center relative z-10">
+      <h1 className="text-6xl font-extrabold text-pink-500 drop-shadow-[0_0_15px_#ff4dd6] flex items-center gap-4">
+        CHERZI ARENA
         <Image
           src="/avatars/hammer-cherry.png"
-          alt="User Avatar"
-          width={40}
-          height={40}
-          className="rounded-full border border-pink-500 shadow-lg"
+          alt="Hammer Cherry"
+          width={60}
+          height={60}
+          className="animate-bounce"
         />
-      </div>
+      </h1>
     </header>
   );
 }
