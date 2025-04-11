@@ -20,16 +20,20 @@ export default function Home() {
         <MainContent />
 
         {/* Bottom Cherries */}
-        <img
-          src="/avatars/cool-cherry.png"
-          alt="Cool Cherry"
-          className="w-50 h-50 absolute bottom-4 left-4 z-10"
-        />
-        <img
-          src="/avatars/angry-cherry.png"
-          alt="Angry Cherry"
-          className="w-50 h-50 absolute bottom-4 right-4 z-10"
-        />
+      <Image
+  src="/avatars/cool-cherry.png"
+  alt="Cool Cherry"
+  width={100}
+  height={100}
+  className="absolute bottom-4 left-4 z-40"
+/>
+<Image
+  src="/avatars/angry-cherry.png"
+  alt="Angry Cherry"
+  width={100}
+  height={100}
+  className="absolute bottom-4 right-4 z-40"
+/>
 
         {/* Chat */}
         <CherryChat />
