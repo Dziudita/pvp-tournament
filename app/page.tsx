@@ -1,11 +1,10 @@
 "use client";
 
-import LuckySquares from "../components/LuckySquares";
 import { useState, useEffect } from "react";
+import LuckySquares from "../components/LuckySquares";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import CherryChat from "../components/CherryChat";
-import WalletInfo from "../components/WalletInfo";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import LoginModal from "../components/LoginModal";
 import Image from "next/image";
@@ -28,10 +27,6 @@ export default function Home() {
       <div className="flex flex-col flex-grow relative">
         <Header />
 
-        <div className="absolute top-4 right-6 z-50">
-          <WalletInfo />
-        </div>
-
         <div className="px-8 mt-8">
           <input
             type="text"
@@ -53,7 +48,7 @@ export default function Home() {
           <div className="mt-10 md:mt-0 md:ml-10">
             <TopPlayerOfDay />
           </div>
-        </div> {/* ← ŠITAS buvo trūkstamas uždarymas */}
+        </div>
 
         <div className="mt-16">
           <LuckySquares />
