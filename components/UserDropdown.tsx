@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { FaUser, FaEnvelope, FaKey, FaCoins } from "react-icons/fa";
 
 export default function UserDropdown() {
@@ -27,19 +26,19 @@ export default function UserDropdown() {
 
   return (
     <div className="relative">
+      {/* Avataras, kuris atidaro dropdown */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="focus:outline-none"
       >
-        <Image
-          src="/avatars/cherzi.png"
+        <img
+          src="/avatars/cherzi-owner.png"
           alt="Avatar"
-          width={48}
-          height={48}
-          className="rounded-full border-2 border-pink-500 hover:brightness-110"
+          className="w-12 h-12 rounded-full border-2 border-pink-500 hover:brightness-110"
         />
       </button>
 
+      {/* Dropdown turinys */}
       {isOpen && (
         <div className="absolute top-14 left-0 bg-zinc-900 border border-pink-500 rounded-xl p-4 w-64 shadow-2xl z-50">
           <h3 className="text-xl text-pink-400 font-bold mb-4">👤 {nickname}</h3>
@@ -51,9 +50,7 @@ export default function UserDropdown() {
             </div>
             <div className="flex items-center gap-2">
               <FaKey className="text-pink-300" />
-              <span className="text-white cursor-pointer hover:underline">
-                Change Password
-              </span>
+              <span className="text-white">Change Password</span>
             </div>
             <div className="border-t border-pink-500 my-3"></div>
             <div className="flex items-center gap-2">
