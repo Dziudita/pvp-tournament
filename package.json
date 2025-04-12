@@ -7,15 +7,15 @@
     "build": "next build",
     "start": "next start"
   },
- "dependencies": {
-  "next": "14.1.0",
-  "react": "18.2.0",
-  "react-dom": "18.2.0",
-  "lucide-react": "^0.321.0",
-  "react-icons": "^4.12.0",
-  "wagmi": "^1.4.7",
-  "ethers": "^6.8.1",
-  "viem": "^1.4.0"
+  "dependencies": {
+    "next": "14.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.12.0",
+    "lucide-react": "^0.321.0",
+    "@rainbow-me/rainbowkit": "^0.9.14",
+    "wagmi": "^1.3.0",
+    "viem": "^1.20.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1",
