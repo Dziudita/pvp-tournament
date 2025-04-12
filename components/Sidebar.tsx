@@ -7,8 +7,8 @@ import {
   FaScroll,
   FaQuestionCircle,
   FaLifeRing,
-  FaSignInAlt,
 } from "react-icons/fa";
+import LogoutButton from "../components/LogoutButton";
 
 export default function Sidebar() {
   return (
@@ -31,21 +31,23 @@ export default function Sidebar() {
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-xl">
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            <FaGamepad size={26} /> Games
+            🎮 Games
           </Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            <FaScroll size={26} /> Rules
+            📜 Rules
           </Link>
           <Link href="/about" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            <FaQuestionCircle size={26} /> About
+            ❓ About
           </Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            <FaLifeRing size={26} /> Support
-          </Link>
-          <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            <FaSignInAlt size={26} /> Login / Logout
+            💬 Support
           </Link>
         </nav>
+      </div>
+
+      {/* Logout */}
+      <div className="mt-10">
+        <LogoutButton />
       </div>
     </aside>
   );
