@@ -1,5 +1,6 @@
 "use client";
 
+import LuckySquares from "../components/LuckySquares";
 import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
@@ -52,7 +53,9 @@ export default function Home() {
           <div className="mt-10 md:mt-0 md:ml-10">
             <TopPlayerOfDay />
           </div>
-        </div>
+       <div className="mt-16">
+  <LuckySquares />
+</div>
 
         <Image
           src="/avatars/cool-cherry.png"
