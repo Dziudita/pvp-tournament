@@ -8,6 +8,7 @@ export default function UserDropdown() {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [bets, setBets] = useState(0);
+  const [wager, setWager] = useState(0);
   const [dailyWD, setDailyWD] = useState(0);
   const [dailyDeposit, setDailyDeposit] = useState(0);
 
@@ -15,18 +16,19 @@ export default function UserDropdown() {
     const nick = localStorage.getItem("cherzi-nick") || "User";
     const storedEmail = localStorage.getItem("cherzi-email") || "Not set";
     const storedBets = Number(localStorage.getItem("cherzi-bets") || 0);
+    const storedWager = Number(localStorage.getItem("cherzi-wager") || 0);
     const wd = Number(localStorage.getItem("cherzi-dailyWD") || 0);
     const depo = Number(localStorage.getItem("cherzi-dailyDeposit") || 0);
     setNickname(nick);
     setEmail(storedEmail);
     setBets(storedBets);
+    setWager(storedWager);
     setDailyWD(wd);
     setDailyDeposit(depo);
   }, []);
 
   return (
     <div className="relative">
-      {/* Avataras, kuris atidaro dropdown */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="focus:outline-none"
@@ -38,7 +40,6 @@ export default function UserDropdown() {
         />
       </button>
 
-      {/* Dropdown turinys */}
       {isOpen && (
         <div className="absolute top-14 left-0 bg-zinc-900 border border-pink-500 rounded-xl p-4 w-64 shadow-2xl z-50">
           <h3 className="text-xl text-pink-400 font-bold mb-4">👤 {nickname}</h3>
@@ -56,6 +57,10 @@ export default function UserDropdown() {
             <div className="flex items-center gap-2">
               <FaCoins className="text-yellow-400" />
               <span className="text-white">Total Bets: {bets}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-pink-400">🎯</span>
+              <span className="text-white">Wager: {wager}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-pink-300">💸</span>
