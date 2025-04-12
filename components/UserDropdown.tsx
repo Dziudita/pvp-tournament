@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { FaUser, FaEnvelope, FaKey, FaCoins } from "react-icons/fa";
 
 export default function UserDropdown() {
@@ -30,10 +31,12 @@ export default function UserDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         className="focus:outline-none"
       >
-        <img
+        <Image
           src="/avatars/cherzi.png"
           alt="Avatar"
-          className="w-12 h-12 rounded-full border-2 border-pink-500 hover:brightness-110"
+          width={48}
+          height={48}
+          className="rounded-full border-2 border-pink-500 hover:brightness-110"
         />
       </button>
 
@@ -48,7 +51,9 @@ export default function UserDropdown() {
             </div>
             <div className="flex items-center gap-2">
               <FaKey className="text-pink-300" />
-              <span className="text-white">Change Password</span>
+              <span className="text-white cursor-pointer hover:underline">
+                Change Password
+              </span>
             </div>
             <div className="border-t border-pink-500 my-3"></div>
             <div className="flex items-center gap-2">
