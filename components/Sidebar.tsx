@@ -1,5 +1,6 @@
 "use client";
 
+import UserDropdown from "./UserDropdown";
 import UserProfileBadge from "./UserProfileBadge";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,10 +25,9 @@ export default function Sidebar() {
         {/* Logo + Title */}
        <div className="flex items-center gap-4 mb-10">
 
-  <UserProfileBadge />
+ <div className="mb-10">
+  <UserDropdown />
 </div>
-
-
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-xl">
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
