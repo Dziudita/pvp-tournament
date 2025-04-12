@@ -27,9 +27,9 @@ export default function Sidebar() {
 
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-xl">
-          <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            <FaGamepad size={26} /> Games
-          </Link>
+          <Link href="/game" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
+  <FaGamepad size={26} /> Games
+</Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
             <FaScroll size={26} /> Rules
           </Link>
