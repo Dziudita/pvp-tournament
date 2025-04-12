@@ -1,67 +1,64 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginModal() {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [existingUsers, setExistingUsers] = useState<{ [key: string]: string }>({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Load existing users and check if user already logged in
+  // Load users from localStorage
   useEffect(() => {
     const users = localStorage.getItem("cherzi-users");
     if (users) setExistingUsers(JSON.parse(users));
-
-    const savedNick = localStorage.getItem("cherzi-nick");
-    const savedPass = localStorage.getItem("cherzi-pass");
-
-    if (savedNick && savedPass) {
-      setIsLoggedIn(true); // Hide modal if already logged in
-    }
   }, []);
 
   const validatePassword = (pw: string) => {
-    return pw.length >= 6 && /\d/.test(pw);
+    return pw.length >= 5 && /\d/.test(pw);
   };
 
   const handleAuth = () => {
     setError("");
 
-    if (!nickname || !password) {
-      return setError("Please fill in both fields.");
+    if (!nickname || !password || (isSignUp && !confirmPassword)) {
+      return setError("Please fill in all fields.");
     }
 
     if (isSignUp) {
       if (nickname in existingUsers) {
-        return setError("Nickname already taken.");
+        return setError("Nickname is already taken.");
       }
+
       if (!validatePassword(password)) {
-        return setError("Password must be at least 6 characters and include a number.");
+        return setError("Password must be at least 5 characters and include a number.");
+      }
+
+      if (password !== confirmPassword) {
+        return setError("Passwords do not match.");
       }
 
       const updatedUsers = { ...existingUsers, [nickname]: password };
       localStorage.setItem("cherzi-users", JSON.stringify(updatedUsers));
+      localStorage.setItem("cherzi-nick", nickname);
+      localStorage.setItem("cherzi-pass", password);
+      location.reload();
     } else {
       if (!(nickname in existingUsers)) {
         return setError("User not found.");
       }
+
       if (existingUsers[nickname] !== password) {
         return setError("Incorrect password.");
       }
+
+      localStorage.setItem("cherzi-nick", nickname);
+      localStorage.setItem("cherzi-pass", password);
+      location.reload();
     }
-
-    localStorage.setItem("cherzi-nick", nickname);
-    localStorage.setItem("cherzi-pass", password);
-    setIsLoggedIn(true); // Close modal
-    location.reload(); // Optional: reload page after login
   };
-
-  if (isLoggedIn) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
@@ -70,7 +67,7 @@ export default function LoginModal() {
           {isSignUp ? "Sign Up" : "Login"}
         </h2>
 
-        {error && <p className="text-center text-red-400 mb-4">{error}</p>}
+        {error && <p className="text-red-400 text-center mb-4 font-semibold">{error}</p>}
 
         <input
           type="text"
@@ -79,22 +76,23 @@ export default function LoginModal() {
           onChange={(e) => setNickname(e.target.value)}
           className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
         />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+        />
 
-        <div className="relative mb-6">
+        {isSignUp && (
           <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
           />
-          <button
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </button>
-        </div>
+        )}
 
         <button
           onClick={handleAuth}
@@ -105,11 +103,11 @@ export default function LoginModal() {
 
         <div className="mt-4 text-center">
           <button
-            className="text-sm text-pink-300 hover:underline"
             onClick={() => {
               setError("");
               setIsSignUp(!isSignUp);
             }}
+            className="text-sm text-pink-300 hover:underline"
           >
             {isSignUp
               ? "Already have an account? Login"
