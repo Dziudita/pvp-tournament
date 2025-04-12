@@ -50,10 +50,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-16">
-          <LuckySquares />
-        </div>
-
         <Image
           src="/avatars/cool-cherry.png"
           alt="Cool Cherry"
