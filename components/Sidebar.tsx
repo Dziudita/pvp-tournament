@@ -1,5 +1,6 @@
 "use client";
 
+import UserProfileBadge from "./UserProfileBadge";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -21,18 +22,17 @@ export default function Sidebar() {
     <aside className="bg-zinc-900 text-white w-64 min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl">
       <div>
         {/* Logo + Title */}
-        <div className="flex items-center gap-4 mb-10">
-          <Image
-            src="/avatars/hammer-cherry.png"
-            alt="Cherry Logo"
-            width={48}
-            height={48}
-            className="rounded-full drop-shadow-[0_0_10px_#ff4dd6]"
-          />
-          <span className="text-3xl font-extrabold text-pink-500 leading-tight drop-shadow-[0_0_10px_#ff4dd6]">
-            CHERZI <br /> ARENA
-          </span>
-        </div>
+       <div className="flex items-center gap-4 mb-10">
+  <Image
+    src="/avatars/hammer-cherry.png"
+    alt="Cherry Logo"
+    width={48}
+    height={48}
+    className="rounded-full drop-shadow-[0_0_10px_#ff4dd6]"
+  />
+  <UserProfileBadge />
+</div>
+
 
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-xl">
