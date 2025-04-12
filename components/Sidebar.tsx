@@ -7,10 +7,16 @@ import {
   FaScroll,
   FaQuestionCircle,
   FaLifeRing,
+  FaSignOutAlt,
 } from "react-icons/fa";
-import LogoutButton from "../components/LogoutButton";
 
 export default function Sidebar() {
+  const handleLogout = () => {
+    localStorage.removeItem("cherzi-nick");
+    localStorage.removeItem("cherzi-pass");
+    location.reload();
+  };
+
   return (
     <aside className="bg-zinc-900 text-white w-64 min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl">
       <div>
@@ -31,23 +37,24 @@ export default function Sidebar() {
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-xl">
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            🎮 Games
+            <FaGamepad size={26} /> Games
           </Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            📜 Rules
+            <FaScroll size={26} /> Rules
           </Link>
           <Link href="/about" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            ❓ About
+            <FaQuestionCircle size={26} /> About
           </Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-            💬 Support
+            <FaLifeRing size={26} /> Support
           </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
+          >
+            <FaSignOutAlt size={24} /> Logout
+          </button>
         </nav>
-      </div>
-
-      {/* Logout */}
-      <div className="mt-10">
-        <LogoutButton />
       </div>
     </aside>
   );
