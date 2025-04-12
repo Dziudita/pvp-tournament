@@ -1,9 +1,7 @@
 "use client";
 
 import UserDropdown from "./UserDropdown";
-import UserProfileBadge from "./UserProfileBadge";
 import Link from "next/link";
-import Image from "next/image";
 import {
   FaGamepad,
   FaScroll,
@@ -22,12 +20,11 @@ export default function Sidebar() {
   return (
     <aside className="bg-zinc-900 text-white w-64 min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl">
       <div>
-        {/* Logo + Title */}
-       <div className="flex items-center gap-4 mb-10">
+        {/* User Profile Dropdown */}
+        <div className="mb-10">
+          <UserDropdown />
+        </div>
 
- <div className="mb-10">
-  <UserDropdown />
-</div>
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-xl">
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
