@@ -7,7 +7,7 @@ import Header from "../components/Header";
 import CherryChat from "../components/CherryChat";
 import WalletInfo from "../components/WalletInfo";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
-import LoginModal from "../components/LoginModal"; // <- svarbu
+import LoginModal from "../components/LoginModal";
 import Image from "next/image";
 
 export default function Home() {
@@ -53,9 +53,11 @@ export default function Home() {
           <div className="mt-10 md:mt-0 md:ml-10">
             <TopPlayerOfDay />
           </div>
-       <div className="mt-16">
-  <LuckySquares />
-</div>
+        </div> {/* ← ŠITAS buvo trūkstamas uždarymas */}
+
+        <div className="mt-16">
+          <LuckySquares />
+        </div>
 
         <Image
           src="/avatars/cool-cherry.png"
