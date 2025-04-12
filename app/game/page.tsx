@@ -1,4 +1,3 @@
-// app/game/page.tsx
 "use client";
 
 import LuckySquares from "../../components/LuckySquares";
