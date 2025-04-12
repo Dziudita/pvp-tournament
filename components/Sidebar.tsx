@@ -23,13 +23,7 @@ export default function Sidebar() {
       <div>
         {/* Logo + Title */}
        <div className="flex items-center gap-4 mb-10">
-  <Image
-    src="/avatars/hammer-cherry.png"
-    alt="Cherry Logo"
-    width={48}
-    height={48}
-    className="rounded-full drop-shadow-[0_0_10px_#ff4dd6]"
-  />
+
   <UserProfileBadge />
 </div>
 
