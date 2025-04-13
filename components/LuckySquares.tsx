@@ -52,7 +52,14 @@ export default function LuckySquares() {
                   : "bg-zinc-700 hover:bg-pink-400"
               }`}
           >
-            {clickedIndex !== null && index === winnerIndex ? "💰" : ""}
+           {clickedIndex !== null && index === winnerIndex ? (
+  <Image
+    src="/assets/glowing-cherry-bag.png"
+    alt="Cherry Win"
+    width={36}
+    height={36}
+  />
+) : ""}
             {clickedIndex === index && index !== winnerIndex ? "❌" : ""}
           </div>
         ))}
