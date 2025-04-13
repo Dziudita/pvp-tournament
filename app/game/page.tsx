@@ -5,14 +5,22 @@ import Link from "next/link";
 export default function GameHub() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-zinc-900 text-white p-10">
-      <h1 className="text-4xl font-bold text-pink-400 text-center mb-8">
-        Choose a Game
-      </h1>
+      
+      {/* ✨ Švytinti Antraštė */}
+      <div className="text-center mb-12 mt-4">
+        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 drop-shadow-[0_0_10px_rgba(255,0,255,0.5)]">
+          🎮 Welcome to Cherry Arena
+        </h1>
+        <p className="mt-3 text-lg text-zinc-300 drop-shadow-[0_0_4px_rgba(255,255,255,0.3)]">
+          Select a game below and test your luck 🍒
+        </p>
+      </div>
 
+      {/* 🎲 Žaidimų pasirinkimas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
         <Link
           href="/game/lucky-squares"
-          className="rounded-xl bg-zinc-800 border border-pink-500 p-6 hover:bg-zinc-700 transition"
+          className="rounded-xl bg-zinc-800 border border-pink-500 p-6 hover:bg-zinc-700 transition shadow-lg hover:shadow-pink-500/20"
         >
           <h2 className="text-2xl font-bold text-pink-300 mb-2">🎯 Lucky Squares</h2>
           <p className="text-sm text-zinc-300">
@@ -20,7 +28,7 @@ export default function GameHub() {
           </p>
         </Link>
 
-        {/* Galima pridėti daugiau žaidimų čia */}
+        {/* 🔒 Kiti žaidimai vėliau */}
         <Link
           href="#"
           className="rounded-xl bg-zinc-800 border border-zinc-600 p-6 opacity-40 cursor-not-allowed"
