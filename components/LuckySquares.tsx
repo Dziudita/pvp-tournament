@@ -37,28 +37,26 @@ export default function LuckySquares() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900">
+    <div className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900">
 
-     {/* CRAZY CHERRY (kairėje) */}
-<Image
-  src="/assets/crazy-cherry.png"
-  alt="Crazy Cherry"
-  fill
-  className="absolute left-0 top-0 bottom-0 my-auto h-[90vh] w-auto max-w-none object-contain z-0 pointer-events-none"
-/>
-</div>
+      {/* Left Cherry Character (crazy) */}
+      <Image
+        src="/assets/crazy-cherry.png"
+        alt="Crazy Cherry"
+        fill
+        className="absolute left-0 top-0 bottom-0 my-auto h-[90vh] w-auto max-w-none object-contain z-0 pointer-events-none"
+      />
 
-{/* SAD CHERRY (dešinėje) */}
-<Image
-  src="/assets/sad-cherry.png"
-  alt="Sad Cherry"
-  fill
-  className="absolute right-0 top-0 bottom-0 my-auto h-[90vh] w-auto max-w-none object-contain z-0 pointer-events-none"
-/>
-</div>
+      {/* Right Cherry Character (sad) */}
+      <Image
+        src="/assets/sad-cherry.png"
+        alt="Sad Cherry"
+        fill
+        className="absolute right-0 top-0 bottom-0 my-auto h-[90vh] w-auto max-w-none object-contain z-0 pointer-events-none"
+      />
 
-      {/* Game board */}
-      <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 z-20">
+      {/* Game Container */}
+      <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 max-w-2xl z-10">
         <div className="grid grid-cols-5 gap-4 justify-center">
           {squares.map((_, index) => (
             <div
@@ -87,14 +85,15 @@ export default function LuckySquares() {
             </div>
           ))}
         </div>
-        {/* Button */}
-        <button
-          onClick={resetGame}
-          className="mt-6 px-6 py-2 bg-pink-600 hover:bg-pink-500 rounded-lg font-bold text-white"
-        >
-          Play Again
-        </button>
       </div>
+
+      {/* Play Again Button */}
+      <button
+        onClick={resetGame}
+        className="mt-6 px-6 py-2 bg-pink-600 hover:bg-pink-500 rounded-lg font-bold text-white z-10"
+      >
+        Play Again
+      </button>
     </div>
   );
 }
