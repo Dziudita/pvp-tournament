@@ -39,21 +39,23 @@ export default function LuckySquares() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900">
 
-      {/* Left Cherry Character (crazy) */}
-      <Image
-        src="/assets/crazy-cherry.png"
-        alt="Crazy Cherry"
-        fill
-        className="absolute left-0 top-0 bottom-0 my-auto h-[90vh] w-auto max-w-none object-contain z-0 pointer-events-none"
-      />
+    {/* Left Cherry Character (crazy) */}
+<Image
+  src="/assets/crazy-cherry.png"
+  alt="Crazy Cherry"
+  width={300}
+  height={600}
+  className="absolute left-8 top-1/2 -translate-y-1/2 z-0 pointer-events-none"
+/>
 
-      {/* Right Cherry Character (sad) */}
-      <Image
-        src="/assets/sad-cherry.png"
-        alt="Sad Cherry"
-        fill
-        className="absolute right-0 top-0 bottom-0 my-auto h-[90vh] w-auto max-w-none object-contain z-0 pointer-events-none"
-      />
+{/* Right Cherry Character (sad) */}
+<Image
+  src="/assets/sad-cherry.png"
+  alt="Sad Cherry"
+  width={300}
+  height={600}
+  className="absolute right-8 top-1/2 -translate-y-1/2 z-0 pointer-events-none"
+/>
 
       {/* Game Container */}
       <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 max-w-2xl z-10">
