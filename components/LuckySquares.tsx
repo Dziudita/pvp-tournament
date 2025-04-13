@@ -37,36 +37,32 @@ export default function LuckySquares() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900">
+    <div className="relative min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900">
 
-      {/* LEFT Cherry with moving eyes */}
-      <div className="absolute bottom-0 left-0 h-full w-[300px] z-0 pointer-events-none">
-        <div className="relative h-full w-full flex items-end justify-center">
-          <Image
-            src="/assets/crazy-cherry.png"
-            alt="Crazy Cherry"
-            width={300}
-            height={300}
-            className="animate-[eyeShift_2s_infinite] duration-1000"
-          />
-        </div>
+      {/* LEFT Cherry */}
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
+        <Image
+          src="/assets/crazy-cherry.png"
+          alt="Crazy Cherry"
+          width={220}
+          height={220}
+          className="h-[440px] w-auto pointer-events-none select-none"
+        />
       </div>
 
-      {/* RIGHT Cherry with moving eyes */}
-      <div className="absolute bottom-0 right-0 h-full w-[300px] z-0 pointer-events-none">
-        <div className="relative h-full w-full flex items-end justify-center">
-          <Image
-            src="/assets/sad-cherry.png"
-            alt="Sad Cherry"
-            width={300}
-            height={300}
-            className="animate-[eyeShift_2s_infinite] duration-1000"
-          />
-        </div>
+      {/* RIGHT Cherry */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
+        <Image
+          src="/assets/sad-cherry.png"
+          alt="Sad Cherry"
+          width={220}
+          height={220}
+          className="h-[440px] w-auto pointer-events-none select-none"
+        />
       </div>
 
       {/* Game board */}
-      <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 max-w-2xl z-10">
+      <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 z-20">
         <div className="grid grid-cols-5 gap-4 justify-center">
           {squares.map((_, index) => (
             <div
@@ -95,27 +91,14 @@ export default function LuckySquares() {
             </div>
           ))}
         </div>
+        {/* Button */}
+        <button
+          onClick={resetGame}
+          className="mt-6 px-6 py-2 bg-pink-600 hover:bg-pink-500 rounded-lg font-bold text-white"
+        >
+          Play Again
+        </button>
       </div>
-
-      {/* Play again */}
-      <button
-        onClick={resetGame}
-        className="mt-6 px-6 py-2 bg-pink-600 hover:bg-pink-500 rounded-lg font-bold text-white z-10"
-      >
-        Play Again
-      </button>
-
-      {/* Custom keyframes for eye shifting */}
-      <style jsx global>{`
-        @keyframes eyeShift {
-          0%, 100% {
-            transform: translateX(0px);
-          }
-          50% {
-            transform: translateX(2px);
-          }
-        }
-      `}</style>
     </div>
   );
 }
