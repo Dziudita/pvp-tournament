@@ -39,27 +39,27 @@ export default function LuckySquares() {
   return (
     <div className="relative min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900">
 
-      {/* LEFT Cherry */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
-        <Image
-          src="/assets/crazy-cherry.png"
-          alt="Crazy Cherry"
-          width={220}
-          height={220}
-          className="h-[440px] w-auto pointer-events-none select-none"
-        />
-      </div>
+     {/* LEFT Cherry */}
+<div className="absolute left-4 top-1/2 -translate-y-1/2 z-10">
+  <Image
+    src="/assets/crazy-cherry.png"
+    alt="Crazy Cherry"
+    width={220}
+    height={220}
+    className="h-[360px] max-h-[90vh] w-auto pointer-events-none select-none"
+  />
+</div>
 
-      {/* RIGHT Cherry */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
-        <Image
-          src="/assets/sad-cherry.png"
-          alt="Sad Cherry"
-          width={220}
-          height={220}
-          className="h-[440px] w-auto pointer-events-none select-none"
-        />
-      </div>
+{/* RIGHT Cherry */}
+<div className="absolute right-4 top-1/2 -translate-y-1/2 z-10">
+  <Image
+    src="/assets/sad-cherry.png"
+    alt="Sad Cherry"
+    width={220}
+    height={220}
+    className="h-[360px] max-h-[90vh] w-auto pointer-events-none select-none"
+  />
+</div>
 
       {/* Game board */}
       <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 z-20">
