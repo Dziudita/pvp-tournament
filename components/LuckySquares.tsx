@@ -38,34 +38,34 @@ export default function LuckySquares() {
 
   return (
     <div className="text-center flex flex-col items-center">
-      <div className="p-4 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40">
-        <div className="grid grid-cols-5 gap-3 justify-center">
-          {squares.map((_, index) => (
-            <div
-              key={index}
-              onClick={() => handleClick(index)}
-              className={`w-16 h-16 cursor-pointer flex items-center justify-center border-2 border-zinc-600 rounded-xl text-2xl transition
-                ${
-                  clickedIndex === index && index === winnerIndex
-                    ? "bg-green-500"
-                    : clickedIndex === index
-                    ? "bg-red-500"
-                    : "bg-zinc-700 hover:bg-pink-400"
-                }`}
-            >
-              {clickedIndex !== null && index === winnerIndex ? (
-                <Image
-                  src="/assets/glowing-cherry-bag.png"
-                  alt="Cherry Bag"
-                  width={36}
-                  height={36}
-                />
-              ) : ""}
-              {clickedIndex === index && index !== winnerIndex ? "❌" : ""}
-            </div>
-          ))}
-        </div>
+     <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 max-w-2xl">
+  <div className="grid grid-cols-5 gap-4 justify-center">
+    {squares.map((_, index) => (
+      <div
+        key={index}
+        onClick={() => handleClick(index)}
+        className={`w-20 h-20 cursor-pointer flex items-center justify-center border-2 border-zinc-600 rounded-xl text-2xl transition
+          ${
+            clickedIndex === index && index === winnerIndex
+              ? "bg-green-500"
+              : clickedIndex === index
+              ? "bg-red-500"
+              : "bg-zinc-700 hover:bg-pink-400"
+          }`}
+      >
+        {clickedIndex !== null && index === winnerIndex ? (
+          <Image
+            src="/assets/glowing-cherry-bag.png"
+            alt="Cherry Bag"
+            width={40}
+            height={40}
+          />
+        ) : ""}
+        {clickedIndex === index && index !== winnerIndex ? "❌" : ""}
       </div>
+    ))}
+  </div>
+</div>
 
       <button
         onClick={resetGame}
