@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "next/image"; // svarbu!
 
 export default function LuckySquares() {
   const [squares, setSquares] = useState<number[]>([]);
@@ -52,14 +52,7 @@ export default function LuckySquares() {
                   : "bg-zinc-700 hover:bg-pink-400"
               }`}
           >
-            {clickedIndex !== null && index === winnerIndex ? (
-              <Image
-                src="/assets/glowing-cherry-bag.png"
-                alt="Cherry Win"
-                width={36}
-                height={36}
-              />
-            ) : null}
+            {clickedIndex !== null && index === winnerIndex ? "💰" : ""}
             {clickedIndex === index && index !== winnerIndex ? "❌" : ""}
           </div>
         ))}
@@ -71,6 +64,17 @@ export default function LuckySquares() {
       >
         Play Again
       </button>
-    </div> {/* ← Šitas buvo per daug pas tave */}
+
+      {/* 🍒 Vysnių maišelis apačioje */}
+      <div className="mt-8 flex justify-center">
+        <Image
+          src="/assets/glowing-cherry-bag.png"
+          alt="Cherry Bag"
+          width={140}
+          height={140}
+          className="drop-shadow-[0_0_15px_#ff4dd6] animate-bounce"
+        />
+      </div>
+    </div>
   );
 }
