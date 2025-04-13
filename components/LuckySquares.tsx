@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image"; // svarbu!
 
 export default function LuckySquares() {
   const [squares, setSquares] = useState<number[]>([]);
@@ -19,8 +20,7 @@ export default function LuckySquares() {
   };
 
   const handleClick = (index: number) => {
-    if (clickedIndex !== null) return; // prevent multiple clicks
-
+    if (clickedIndex !== null) return;
     setClickedIndex(index);
     playSound("/sounds/click.mp3");
 
@@ -37,13 +37,13 @@ export default function LuckySquares() {
   };
 
   return (
-    <div className="text-center">
+    <div className="text-center relative">
       <div className="grid grid-cols-5 gap-2 justify-center">
         {squares.map((_, index) => (
           <div
             key={index}
             onClick={() => handleClick(index)}
-            className={`w-16 h-16 cursor-pointer flex items-center justify-center border rounded-xl text-2xl
+            className={`w-16 h-16 cursor-pointer flex items-center justify-center border rounded-xl text-2xl transition
               ${
                 clickedIndex === index && index === winnerIndex
                   ? "bg-green-500"
@@ -64,6 +64,17 @@ export default function LuckySquares() {
       >
         Play Again
       </button>
+
+      {/* 🍒 Vysnių maišelis apačioje */}
+      <div className="mt-8 flex justify-center">
+        <Image
+          src="/assets/glowing-cherry-bag.png"
+          alt="Cherry Bag"
+          width={140}
+          height={140}
+          className="drop-shadow-[0_0_15px_#ff4dd6] animate-bounce"
+        />
+      </div>
     </div>
   );
 }
