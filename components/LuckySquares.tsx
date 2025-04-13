@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image"; // svarbu!
+import Image from "next/image";
 
 export default function LuckySquares() {
   const [squares, setSquares] = useState<number[]>([]);
@@ -64,17 +64,6 @@ export default function LuckySquares() {
       >
         Play Again
       </button>
-
-      {/* 🍒 Vysnių maišelis apačioje */}
-      <div className="mt-8 flex justify-center">
-        <Image
-          src="/assets/glowing-cherry-bag.png"
-          alt="Cherry Bag"
-          width={140}
-          height={140}
-          className="drop-shadow-[0_0_15px_#ff4dd6] animate-bounce"
-        />
-      </div>
     </div>
   );
 }
