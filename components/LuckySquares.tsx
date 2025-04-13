@@ -37,68 +37,85 @@ export default function LuckySquares() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900 px-4">
+    <div className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden bg-gradient-to-b from-black to-zinc-900">
 
-      {/* LEFT Cherry – Full height */}
-      <div className="absolute bottom-0 left-0 h-full w-[180px] z-0 pointer-events-none">
-        <Image
-          src="/assets/crazy-cherry.png"
-          alt="Crazy Cherry"
-          fill
-          className="object-contain"
-        />
-      </div>
-
-      {/* RIGHT Cherry – Full height */}
-      <div className="absolute bottom-0 right-0 h-full w-[180px] z-0 pointer-events-none">
-        <Image
-          src="/assets/sad-cherry.png"
-          alt="Sad Cherry"
-          fill
-          className="object-contain"
-        />
-      </div>
-
-      {/* Main Game Area */}
-      <div className="relative z-10 flex flex-col items-center">
-        <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 max-w-2xl">
-          <div className="grid grid-cols-5 gap-4 justify-center">
-            {squares.map((_, index) => (
-              <div
-                key={index}
-                onClick={() => handleClick(index)}
-                className={`w-20 h-20 cursor-pointer flex items-center justify-center border-2 border-zinc-600 rounded-xl text-2xl transition
-                  ${
-                    clickedIndex === index && index === winnerIndex
-                      ? "bg-green-500"
-                      : clickedIndex === index
-                      ? "bg-red-500"
-                      : "bg-zinc-700 hover:bg-pink-400"
-                  }`}
-              >
-                {clickedIndex !== null && index === winnerIndex ? (
-                  <Image
-                    src="/assets/glowing-cherry-bag.png"
-                    alt="Cherry Bag"
-                    width={40}
-                    height={40}
-                  />
-                ) : (
-                  ""
-                )}
-                {clickedIndex === index && index !== winnerIndex ? "❌" : ""}
-              </div>
-            ))}
-          </div>
+      {/* LEFT Cherry with moving eyes */}
+      <div className="absolute bottom-0 left-0 h-full w-[300px] z-0 pointer-events-none">
+        <div className="relative h-full w-full flex items-end justify-center">
+          <Image
+            src="/assets/crazy-cherry.png"
+            alt="Crazy Cherry"
+            width={300}
+            height={300}
+            className="animate-[eyeShift_2s_infinite] duration-1000"
+          />
         </div>
-
-        <button
-          onClick={resetGame}
-          className="mt-6 px-6 py-2 bg-pink-600 hover:bg-pink-500 rounded-lg font-bold text-white"
-        >
-          Play Again
-        </button>
       </div>
+
+      {/* RIGHT Cherry with moving eyes */}
+      <div className="absolute bottom-0 right-0 h-full w-[300px] z-0 pointer-events-none">
+        <div className="relative h-full w-full flex items-end justify-center">
+          <Image
+            src="/assets/sad-cherry.png"
+            alt="Sad Cherry"
+            width={300}
+            height={300}
+            className="animate-[eyeShift_2s_infinite] duration-1000"
+          />
+        </div>
+      </div>
+
+      {/* Game board */}
+      <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/40 max-w-2xl z-10">
+        <div className="grid grid-cols-5 gap-4 justify-center">
+          {squares.map((_, index) => (
+            <div
+              key={index}
+              onClick={() => handleClick(index)}
+              className={`w-20 h-20 cursor-pointer flex items-center justify-center border-2 border-zinc-600 rounded-xl text-2xl transition
+                ${
+                  clickedIndex === index && index === winnerIndex
+                    ? "bg-green-500"
+                    : clickedIndex === index
+                    ? "bg-red-500"
+                    : "bg-zinc-700 hover:bg-pink-400"
+                }`}
+            >
+              {clickedIndex !== null && index === winnerIndex ? (
+                <Image
+                  src="/assets/glowing-cherry-bag.png"
+                  alt="Cherry Bag"
+                  width={40}
+                  height={40}
+                />
+              ) : (
+                ""
+              )}
+              {clickedIndex === index && index !== winnerIndex ? "❌" : ""}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Play again */}
+      <button
+        onClick={resetGame}
+        className="mt-6 px-6 py-2 bg-pink-600 hover:bg-pink-500 rounded-lg font-bold text-white z-10"
+      >
+        Play Again
+      </button>
+
+      {/* Custom keyframes for eye shifting */}
+      <style jsx global>{`
+        @keyframes eyeShift {
+          0%, 100% {
+            transform: translateX(0px);
+          }
+          50% {
+            transform: translateX(2px);
+          }
+        }
+      `}</style>
     </div>
   );
 }
