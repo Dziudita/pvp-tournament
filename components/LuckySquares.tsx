@@ -43,18 +43,18 @@ export default function LuckySquares() {
       <Image
         src="/assets/crazy-cherry.png"
         alt="Crazy Cherry Left"
-        width={220}
-        height={220}
-        className="absolute bottom-0 left-0 z-0 opacity-80 pointer-events-none"
+        width={300}
+        height={300}
+        className="absolute bottom-0 left-0 z-0 opacity-90 pointer-events-none"
       />
 
       {/* RIGHT Cherry */}
       <Image
         src="/assets/sad-cherry.png"
         alt="Sad Cherry Right"
-        width={220}
-        height={220}
-        className="absolute bottom-0 right-0 z-0 opacity-80 pointer-events-none"
+        width={300}
+        height={300}
+        className="absolute bottom-0 right-0 z-0 opacity-90 pointer-events-none"
       />
 
       {/* Game Grid Container */}
