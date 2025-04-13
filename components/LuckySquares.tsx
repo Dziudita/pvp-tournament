@@ -41,7 +41,8 @@ export default function LuckySquares() {
       className="min-h-screen flex flex-col items-center justify-center text-center bg-cover bg-center relative"
       style={{ backgroundImage: 'url("/assets/winner-loser-bg.png")' }}
     >
-      <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-xl bg-black/60 max-w-2xl z-10">
+      {/* Game Grid Container */}
+      <div className="p-8 rounded-2xl ring-4 ring-pink-500 shadow-2xl backdrop-blur-md bg-black/20 max-w-2xl z-10">
         <div className="grid grid-cols-5 gap-4 justify-center">
           {squares.map((_, index) => (
             <div
@@ -72,6 +73,7 @@ export default function LuckySquares() {
         </div>
       </div>
 
+      {/* Play Again Button */}
       <button
         onClick={resetGame}
         className="mt-6 px-6 py-2 bg-pink-600 hover:bg-pink-500 rounded-lg font-bold text-white z-10"
