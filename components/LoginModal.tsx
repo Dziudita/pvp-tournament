@@ -12,6 +12,7 @@ export default function LoginModal() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
+  const [confirmAge, setConfirmAge] = useState(false);
   const [existingUsers, setExistingUsers] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
@@ -28,6 +29,10 @@ export default function LoginModal() {
 
     if (!nickname || !password || (isSignUp && !confirmPassword)) {
       return setError("Please fill in all fields.");
+    }
+
+    if (!confirmAge) {
+      return setError("You must confirm that you're at least 18 years old.");
     }
 
     if (isSignUp) {
@@ -64,24 +69,14 @@ export default function LoginModal() {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black flex items-center justify-center bg-cover"
-      style={{
-        backgroundImage: `url("/assets/cherry-mascot.png")`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-      }}
-    >
-      <div className="bg-zinc-900/90 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl backdrop-blur-md">
-        <Image
-          src="/assets/cherry-mascot.png"
-          alt="Main Cherry Mascot"
-          width={100}
-          height={100}
-          className="mx-auto mb-4 drop-shadow-[0_0_12px_#ff4dd6]"
-        />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-cover bg-center" style={{ backgroundImage: "url(/assets/login-bg.png)" }}>
+      <div className="bg-black/80 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl relative">
+        <div className="flex flex-col items-center mb-6">
+          <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
+          <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
+        </div>
 
-        <h2 className="text-2xl font-bold text-center mb-6 text-pink-400">
+        <h2 className="text-xl font-semibold text-center mb-4 text-white">
           {isSignUp ? "Sign Up" : "Login"}
         </h2>
 
@@ -133,6 +128,21 @@ export default function LoginModal() {
           </div>
         )}
 
+        <div className="flex items-start mb-4 text-sm text-gray-300">
+          <input
+            type="checkbox"
+            className="mr-2 mt-1"
+            checked={confirmAge}
+            onChange={() => setConfirmAge(!confirmAge)}
+          />
+          <label>
+            I confirm that I am 18 years old and I have read the {" "}
+            <a href="#" className="text-blue-400 hover:underline">
+              Terms of service
+            </a>
+          </label>
+        </div>
+
         <button
           onClick={handleAuth}
           className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-lg transition"
@@ -148,9 +158,7 @@ export default function LoginModal() {
             }}
             className="text-sm text-pink-300 hover:underline"
           >
-            {isSignUp
-              ? "Already have an account? Login"
-              : "Don't have an account? Sign Up"}
+            {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
           </button>
         </div>
       </div>
