@@ -57,7 +57,7 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black px-4">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-gradient-to-br from-[#0a0c2a] via-[#0d0f35] to-black px-4">
       {/* Background Container */}
       <div className="w-full max-w-screen-xl mx-auto relative h-full flex items-center justify-center">
         {/* Left Cherry */}
