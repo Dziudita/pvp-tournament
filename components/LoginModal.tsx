@@ -72,13 +72,15 @@ export default function LoginModal() {
   };
 
   return (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-cover bg-center"
-     style={{
-       backgroundImage: "url(/assets/winner-loser-bg.png)",
-       backgroundSize: "cover",
-       backgroundPosition: "center",
-     }}>
-      <div className="bg-black/80 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl relative">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black bg-cover bg-center"
+      style={{
+        backgroundImage: "url(/assets/winner-loser-bg.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-2xl relative">
         <div className="flex flex-col items-center mb-6">
           <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
           <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
@@ -100,8 +102,7 @@ export default function LoginModal() {
 
         <div className="relative mb-4">
           <input
-           type={showPassword ? "password" : "text"}
-{showPassword ? <FaEye /> : <FaEyeSlash />}
+            type={showPassword ? "password" : "text"}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -112,7 +113,7 @@ export default function LoginModal() {
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+            {showPassword ? <FaEye /> : <FaEyeSlash />}
           </button>
         </div>
 
@@ -120,7 +121,7 @@ export default function LoginModal() {
           <>
             <div className="relative mb-4">
               <input
-                type={showConfirmPassword ? "text" : "password"}
+                type={showConfirmPassword ? "password" : "text"}
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -131,7 +132,7 @@ export default function LoginModal() {
                 onClick={() => setShowConfirmPassword((prev) => !prev)}
                 className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
               >
-                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
 
