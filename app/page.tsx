@@ -21,11 +21,22 @@ export default function Home() {
   if (!loggedIn) return <LoginModal />;
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-black">
+    <div className="flex h-screen w-full overflow-hidden bg-gradient-to-b from-[#1a1a1a] to-black relative">
       <Sidebar />
 
-      <div className="flex flex-col flex-grow relative">
+      <div className="flex flex-col flex-grow relative z-10">
         <Header />
+
+        {/* Main Cherry Hero in the top center */}
+        <div className="flex justify-center mt-6">
+          <Image
+            src="/avatars/main-cherry.png" // <- pakeisk į tikslų failo pavadinimą
+            alt="Main Cherry Mascot"
+            width={180}
+            height={180}
+            className="drop-shadow-[0_0_25px_#ff4dd6]"
+          />
+        </div>
 
         <div className="px-8 mt-8">
           <input
@@ -50,19 +61,20 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Background cherries left/right */}
         <Image
           src="/avatars/cool-cherry.png"
           alt="Cool Cherry"
-          width={130}
-          height={130}
-          className="absolute bottom-6 left-6 drop-shadow-[0_0_10px_#ff4dd6]"
+          width={160}
+          height={160}
+          className="absolute bottom-6 left-6 drop-shadow-[0_0_15px_#ff4dd6]"
         />
         <Image
           src="/avatars/angry-cherry.png"
           alt="Angry Cherry"
-          width={130}
-          height={130}
-          className="absolute bottom-6 right-6 drop-shadow-[0_0_10px_#ff4dd6]"
+          width={160}
+          height={160}
+          className="absolute bottom-6 right-6 drop-shadow-[0_0_15px_#ff4dd6]"
         />
 
         <CherryChat />
