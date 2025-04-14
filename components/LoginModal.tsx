@@ -72,13 +72,21 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-40">
-  <img src="/assets/cherry-winner.png" className="absolute left-0 h-full object-contain" />
-  <img src="/assets/cherry-loser.png" className="absolute right-0 h-full object-contain" />
-</div>
-}}
-    >
-      <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-2xl relative">
+    <div className="fixed inset-0 z-40 flex items-center justify-center px-4 bg-black">
+      {/* Left and right cherries */}
+      <img
+        src="/assets/cherry-winner.png"
+        alt="Winner Cherry"
+        className="absolute left-0 h-full object-contain pointer-events-none select-none"
+      />
+      <img
+        src="/assets/cherry-loser.png"
+        alt="Loser Cherry"
+        className="absolute right-0 h-full object-contain pointer-events-none select-none"
+      />
+
+      {/* Login Modal */}
+      <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-2xl relative z-50">
         <div className="flex flex-col items-center mb-6">
           <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
           <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
