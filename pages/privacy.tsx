@@ -1,49 +1,49 @@
-export default function PrivacyPolicyPage() {
+// pages/terms.tsx
+export default function TermsPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12 text-sm text-gray-200 space-y-6">
-      <h1 className="text-2xl font-bold text-white mb-6">Privacy Policy</h1>
+      <h1 className="text-2xl font-bold text-white mb-6">Terms of Service</h1>
       <p>Last Updated: [Insert Date]</p>
 
-      <p>This Privacy Policy describes how Cherzi Arena ("we", "our", or "us") collects, uses, and protects your personal information.</p>
+      <p>Welcome to <strong>Cherzi Arena</strong>, a Web3-powered platform offering skill-based games, staking, and giveaways. These Terms of Service ("Terms") govern your use of our platform ("we", "our", or "us").</p>
 
-      <h2 className="text-lg font-semibold text-white mt-6">1. Information We Collect</h2>
+      <h2 className="text-lg font-semibold text-white mt-6">1. Eligibility</h2>
+      <p>You must be at least 18 years old to use Cherzi Arena. You are responsible for ensuring your jurisdiction permits access to the platform.</p>
+
+      <h2 className="text-lg font-semibold text-white mt-6">2. Account Registration</h2>
+      <p>You must register an account to access features. You agree to maintain the security of your credentials and take responsibility for all activity under your account.</p>
+
+      <h2 className="text-lg font-semibold text-white mt-6">3. Use of Digital Assets</h2>
+      <p>Cherzi Arena supports USDC for staking and transactions. You acknowledge that blockchain transactions are final, public, and subject to market risks.</p>
+
+      <h2 className="text-lg font-semibold text-white mt-6">4. Platform Features</h2>
       <ul className="list-disc ml-5">
-        <li>Wallet addresses</li>
-        <li>Email (if provided)</li>
-        <li>Device/IP metadata</li>
-        <li>Gameplay and staking activity</li>
-        <li>Referral and affiliate data</li>
+        <li>Skill-based games</li>
+        <li>Giveaways with crypto or prizes</li>
+        <li>Staking with potential rewards</li>
       </ul>
+      <p>We may modify or suspend features at our discretion.</p>
 
-      <h2 className="text-lg font-semibold text-white mt-6">2. How We Use Your Information</h2>
-      <p>We use your data to operate and improve the platform, distribute rewards, detect fraud, and communicate with users. We never sell your data.</p>
+      <h2 className="text-lg font-semibold text-white mt-6">5. User Conduct</h2>
+      <p>You agree not to engage in fraudulent activity, automation abuse, or violations of applicable laws. Violations may lead to account suspension.</p>
 
-      <h2 className="text-lg font-semibold text-white mt-6">3. Cookies & Analytics</h2>
-      <p>We may use cookies and analytics to understand traffic patterns and enhance user experience.</p>
+      <h2 className="text-lg font-semibold text-white mt-6">6. Affiliate & Referral Program</h2>
+      <p>We offer an affiliate and referral program. By participating, you agree not to self-refer or engage in fraudulent activity. Program terms are subject to change. Payouts and tracking may be based on referral codes or wallet links.</p>
 
-      <h2 className="text-lg font-semibold text-white mt-6">4. Wallet & Blockchain</h2>
-      <p>We do not store private keys. Wallet connections are used solely to authorize interactions. Blockchain data is public and immutable.</p>
+      <h2 className="text-lg font-semibold text-white mt-6">7. Disclaimers & Risks</h2>
+      <p>We provide the platform "as is." You accept the risk of financial loss, network errors, or smart contract bugs. Use at your own risk.</p>
 
-      <h2 className="text-lg font-semibold text-white mt-6">5. Data Retention</h2>
-      <p>We retain necessary data for as long as your account is active, or longer to comply with legal obligations.</p>
+      <h2 className="text-lg font-semibold text-white mt-6">8. Limitation of Liability</h2>
+      <p>We are not liable for indirect or consequential damages. Your use of the platform is at your sole discretion.</p>
 
-      <h2 className="text-lg font-semibold text-white mt-6">6. Your Rights</h2>
-      <p>You may request access, correction, or deletion of your data. Contact us at [Insert Contact Info].</p>
+      <h2 className="text-lg font-semibold text-white mt-6">9. Changes to Terms</h2>
+      <p>We may revise these Terms. Continued use indicates acceptance of updates.</p>
 
-      <h2 className="text-lg font-semibold text-white mt-6">7. Third-Party Services</h2>
-      <p>We use third-party providers for analytics and affiliate tracking. They are subject to their own privacy policies.</p>
-
-      <h2 className="text-lg font-semibold text-white mt-6">8. Children’s Privacy</h2>
-      <p>Cherzi Arena is not intended for users under 18. We do not knowingly collect data from minors.</p>
-
-      <h2 className="text-lg font-semibold text-white mt-6">9. Security</h2>
-      <p>We implement industry best practices to protect your data, but no online system is completely secure.</p>
-
-      <h2 className="text-lg font-semibold text-white mt-6">10. Changes to This Policy</h2>
-      <p>We may update this policy. Continued use of the platform signifies acceptance.</p>
+      <h2 className="text-lg font-semibold text-white mt-6">10. Governing Law</h2>
+      <p>This agreement is governed by the laws of the British Virgin Islands unless otherwise specified.</p>
 
       <h2 className="text-lg font-semibold text-white mt-6">11. Contact</h2>
-      <p>For privacy inquiries, contact us at: [Insert Support Email or Telegram]</p>
+      <p>For support or legal inquiries, contact us at: [Insert Contact Info]</p>
     </div>
   );
 }
