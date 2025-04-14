@@ -72,7 +72,12 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-cover bg-center" style={{ backgroundImage: "url(/assets/login-bg.png)" }}>
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-cover bg-center"
+     style={{
+       backgroundImage: "url(/assets/winner-loser-bg.png)",
+       backgroundSize: "cover",
+       backgroundPosition: "center",
+     }}>
       <div className="bg-black/80 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl relative">
         <div className="flex flex-col items-center mb-6">
           <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
