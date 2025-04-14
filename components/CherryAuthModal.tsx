@@ -1,93 +1,85 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function CherryAuthModal() {
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [country, setCountry] = useState("Lithuania");
-  const [referral, setReferral] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // auth logic here
+    console.log("Submitted:", { email, password });
+  };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-      <div className="bg-zinc-900 rounded-2xl p-8 w-full max-w-md text-white shadow-lg">
-        {/* Tabs */}
-        <div className="flex justify-between mb-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+      {/* Background mascot image */}
+      <Image
+        src="/assets/cherry-mascot.png"
+        alt="Cherry Mascot"
+        layout="fill"
+        objectFit="cover"
+        className="z-0 opacity-10 select-none pointer-events-none"
+      />
+
+      {/* Login/Register Card */}
+      <div className="z-10 w-full max-w-md bg-zinc-900/80 border border-pink-600 rounded-2xl shadow-2xl p-8 relative">
+        <div className="flex justify-center mb-6">
           <button
-            onClick={() => setMode("login")}
-            className={`w-1/2 py-2 font-semibold rounded-t-xl ${
-              mode === "login" ? "bg-pink-600" : "bg-zinc-800"
+            className={`px-6 py-2 font-bold rounded-l-xl transition ${
+              isLogin ? "bg-pink-500 text-white" : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
             }`}
+            onClick={() => setIsLogin(true)}
           >
             Login
           </button>
           <button
-            onClick={() => setMode("signup")}
-            className={`w-1/2 py-2 font-semibold rounded-t-xl ${
-              mode === "signup" ? "bg-pink-600" : "bg-zinc-800"
+            className={`px-6 py-2 font-bold rounded-r-xl transition ${
+              !isLogin ? "bg-pink-500 text-white" : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
             }`}
+            onClick={() => setIsLogin(false)}
           >
             Sign Up
           </button>
         </div>
 
-        {/* Inputs */}
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 px-4 py-2 rounded-xl bg-zinc-800 placeholder-zinc-400 border border-zinc-700"
-        />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-zinc-400 border border-pink-500 focus:outline-none"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-zinc-400 border border-pink-500 focus:outline-none"
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-4 px-4 py-2 rounded-xl bg-zinc-800 placeholder-zinc-400 border border-zinc-700"
-        />
+          {!isLogin && (
+            <div className="flex items-center gap-2">
+              <input type="checkbox" required />
+              <label className="text-sm text-zinc-300">
+                I confirm I am 18+ and agree to the Terms of Service
+              </label>
+            </div>
+          )}
 
-        {mode === "signup" && (
-          <>
-            <select
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              className="w-full mb-4 px-4 py-2 rounded-xl bg-zinc-800 border border-zinc-700 text-white"
-            >
-              <option>Lithuania</option>
-              <option>Estonia</option>
-              <option>Latvia</option>
-              <option>Other</option>
-            </select>
-
-            <input
-              type="text"
-              placeholder="Enter referral code"
-              value={referral}
-              onChange={(e) => setReferral(e.target.value)}
-              className="w-full mb-4 px-4 py-2 rounded-xl bg-zinc-800 placeholder-zinc-400 border border-zinc-700"
-            />
-
-            <label className="flex items-center mb-4 text-sm">
-              <input type="checkbox" className="mr-2" required />
-              I confirm that I am 18 years old and agree to the Terms of Service
-            </label>
-          </>
-        )}
-
-        <button className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:opacity-90 text-white py-3 rounded-xl font-bold text-lg shadow-lg">
-          {mode === "login" ? "Login" : "Create Account"}
-        </button>
-
-        {mode === "login" && (
-          <div className="text-center mt-4">
-            <a href="#" className="text-sm text-blue-400 hover:underline">
-              Forgot your password?
-            </a>
-          </div>
-        )}
+          <button
+            type="submit"
+            className="mt-4 w-full py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold rounded-lg hover:opacity-90 transition"
+          >
+            {isLogin ? "Login" : "Create Account"}
+          </button>
+        </form>
       </div>
     </div>
   );
