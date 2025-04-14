@@ -30,12 +30,12 @@ export default function Home() {
         {/* Main Cherry Hero in the top center */}
         <div className="flex justify-center mt-6">
           <Image
-            src="/avatars/main-cherry.png" // <- pakeisk į tikslų failo pavadinimą
-            alt="Main Cherry Mascot"
-            width={180}
-            height={180}
-            className="drop-shadow-[0_0_25px_#ff4dd6]"
-          />
+  src="/assets/cherry-mascot.png"
+  alt="Main Cherry Mascot"
+  width={180}
+  height={180}
+  className="drop-shadow-[0_0_25px_#ff4dd6]"
+/>
         </div>
 
         <div className="px-8 mt-8">
