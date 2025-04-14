@@ -63,7 +63,12 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center">
+    <div
+  className="fixed inset-0 z-50 bg-cover bg-center flex items-center justify-center"
+  style={{
+    backgroundImage: "url('/assets/cherry-login-bg.png')",
+  }}
+>
       <div className="bg-zinc-900 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl">
         <h2 className="text-2xl font-bold text-center mb-6 text-pink-400">
           {isSignUp ? "Sign Up" : "Login"}
