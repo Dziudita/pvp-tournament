@@ -77,7 +77,7 @@ export default function LoginModal() {
       style={{
         backgroundImage: "url(/assets/winner-loser-bg.png)",
         backgroundSize: "contain",
-        backgroundPosition: "center",
+        backgroundPosition: "top center",
       }}
     >
       <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-2xl relative">
