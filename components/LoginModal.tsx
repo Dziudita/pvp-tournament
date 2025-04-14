@@ -147,8 +147,8 @@ export default function LoginModal() {
             onChange={() => setConfirmAge(!confirmAge)}
           />
           <label>
-            I confirm that I am 18 years old and I have read the {" "}
-            <Link href="/terms" className="text-blue-400 hover:underline">Terms of service</Link> and {" "}
+            I confirm that I am 18 years old and I have read the{" "}
+            <Link href="/terms" className="text-blue-400 hover:underline">Terms of service</Link> and{" "}
             <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
           </label>
         </div>
