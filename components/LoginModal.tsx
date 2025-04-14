@@ -100,7 +100,8 @@ export default function LoginModal() {
 
         <div className="relative mb-4">
           <input
-            type={showPassword ? "text" : "password"}
+           type={showPassword ? "password" : "text"}
+{showPassword ? <FaEye /> : <FaEyeSlash />}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
