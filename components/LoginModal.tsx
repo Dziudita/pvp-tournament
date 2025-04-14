@@ -8,6 +8,7 @@ export default function LoginModal() {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -52,6 +53,11 @@ export default function LoginModal() {
       localStorage.setItem("cherzi-users", JSON.stringify(updatedUsers));
       localStorage.setItem("cherzi-nick", nickname);
       localStorage.setItem("cherzi-pass", password);
+
+      if (referralCode) {
+        localStorage.setItem("cherzi-ref", referralCode);
+      }
+
       location.reload();
     } else {
       if (!(nickname in existingUsers)) {
@@ -69,7 +75,10 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-cover bg-center" style={{ backgroundImage: "url(/assets/login-bg.png)" }}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-cover bg-center"
+      style={{ backgroundImage: "url(/assets/login-bg.png)" }}
+    >
       <div className="bg-black/80 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl relative">
         <div className="flex flex-col items-center mb-6">
           <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
@@ -90,7 +99,7 @@ export default function LoginModal() {
           className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
         />
 
-        {/* Password field */}
+        {/* Password */}
         <div className="relative mb-4">
           <input
             type={showPassword ? "text" : "password"}
@@ -108,7 +117,7 @@ export default function LoginModal() {
           </button>
         </div>
 
-        {/* Confirm Password */}
+        {/* Confirm password */}
         {isSignUp && (
           <div className="relative mb-4">
             <input
@@ -128,6 +137,18 @@ export default function LoginModal() {
           </div>
         )}
 
+        {/* Referral code */}
+        {isSignUp && (
+          <input
+            type="text"
+            placeholder="Referral Code (optional)"
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value)}
+            className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+          />
+        )}
+
+        {/* Age confirmation */}
         <div className="flex items-start mb-4 text-sm text-gray-300">
           <input
             type="checkbox"
@@ -136,7 +157,7 @@ export default function LoginModal() {
             onChange={() => setConfirmAge(!confirmAge)}
           />
           <label>
-            I confirm that I am 18 years old and I have read the {" "}
+            I confirm that I am 18 years old and I have read the{" "}
             <a href="#" className="text-blue-400 hover:underline">
               Terms of service
             </a>
