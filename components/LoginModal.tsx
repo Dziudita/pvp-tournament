@@ -75,10 +75,11 @@ export default function LoginModal() {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black bg-cover bg-center"
       style={{
-        backgroundImage: "url(/assets/winner-loser-bg.png)",
-        backgroundSize: "contain",
-        backgroundPosition: "top center",
-      }}
+  backgroundImage: "url(/assets/winner-loser-bg.png)",
+  backgroundSize: "contain",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
+}}
     >
       <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-2xl relative">
         <div className="flex flex-col items-center mb-6">
