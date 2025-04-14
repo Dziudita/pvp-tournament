@@ -76,7 +76,7 @@ export default function LoginModal() {
       className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black bg-cover bg-center"
       style={{
         backgroundImage: "url(/assets/winner-loser-bg.png)",
-        backgroundSize: "cover",
+        backgroundSize: "contain",
         backgroundPosition: "center",
       }}
     >
