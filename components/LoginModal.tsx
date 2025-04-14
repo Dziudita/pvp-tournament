@@ -22,9 +22,7 @@ export default function LoginModal() {
     if (users) setExistingUsers(JSON.parse(users));
   }, []);
 
-  const validatePassword = (pw: string) => {
-    return pw.length >= 5 && /\d/.test(pw);
-  };
+  const validatePassword = (pw: string) => pw.length >= 5 && /\d/.test(pw);
 
   const handleAuth = () => {
     setError("");
@@ -38,17 +36,9 @@ export default function LoginModal() {
     }
 
     if (isSignUp) {
-      if (nickname in existingUsers) {
-        return setError("Nickname is already taken.");
-      }
-
-      if (!validatePassword(password)) {
-        return setError("Password must be at least 5 characters and include a number.");
-      }
-
-      if (password !== confirmPassword) {
-        return setError("Passwords do not match.");
-      }
+      if (nickname in existingUsers) return setError("Nickname is already taken.");
+      if (!validatePassword(password)) return setError("Password must be at least 5 characters and include a number.");
+      if (password !== confirmPassword) return setError("Passwords do not match.");
 
       const updatedUsers = { ...existingUsers, [nickname]: password };
       localStorage.setItem("cherzi-users", JSON.stringify(updatedUsers));
@@ -57,13 +47,8 @@ export default function LoginModal() {
       if (referralCode) localStorage.setItem("cherzi-ref", referralCode);
       location.reload();
     } else {
-      if (!(nickname in existingUsers)) {
-        return setError("User not found.");
-      }
-
-      if (existingUsers[nickname] !== password) {
-        return setError("Incorrect password.");
-      }
+      if (!(nickname in existingUsers)) return setError("User not found.");
+      if (existingUsers[nickname] !== password) return setError("Incorrect password.");
 
       localStorage.setItem("cherzi-nick", nickname);
       localStorage.setItem("cherzi-pass", password);
@@ -72,117 +57,121 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center px-4 bg-black">
-      {/* Left and right cherries */}
-      <img
-        src="/assets/cherry-winner.png"
-        alt="Winner Cherry"
-        className="absolute left-0 h-full object-contain pointer-events-none select-none"
-      />
-      <img
-        src="/assets/cherry-loser.png"
-        alt="Loser Cherry"
-        className="absolute right-0 h-full object-contain pointer-events-none select-none"
-      />
-
-      {/* Login Modal */}
-      <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-2xl relative z-50">
-        <div className="flex flex-col items-center mb-6">
-          <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
-          <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
-        </div>
-
-        <h2 className="text-xl font-semibold text-center mb-4 text-white">
-          {isSignUp ? "Sign Up" : "Login"}
-        </h2>
-
-        {error && <p className="text-red-400 text-center mb-4 font-semibold">{error}</p>}
-
-        <input
-          type="text"
-          placeholder="Nickname"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black px-4">
+      {/* Background Container */}
+      <div className="w-full max-w-screen-xl mx-auto relative h-full flex items-center justify-center">
+        {/* Left Cherry */}
+        <img
+          src="/assets/cherry-winner.png"
+          alt="Winner Cherry"
+          className="hidden md:block absolute left-0 h-full object-contain pointer-events-none select-none"
+        />
+        {/* Right Cherry */}
+        <img
+          src="/assets/cherry-loser.png"
+          alt="Loser Cherry"
+          className="hidden md:block absolute right-0 h-full object-contain pointer-events-none select-none"
         />
 
-        <div className="relative mb-4">
+        {/* Login Modal */}
+        <div className="bg-gradient-to-b from-black/80 via-black/70 to-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+          <div className="flex flex-col items-center mb-6">
+            <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
+            <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
+          </div>
+
+          <h2 className="text-xl font-semibold text-center mb-4 text-white">
+            {isSignUp ? "Sign Up" : "Login"}
+          </h2>
+
+          {error && <p className="text-red-400 text-center mb-4 font-semibold">{error}</p>}
+
           <input
-            type={showPassword ? "password" : "text"}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+            type="text"
+            placeholder="Nickname"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
-          >
-            {showPassword ? <FaEye /> : <FaEyeSlash />}
-          </button>
-        </div>
 
-        {isSignUp && (
-          <>
-            <div className="relative mb-4">
-              <input
-                type={showConfirmPassword ? "password" : "text"}
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
-              >
-                {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
-
+          <div className="relative mb-4">
             <input
-              type="text"
-              placeholder="Referral Code (optional)"
-              value={referralCode}
-              onChange={(e) => setReferralCode(e.target.value)}
-              className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+              type={showPassword ? "password" : "text"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
             />
-          </>
-        )}
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
+            >
+              {showPassword ? <FaEye /> : <FaEyeSlash />}
+            </button>
+          </div>
 
-        <div className="flex items-start mb-4 text-sm text-gray-300">
-          <input
-            type="checkbox"
-            className="mr-2 mt-1"
-            checked={confirmAge}
-            onChange={() => setConfirmAge(!confirmAge)}
-          />
-          <label>
-            I confirm that I am 18 years old and I have read the{" "}
-            <Link href="/terms" className="text-blue-400 hover:underline">Terms of service</Link> and{" "}
-            <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
-          </label>
-        </div>
+          {isSignUp && (
+            <>
+              <div className="relative mb-4">
+                <input
+                  type={showConfirmPassword ? "password" : "text"}
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
+                >
+                  {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              </div>
 
-        <button
-          onClick={handleAuth}
-          className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-lg transition"
-        >
-          {isSignUp ? "Create Account" : "Enter Arena"}
-        </button>
+              <input
+                type="text"
+                placeholder="Referral Code (optional)"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value)}
+                className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+              />
+            </>
+          )}
 
-        <div className="mt-4 text-center">
+          <div className="flex items-start mb-4 text-sm text-gray-300">
+            <input
+              type="checkbox"
+              className="mr-2 mt-1"
+              checked={confirmAge}
+              onChange={() => setConfirmAge(!confirmAge)}
+            />
+            <label>
+              I confirm that I am 18 years old and I have read the{" "}
+              <Link href="/terms" className="text-blue-400 hover:underline">Terms of service</Link> and{" "}
+              <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
+            </label>
+          </div>
+
           <button
-            onClick={() => {
-              setError("");
-              setIsSignUp(!isSignUp);
-            }}
-            className="text-sm text-pink-300 hover:underline"
+            onClick={handleAuth}
+            className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-lg transition"
           >
-            {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+            {isSignUp ? "Create Account" : "Enter Arena"}
           </button>
+
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => {
+                setError("");
+                setIsSignUp(!isSignUp);
+              }}
+              className="text-sm text-pink-300 hover:underline"
+            >
+              {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
