@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Image from "next/image";
 
 export default function LoginModal() {
   const [nickname, setNickname] = useState("");
@@ -63,19 +64,23 @@ export default function LoginModal() {
   };
 
   return (
-<div
-  className="fixed inset-0 z-50 bg-cover bg-center flex items-center justify-center"
-  style={{
-    backgroundImage: "url('/assets/cherry-mascot.png')",
-  }}
->
-      <Image
-  src="/assets/cherry-mascot.png"
-  alt="Main Cherry"
-  width={80}
-  height={80}
-  className="mx-auto mb-4 drop-shadow-[0_0_10px_#ff4dd6]"
-/>
+    <div
+      className="fixed inset-0 z-50 bg-black flex items-center justify-center bg-cover"
+      style={{
+        backgroundImage: `url("/assets/cherry-mascot.png")`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    >
+      <div className="bg-zinc-900/90 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl backdrop-blur-md">
+        <Image
+          src="/assets/cherry-mascot.png"
+          alt="Main Cherry Mascot"
+          width={100}
+          height={100}
+          className="mx-auto mb-4 drop-shadow-[0_0_12px_#ff4dd6]"
+        />
+
         <h2 className="text-2xl font-bold text-center mb-6 text-pink-400">
           {isSignUp ? "Sign Up" : "Login"}
         </h2>
