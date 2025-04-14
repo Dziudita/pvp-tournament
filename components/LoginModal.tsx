@@ -78,7 +78,7 @@ export default function LoginModal() {
        backgroundSize: "cover",
        backgroundPosition: "center",
      }}>
-      <div className="bg-black/80 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl relative">
+      <div className="bg-black/80 p-8 rounded-2xl border border-pink-500 w-[340px] shadow-2xl relative">
         <div className="flex flex-col items-center mb-6">
           <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
           <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
