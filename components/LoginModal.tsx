@@ -69,7 +69,13 @@ export default function LoginModal() {
     backgroundImage: "url('/assets/cherry-mascot.png')",
   }}
 >
-      <div className="bg-zinc-900 p-8 rounded-2xl border border-pink-500 w-[400px] shadow-2xl">
+      <Image
+  src="/assets/cherry-mascot.png"
+  alt="Main Cherry"
+  width={80}
+  height={80}
+  className="mx-auto mb-4 drop-shadow-[0_0_10px_#ff4dd6]"
+/>
         <h2 className="text-2xl font-bold text-center mb-6 text-pink-400">
           {isSignUp ? "Sign Up" : "Login"}
         </h2>
