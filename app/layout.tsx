@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Daily PvP Tournament',
+  title: 'Cherzi',
   description: 'Compete daily and win USDC + exclusive rewards.',
   icons: {
     icon: '/favicon.ico',
