@@ -80,7 +80,7 @@ export default function LoginModal() {
       }}
     >
       <div className="min-h-screen flex items-center justify-center py-10">
-        <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+        <div className="w-full max-w-sm bg-black/80 backdrop-blur-md p-8 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
           <div className="flex flex-col items-center mb-6">
             <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
             <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
