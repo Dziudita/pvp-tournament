@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
@@ -71,26 +71,26 @@ export default function LoginModal() {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-40 overflow-y-auto bg-black bg-cover bg-center px-4 flex items-center justify-center"
-      style={{
-        backgroundImage: "url(/assets/login-bg.png)",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
-      <div className="min-h-screen flex items-center justify-center py-10">
-       <div className="w-full max-w-xs bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
-          <div className="flex flex-col items-center mb-6">
-            <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
+    <div className="fixed inset-0 z-40">
+      <Image
+        src="/assets/login-bg.png"
+        alt="Background"
+        fill
+        className="object-cover"
+        priority
+      />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center px-4">
+        <div className="w-full max-w-xs bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+          <div className="flex flex-col items-center mb-4">
+            <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={70} height={70} />
             <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
           </div>
 
-          <h2 className="text-xl font-semibold text-center mb-4 text-white">
+          <h2 className="text-lg font-semibold text-center mb-3 text-white">
             {isSignUp ? "Sign Up" : "Login"}
           </h2>
 
-          {error && <p className="text-red-400 text-center mb-4 font-semibold">{error}</p>}
+          {error && <p className="text-red-400 text-center mb-3 font-semibold">{error}</p>}
 
           <form onSubmit={handleAuth}>
             {isSignUp && (
@@ -99,7 +99,7 @@ export default function LoginModal() {
                 placeholder="Nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
-                className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+                className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
               />
             )}
 
@@ -108,21 +108,21 @@ export default function LoginModal() {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+              className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
             />
 
-            <div className="relative mb-4">
+            <div className="relative mb-3">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+                className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
               />
               <button
                 type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-2 text-pink-300 hover:text-pink-400"
               >
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
@@ -130,18 +130,18 @@ export default function LoginModal() {
 
             {isSignUp && (
               <>
-                <div className="relative mb-4">
+                <div className="relative mb-3">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+                    className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowConfirmPassword((prev) => !prev)}
-                    className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-2 text-pink-300 hover:text-pink-400"
                   >
                     {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
                   </button>
@@ -152,12 +152,12 @@ export default function LoginModal() {
                   placeholder="Referral Code (optional)"
                   value={referralCode}
                   onChange={(e) => setReferralCode(e.target.value)}
-                  className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
+                  className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
                 />
               </>
             )}
 
-            <div className="flex items-start mb-4 text-sm text-gray-300">
+            <div className="flex items-start mb-3 text-xs text-gray-300">
               <input
                 type="checkbox"
                 className="mr-2 mt-1"
@@ -173,7 +173,7 @@ export default function LoginModal() {
 
             <button
               type="submit"
-              className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-lg transition"
+              className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
             >
               {isSignUp ? "Create Account" : "Enter Arena"}
             </button>
@@ -185,7 +185,7 @@ export default function LoginModal() {
                 setError("");
                 setIsSignUp(!isSignUp);
               }}
-              className="text-sm text-pink-300 hover:underline"
+              className="text-xs text-pink-300 hover:underline"
             >
               {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
             </button>
