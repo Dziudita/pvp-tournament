@@ -76,11 +76,11 @@ export default function LoginModal() {
         src="/assets/login-bg.png"
         alt="Background"
         fill
-        className="object-cover"
+        className="object-cover brightness-110 contrast-110"
         priority
       />
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center px-4">
-        <div className="w-full max-w-sm bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+      <div className="absolute inset-0 bg-black/50 flex items-center justify-center px-4">
+        <div className="w-full max-w-xs bg-black/80 p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
           <div className="flex flex-col items-center mb-4">
             <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={70} height={70} />
             <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
@@ -99,7 +99,7 @@ export default function LoginModal() {
                 placeholder="Nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
-                className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none text-sm"
+                className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
               />
             )}
 
@@ -108,7 +108,7 @@ export default function LoginModal() {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none text-sm"
+              className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
             />
 
             <div className="relative mb-3">
@@ -117,7 +117,7 @@ export default function LoginModal() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none text-sm"
+                className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
               />
               <button
                 type="button"
@@ -136,7 +136,7 @@ export default function LoginModal() {
                     placeholder="Confirm Password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none text-sm"
+                    className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
                   />
                   <button
                     type="button"
@@ -152,7 +152,7 @@ export default function LoginModal() {
                   placeholder="Referral Code (optional)"
                   value={referralCode}
                   onChange={(e) => setReferralCode(e.target.value)}
-                  className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none text-sm"
+                  className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
                 />
               </>
             )}
@@ -173,7 +173,7 @@ export default function LoginModal() {
 
             <button
               type="submit"
-              className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition text-sm"
+              className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
             >
               {isSignUp ? "Create Account" : "Enter Arena"}
             </button>
