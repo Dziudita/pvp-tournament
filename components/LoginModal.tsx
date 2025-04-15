@@ -72,13 +72,13 @@ export default function LoginModal() {
 
   return (
     <div className="fixed inset-0 z-40">
-      <Image
-        src="/assets/login-bg.png"
-        alt="Background"
-        fill
-        className="object-cover"
-        priority
-      />
+    <Image
+  src="/assets/login-bg.png"
+  alt="Background"
+  fill
+  className="object-contain object-center"
+  priority
+/>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center px-4">
         <div className="w-full max-w-xs bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
           <div className="flex flex-col items-center mb-4">
