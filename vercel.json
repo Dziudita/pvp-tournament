@@ -1,9 +1,0 @@
-{
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "destination": "https://www.cherzi.com/$1",
-      "permanent": true
-    }
-  ]
-}
