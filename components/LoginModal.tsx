@@ -71,16 +71,16 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-40">
+  <div className="fixed inset-0 z-40">
     <Image
-  src="/assets/login-bg.png"
-  alt="Background"
-  fill
-  className="object-cover object-center md:object-contain md:scale-110"
-  priority
-/>
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center px-4">
-        <div className="w-full max-w-xs bg-black/80 backdrop-blur-md p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+      src="/assets/login-bg.png"
+      alt="Background"
+      fill
+      className="object-cover w-full h-full"
+      priority
+    />
+    <div className="absolute inset-0 bg-black/40 flex items-center justify-center px-4">
+      <div className="w-full max-w-xs bg-black/90 backdrop-blur-sm p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] z-50">
           <div className="flex flex-col items-center mb-4">
             <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={70} height={70} />
             <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
