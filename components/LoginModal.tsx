@@ -76,7 +76,7 @@ export default function LoginModal() {
   src="/assets/login-bg.png"
   alt="Background"
   fill
-  className="object-contain object-center"
+  className="object-cover object-center md:object-contain md:scale-110"
   priority
 />
       <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center px-4">
