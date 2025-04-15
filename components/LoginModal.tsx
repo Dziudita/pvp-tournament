@@ -72,14 +72,20 @@ export default function LoginModal() {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black px-4"
-      style={{
-        backgroundImage: "url(/assets/login-bg.png)",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+   <div
+  className="fixed inset-0 z-40 overflow-y-auto bg-black bg-cover bg-center px-4 flex items-center justify-center"
+  style={{
+    backgroundImage: "url(/assets/login-bg.png)",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+  <div className="min-h-screen flex items-center justify-center py-10">
+    <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+      {/* visa tavo forma */}
+    </div>
+  </div>
+</div>
       <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
         <div className="flex flex-col items-center mb-6">
           <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
