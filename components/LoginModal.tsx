@@ -8,8 +8,8 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginModal() {
   const [email, setEmail] = useState("");
-  const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
+  const [nickname, setNickname] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -20,12 +20,12 @@ export default function LoginModal() {
 
   const validatePassword = (pw: string) => pw.length >= 5 && /\d/.test(pw);
 
-  const handleAuth = async (e?: React.FormEvent) => {
-    e?.preventDefault();
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
     setError("");
 
-    if (!email || !password || !nickname || (isSignUp && !confirmPassword)) {
-      return setError("Please fill in all fields.");
+    if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
+      return setError("Please fill in all required fields.");
     }
 
     if (!confirmAge) {
@@ -33,8 +33,12 @@ export default function LoginModal() {
     }
 
     if (isSignUp) {
-      if (!validatePassword(password)) return setError("Password must be at least 5 characters and include a number.");
-      if (password !== confirmPassword) return setError("Passwords do not match.");
+      if (!validatePassword(password)) {
+        return setError("Password must be at least 5 characters and include a number.");
+      }
+      if (password !== confirmPassword) {
+        return setError("Passwords do not match.");
+      }
 
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
@@ -43,22 +47,24 @@ export default function LoginModal() {
 
       if (signUpError) return setError(signUpError.message);
 
-      // Insert user metadata into `users` table
-      const { error: insertError } = await supabase.from("users").insert({
-        id: data.user?.id,
-        nickname,
-        referral_code: referralCode || null,
-      });
+      // Įrašom papildomus duomenis į `users` lentelę
+      const userId = data.user?.id;
+      if (userId) {
+        await supabase.from("users").insert([
+          {
+            id: userId,
+            nickname,
+            referral_code: referralCode || null,
+          },
+        ]);
+      }
 
-      if (insertError) return setError("Signup succeeded but failed to save user data.");
-
-      alert("Check your email to confirm your account!");
+      alert("Account created! Please check your email to confirm.");
     } else {
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
       if (signInError) return setError(signInError.message);
 
       location.reload();
@@ -67,16 +73,23 @@ export default function LoginModal() {
 
   return (
     <div
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-cover bg-center px-4"
-      style={{ backgroundImage: "url(/assets/login-bg.png)" }}
+      className="fixed inset-0 z-40 flex items-center justify-center bg-black px-4"
+      style={{
+        backgroundImage: "url(/assets/login-bg.png)",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+      }}
     >
-      <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-[0_0_30px_rgba(255,0,255,0.3)]">
+      <div className="bg-black/80 backdrop-blur-sm p-8 rounded-2xl border border-pink-500 w-[320px] shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
         <div className="flex flex-col items-center mb-6">
           <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={80} height={80} />
           <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
         </div>
 
-        <h2 className="text-xl font-semibold text-center mb-4 text-white">{isSignUp ? "Sign Up" : "Login"}</h2>
+        <h2 className="text-xl font-semibold text-center mb-4 text-white">
+          {isSignUp ? "Sign Up" : "Login"}
+        </h2>
+
         {error && <p className="text-red-400 text-center mb-4 font-semibold">{error}</p>}
 
         <form onSubmit={handleAuth}>
@@ -86,7 +99,7 @@ export default function LoginModal() {
               placeholder="Nickname"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200"
+              className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
             />
           )}
 
@@ -95,7 +108,7 @@ export default function LoginModal() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200"
+            className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
           />
 
           <div className="relative mb-4">
@@ -104,12 +117,12 @@ export default function LoginModal() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200"
+              className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
             />
             <button
               type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-3 text-pink-300"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
             >
               {showPassword ? <FaEye /> : <FaEyeSlash />}
             </button>
@@ -123,12 +136,12 @@ export default function LoginModal() {
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200"
+                  className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-4 top-3 text-pink-300"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-4 top-3 text-pink-300 hover:text-pink-400"
                 >
                   {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
                 </button>
@@ -139,7 +152,7 @@ export default function LoginModal() {
                 placeholder="Referral Code (optional)"
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}
-                className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200"
+                className="w-full mb-4 px-4 py-3 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
               />
             </>
           )}
@@ -152,9 +165,9 @@ export default function LoginModal() {
               onChange={() => setConfirmAge(!confirmAge)}
             />
             <label>
-              I confirm I am 18+ and agree to the{" "}
-              <Link href="/terms" className="text-blue-400 hover:underline">Terms</Link> and{" "}
-              <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>.
+              I confirm that I am 18 years old and I have read the{" "}
+              <Link href="/terms" className="text-blue-400 hover:underline">Terms of Service</Link> and{" "}
+              <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
             </label>
           </div>
 
