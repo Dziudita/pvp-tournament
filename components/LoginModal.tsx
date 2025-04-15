@@ -72,15 +72,18 @@ export default function LoginModal() {
 
   return (
     <div className="fixed inset-0 z-40">
+      {/* Background image full-screen */}
       <Image
         src="/assets/login-bg.png"
         alt="Background"
         fill
-        className="object-cover brightness-110 contrast-110"
+        className="object-cover"
         priority
       />
-      <div className="absolute inset-0 bg-black/50 flex items-center justify-center px-4">
-        <div className="w-full max-w-xs bg-black/80 p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+
+      {/* Overlay and modal */}
+      <div className="absolute inset-0 bg-black/70 flex items-center justify-center px-4 py-8 overflow-y-auto">
+        <div className="w-full max-w-md bg-black/80 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
           <div className="flex flex-col items-center mb-4">
             <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={70} height={70} />
             <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
