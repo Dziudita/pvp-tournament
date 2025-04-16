@@ -20,8 +20,9 @@ export default function LoginModal() {
 
   const validatePassword = (pw: string) => pw.length >= 5 && /\d/.test(pw);
 
- const handleAuth = async (e: React.FormEvent) => {
+const handleAuth = async (e: React.FormEvent) => {
   e.preventDefault();
+  console.log("🚀 handleAuth pradėjo veikti"); // ← čia įterpk
   setError("");
 
   if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
