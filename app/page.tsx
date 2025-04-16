@@ -1,22 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import LuckySquares from "../components/LuckySquares";
-import Sidebar from "../components/Sidebar";
-import Header from "../components/Header";
-import CherryChat from "../components/CherryChat";
-import TopPlayerOfDay from "../components/TopPlayerOfDay";
+import { supabase } from "@/lib/supabaseClient";
+
 import LoginModal from "../components/LoginModal";
-import Image from "next/image";
+import Sidebar from "../components/Sidebar";
+import CherryChat from "../components/CherryChat";
+import TopPlayersRow from "../components/TopPlayersRow";
+import TopPlayersModal from "../components/TopPlayersModal";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const nick = localStorage.getItem("cherzi-nick");
-    const pass = localStorage.getItem("cherzi-pass");
-    if (nick && pass) setLoggedIn(true);
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        console.log("✅ Prisijungęs vartotojas:", data.user);
+        setLoggedIn(true);
+      } else {
+        console.log("🚫 Nėra prisijungusio vartotojo");
+        setLoggedIn(false);
+      }
+    };
+    checkUser();
   }, []);
+
 
   if (!loggedIn) return <LoginModal />;
 
