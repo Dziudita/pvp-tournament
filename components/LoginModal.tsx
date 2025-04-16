@@ -184,12 +184,13 @@ export default function LoginModal() {
                 <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
               </label>
             </div>
-            <button
-              type="submit"
-              className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
-            >
-              {isSignUp ? "Create Account" : "Enter Arena"}
-            </button>
+           <button
+  type="button"
+  onClick={handleAuth}
+  className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
+>
+  {isSignUp ? "Create Account" : "Enter Arena"}
+</button>
           </form>
           <div className="mt-4 text-center">
             <button
