@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { FaEnvelope, FaKey, FaCoins } from "react-icons/fa";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
