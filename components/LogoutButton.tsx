@@ -9,17 +9,19 @@ export default function LogoutButton() {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      console.error("❌ Logout error:", error.message);
+      console.error("❌ Logout klaida:", error.message);
     } else {
-      console.log("✅ User signed out from Supabase");
-
-      // Išvalom localStorage, jei reikia
-      localStorage.removeItem("cherzi-nick");
-      localStorage.removeItem("cherzi-pass");
-
-      // Perkrovimas kad UI persikrautų (grįžtų į LoginModal)
-      window.location.reload();
+      console.log("✅ Vartotojas atsijungė iš Supabase");
     }
+
+    // Išvalome localStorage
+    localStorage.removeItem("cherzi-nick");
+    localStorage.removeItem("cherzi-pass");
+
+    // Perkrauname puslapį (kad pasirodytų LoginModal)
+    setTimeout(() => {
+      window.location.reload();
+    }, 500); // trumpas delay, kad išvengtume race condition
   };
 
   return (
