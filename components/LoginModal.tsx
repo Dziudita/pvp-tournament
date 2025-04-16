@@ -40,46 +40,29 @@ export default function LoginModal() {
         return setError("Passwords do not match.");
       }
 
-     const { data, error: signUpError } = await supabase.auth.signUp({
-  email,
-  password,
-});
-
-if (signUpError) return setError(signUpError.message);
-
-const userId = data.user?.id;
-
-// 👇 papildomas įrašymas į "users" lentelę
-if (userId) {
-  const { error: insertError } = await supabase.from("users").insert([
-    {
-      id: userId,
-      nickname: nickname,
-      referral_code: referralCode || null,
-      role: "user", // gali būti ir "admin", jei reikia
-    },
-  ]);
-
-  if (insertError) {
-    console.error("Failed to insert user details:", insertError.message);
-    return setError("User created, but failed to save nickname/referral.");
-  }
-}
-
-alert("Account created! Please check your email to confirm.");
-
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
       if (signUpError) return setError(signUpError.message);
 
       const userId = data.user?.id;
+
       if (userId) {
-        await supabase.from("users").insert([
+        const { error: insertError } = await supabase.from("users").insert([
           {
             id: userId,
-            nickname,
+            nickname: nickname,
             referral_code: referralCode || null,
+            role: "user", // jei reikia galima padaryti "admin"
           },
         ]);
+
+        if (insertError) {
+          console.error("Failed to insert user details:", insertError.message);
+          return setError("User created, but failed to save nickname/referral.");
+        }
       }
 
       alert("Account created! Please check your email to confirm.");
@@ -96,7 +79,6 @@ alert("Account created! Please check your email to confirm.");
 
   return (
     <div className="fixed inset-0 z-40">
-      {/* Background for desktop */}
       <Image
         src="/assets/login-bg.png"
         alt="Background"
@@ -104,24 +86,17 @@ alert("Account created! Please check your email to confirm.");
         className="object-cover brightness-110 contrast-110 hidden md:block"
         priority
       />
-
-      {/* Solid black background for mobile */}
       <div className="block md:hidden absolute inset-0 bg-black" />
-
-      {/* Modal overlay */}
       <div className="absolute inset-0 bg-black/50 flex items-center justify-center px-4 py-8 overflow-y-auto">
         <div className="w-full max-w-xs bg-black/80 p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
           <div className="flex flex-col items-center mb-4">
             <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={70} height={70} />
             <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
           </div>
-
           <h2 className="text-lg font-semibold text-center mb-3 text-white">
             {isSignUp ? "Sign Up" : "Login"}
           </h2>
-
           {error && <p className="text-red-400 text-center mb-3 font-semibold">{error}</p>}
-
           <form onSubmit={handleAuth}>
             {isSignUp && (
               <input
@@ -132,7 +107,6 @@ alert("Account created! Please check your email to confirm.");
                 className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
               />
             )}
-
             <input
               type="email"
               placeholder="Email"
@@ -140,7 +114,6 @@ alert("Account created! Please check your email to confirm.");
               onChange={(e) => setEmail(e.target.value)}
               className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
             />
-
             <div className="relative mb-3">
               <input
                 type={showPassword ? "text" : "password"}
@@ -157,7 +130,6 @@ alert("Account created! Please check your email to confirm.");
                 {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
             </div>
-
             {isSignUp && (
               <>
                 <div className="relative mb-3">
@@ -176,7 +148,6 @@ alert("Account created! Please check your email to confirm.");
                     {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
                   </button>
                 </div>
-
                 <input
                   type="text"
                   placeholder="Referral Code (optional)"
@@ -186,7 +157,6 @@ alert("Account created! Please check your email to confirm.");
                 />
               </>
             )}
-
             <div className="flex items-start mb-3 text-xs text-gray-300">
               <input
                 type="checkbox"
@@ -200,7 +170,6 @@ alert("Account created! Please check your email to confirm.");
                 <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
               </label>
             </div>
-
             <button
               type="submit"
               className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
@@ -208,7 +177,6 @@ alert("Account created! Please check your email to confirm.");
               {isSignUp ? "Create Account" : "Enter Arena"}
             </button>
           </form>
-
           <div className="mt-4 text-center">
             <button
               onClick={() => {
