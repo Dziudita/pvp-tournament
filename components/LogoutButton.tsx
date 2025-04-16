@@ -4,18 +4,20 @@ import { supabase } from "@/lib/supabaseClient";
 
 export default function LogoutButton() {
   const handleLogout = async () => {
-    // 1. Atsijungiam iš Supabase sesijos
+    console.log("🚪 Bandome atsijungti...");
+
     const { error } = await supabase.auth.signOut();
+
     if (error) {
-      console.error("Logout error:", error.message);
+      console.error("❌ Logout error:", error.message);
     } else {
       console.log("✅ User signed out from Supabase");
 
-      // 2. Išvalom localStorage (jei naudojamas)
+      // Išvalom localStorage, jei reikia
       localStorage.removeItem("cherzi-nick");
       localStorage.removeItem("cherzi-pass");
 
-      // 3. Perkrovimas arba navigacija į login
+      // Perkrovimas kad UI persikrautų (grįžtų į LoginModal)
       window.location.reload();
     }
   };
