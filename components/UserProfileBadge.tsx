@@ -26,6 +26,7 @@ export default function UserProfileBadge() {
         alt="User Avatar"
         width={32}
         height={32}
+        unoptimized
         className="rounded-full border border-pink-400"
       />
       <span className="text-white font-semibold">{nickname}</span>
