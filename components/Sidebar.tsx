@@ -1,13 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { FaBars } from "react-icons/fa";  // Naudojame ikoną, kad atidaryti ir uždaryti šoninę juostą
+import UserDropdown from "./UserDropdown";
+import Link from "next/link";
+import { FaGamepad, FaScroll, FaQuestionCircle, FaLifeRing, FaSignOutAlt } from "react-icons/fa";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); // Inicializuojame kaip atidarytą
+  const handleLogout = async () => {
+    console.log("🚪 Bandome atsijungti...");
+
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("❌ Atsijungimo klaida:", error.message);
+    } else {
+      console.log("✅ Atsijungta iš Supabase");
+
+      localStorage.removeItem("cherzi-nick");
+      localStorage.removeItem("cherzi-pass");
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+  };
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);  // Keičiame šoninės juostos būseną
+    setIsOpen(!isOpen); // Keičiam šoninės juostos būseną
   };
 
   return (
@@ -17,7 +37,8 @@ export default function Sidebar() {
         onClick={toggleSidebar}
         className="absolute top-5 left-5 text-white text-2xl z-50"
       >
-        <FaBars />
+        {/* Ikona atidaryti arba uždaryti */}
+        {isOpen ? "❌" : "☰"} 
       </button>
 
       {/* Šoninė juosta su animacija */}
@@ -27,11 +48,12 @@ export default function Sidebar() {
         }`}
       >
         <div>
-          {/* Naudotojo profilis ir nuorodos */}
+          {/* User Profile Dropdown */}
           <div className="mb-10">
-            <UserProfileBadge />
+            <UserDropdown />
           </div>
 
+          {/* Navigation */}
           <nav className="flex flex-col gap-6 text-xl">
             <Link href="/game" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
               <FaGamepad size={26} /> Games
