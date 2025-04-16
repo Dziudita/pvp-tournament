@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaEnvelope, FaKey, FaCoins } from "react-icons/fa";
+import Image from "next/image";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,24 +33,21 @@ export default function UserDropdown() {
 
   const avatarSrc =
     role === "owner"
-      ? "/assets/owner-avatar-cherry-steampunk.png"
+      ? "/avatars/owner-avatar-cherry-steampunk.png"
       : "/avatars/default.png";
-
-  const [avatarUrl, setAvatarUrl] = useState(avatarSrc);
-
-  const handleImgError = () => {
-    setAvatarUrl("/avatars/default.png");
-  };
 
   return (
     <div className="relative">
       <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
-        <img
-          src={avatarUrl}
-          alt="Avatar"
-          onError={handleImgError}
-          className="w-12 h-12 rounded-full border-2 border-pink-500 hover:brightness-110 object-cover"
-        />
+        <div className="w-12 h-12 relative">
+          <Image
+            src={avatarSrc}
+            alt="Avatar"
+            fill
+            sizes="48px"
+            className="rounded-full border-2 border-pink-500 hover:brightness-110 object-cover"
+          />
+        </div>
       </button>
 
       {isOpen && (
