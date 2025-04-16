@@ -7,6 +7,7 @@ export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [bets, setBets] = useState(0);
   const [wager, setWager] = useState(0);
   const [dailyWD, setDailyWD] = useState(0);
@@ -15,26 +16,31 @@ export default function UserDropdown() {
   useEffect(() => {
     const nick = localStorage.getItem("cherzi-nick") || "User";
     const storedEmail = localStorage.getItem("cherzi-email") || "Not set";
+    const storedRole = localStorage.getItem("cherzi-role") || "user";
     const storedBets = Number(localStorage.getItem("cherzi-bets") || 0);
     const storedWager = Number(localStorage.getItem("cherzi-wager") || 0);
     const wd = Number(localStorage.getItem("cherzi-dailyWD") || 0);
     const depo = Number(localStorage.getItem("cherzi-dailyDeposit") || 0);
+
     setNickname(nick);
     setEmail(storedEmail);
+    setRole(storedRole);
     setBets(storedBets);
     setWager(storedWager);
     setDailyWD(wd);
     setDailyDeposit(depo);
   }, []);
 
+  const avatarSrc =
+    role === "owner"
+      ? "/assets/owner-avatar-cherry-steampunk.png"
+      : "/avatars/default.png";
+
   return (
     <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="focus:outline-none"
-      >
+      <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
         <img
-          src="/avatars/cherzi-owner.png"
+          src={avatarSrc}
           alt="Avatar"
           className="w-12 h-12 rounded-full border-2 border-pink-500 hover:brightness-110"
         />
