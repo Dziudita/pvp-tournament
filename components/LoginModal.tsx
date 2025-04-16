@@ -20,14 +20,67 @@ export default function LoginModal() {
 
   const validatePassword = (pw: string) => pw.length >= 5 && /\d/.test(pw);
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+ const handleAuth = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
 
-    if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
-      return setError("Please fill in all required fields.");
+  if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
+    return setError("Please fill in all required fields.");
+  }
+
+  if (!confirmAge) {
+    return setError("You must confirm that you're at least 18 years old.");
+  }
+
+  if (isSignUp) {
+    if (!validatePassword(password)) {
+      return setError("Password must be at least 5 characters and include a number.");
+    }
+    if (password !== confirmPassword) {
+      return setError("Passwords do not match.");
     }
 
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signUpError) return setError(signUpError.message);
+
+    const userId = data.user?.id;
+
+    if (userId) {
+      const { error: insertError } = await supabase.from("users").insert([
+        {
+          id: userId,
+          nickname,
+          referral_code: referralCode || null,
+          role: "user",
+        },
+      ]);
+
+      if (insertError) {
+        console.error("Failed to insert user details:", insertError.message);
+        return setError("User created, but failed to save nickname/referral.");
+      }
+    }
+
+    // ✅ Vartotojas jau prisijungęs – galim redirect'int
+    if (data.session) {
+      window.location.href = "/";
+    } else {
+      alert("Account created, but no active session found.");
+    }
+  } else {
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (signInError) return setError(signInError.message);
+
+    window.location.href = "/";
+};
     if (!confirmAge) {
       return setError("You must confirm that you're at least 18 years old.");
     }
