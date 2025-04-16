@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabaseClient";
 import LoginModal from "../components/LoginModal";
 import Sidebar from "../components/Sidebar";
 import CherryChat from "../components/CherryChat";
-import TopPlayersRow from "../components/TopPlayersRow";
+import Topbar from "../components/Topbar";
 import TopPlayersModal from "../components/TopPlayersModal";
 
 export default function Home() {
