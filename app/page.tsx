@@ -7,7 +7,7 @@ import LoginModal from "../components/LoginModal";
 import Sidebar from "../components/Sidebar";
 import CherryChat from "../components/CherryChat";
 import Topbar from "../components/Topbar";
-import TopPlayersModal from "../components/TopPlayersModal";
+import TopPlayerOfDay from "../components/TopPlayerOfDay";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
