@@ -16,7 +16,7 @@ export default function UserProfileBadge() {
 
   const avatarSrc =
     role === "owner"
-      ? "/assets/owner-avatar-cherry-steampunk.png"
+      ? "/avatars/owner-avatar-cherry-steampunk.png"
       : "/avatars/default.png";
 
   return (
