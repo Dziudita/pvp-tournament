@@ -17,6 +17,10 @@ export default function LoginModal() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [confirmAge, setConfirmAge] = useState(false);
+useEffect(() => {
+  console.log("✅ LoginModal komponentas įkeltas");
+}, []);
+
 
   const validatePassword = (pw: string) => pw.length >= 5 && /\d/.test(pw);
 
