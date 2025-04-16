@@ -9,12 +9,25 @@ import {
   FaLifeRing,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function Sidebar() {
-  const handleLogout = () => {
-    localStorage.removeItem("cherzi-nick");
-    localStorage.removeItem("cherzi-pass");
-    location.reload();
+  const handleLogout = async () => {
+    console.log("🚪 Bandome atsijungti...");
+
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("❌ Atsijungimo klaida:", error.message);
+    } else {
+      console.log("✅ Atsijungta iš Supabase");
+
+      localStorage.removeItem("cherzi-nick");
+      localStorage.removeItem("cherzi-pass");
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
   };
 
   return (
@@ -28,8 +41,8 @@ export default function Sidebar() {
         {/* Navigation */}
         <nav className="flex flex-col gap-6 text-xl">
           <Link href="/game" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
-  <FaGamepad size={26} /> Games
-</Link>
+            <FaGamepad size={26} /> Games
+          </Link>
           <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
             <FaScroll size={26} /> Rules
           </Link>
