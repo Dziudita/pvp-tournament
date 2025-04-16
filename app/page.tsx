@@ -13,24 +13,22 @@ import TopPlayerOfDay from "../components/TopPlayerOfDay";
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
 
- useEffect(() => {
-  // Pradiniam tikrinimui (kai puslapis kraunasi)
-  const checkInitialSession = async () => {
-    const { data } = await supabase.auth.getSession();
-    setLoggedIn(!!data.session?.user);
-  };
-  checkInitialSession();
+  useEffect(() => {
+    const checkInitialSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setLoggedIn(!!data.session?.user);
+    };
+    checkInitialSession();
 
-  // Reaguojam į login/logout pokyčius realiu laiku
-  const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-    console.log("🔄 Auth state changed:", event);
-    setLoggedIn(!!session?.user);
-  });
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("🔄 Auth state changed:", event);
+      setLoggedIn(!!session?.user);
+    });
 
-  return () => {
-    listener.subscription.unsubscribe();
-  };
-}, []);
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   if (!loggedIn) return <LoginModal />;
 
