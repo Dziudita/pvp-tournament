@@ -40,10 +40,34 @@ export default function LoginModal() {
         return setError("Passwords do not match.");
       }
 
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+     const { data, error: signUpError } = await supabase.auth.signUp({
+  email,
+  password,
+});
+
+if (signUpError) return setError(signUpError.message);
+
+const userId = data.user?.id;
+
+// 👇 papildomas įrašymas į "users" lentelę
+if (userId) {
+  const { error: insertError } = await supabase.from("users").insert([
+    {
+      id: userId,
+      nickname: nickname,
+      referral_code: referralCode || null,
+      role: "user", // gali būti ir "admin", jei reikia
+    },
+  ]);
+
+  if (insertError) {
+    console.error("Failed to insert user details:", insertError.message);
+    return setError("User created, but failed to save nickname/referral.");
+  }
+}
+
+alert("Account created! Please check your email to confirm.");
+
 
       if (signUpError) return setError(signUpError.message);
 
