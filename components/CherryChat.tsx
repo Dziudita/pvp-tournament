@@ -7,12 +7,14 @@ import { FaComment } from "react-icons/fa";
 export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
   
+  // Pridėtas tipo apibrėžimas
+  const [messages, setMessages] = useState<{ sender: string; content: string }[]>([]);
+
   useEffect(() => {
-    // Logic for loading messages from Supabase
+    // Logika žinučių užkrovimui iš Supabase
   }, []);
-  
+
   const toggleChat = () => {
     setChatOpen(!chatOpen);
   };
