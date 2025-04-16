@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,75 +17,22 @@ export default function LoginModal() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [confirmAge, setConfirmAge] = useState(false);
-useEffect(() => {
-  console.log("✅ LoginModal komponentas įkeltas");
-}, []);
 
+  useEffect(() => {
+    console.log("✅ LoginModal komponentas įkeltas");
+  }, []);
 
-  const validatePassword = (pw: string) => pw.length >= 5 && /\d/.test(pw);
+  const validatePassword = (pw) => pw.length >= 5 && /\d/.test(pw);
 
-const handleAuth = async (e: React.FormEvent) => {
-  e.preventDefault();
-  console.log("🚀 handleAuth pradėjo veikti"); // ← čia įterpk
-  setError("");
+  const handleAuth = async (e) => {
+    e.preventDefault();
+    console.log("🚀 handleAuth pradėjo veikti");
+    setError("");
 
-  if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
-    return setError("Please fill in all required fields.");
-  }
-
-  if (!confirmAge) {
-    return setError("You must confirm that you're at least 18 years old.");
-  }
-
-  if (isSignUp) {
-    if (!validatePassword(password)) {
-      return setError("Password must be at least 5 characters and include a number.");
-    }
-    if (password !== confirmPassword) {
-      return setError("Passwords do not match.");
+    if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
+      return setError("Please fill in all required fields.");
     }
 
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (signUpError) return setError(signUpError.message);
-
-    const userId = data.user?.id;
-
-    if (userId) {
-      const { error: insertError } = await supabase.from("users").insert([
-        {
-          id: userId,
-          nickname,
-          referral_code: referralCode || null,
-          role: "user",
-        },
-      ]);
-
-      if (insertError) {
-        console.error("Failed to insert user details:", insertError.message);
-        return setError("User created, but failed to save nickname/referral.");
-      }
-    }
-
-    // ✅ Vartotojas jau prisijungęs – galim redirect'int
-    if (data.session) {
-      window.location.href = "/";
-    } else {
-      alert("Account created, but no active session found.");
-    }
-  } else {
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (signInError) return setError(signInError.message);
-
-    window.location.href = "/";
-};
     if (!confirmAge) {
       return setError("You must confirm that you're at least 18 years old.");
     }
@@ -103,6 +50,8 @@ const handleAuth = async (e: React.FormEvent) => {
         password,
       });
 
+      console.log("🟢 signUp result:", data);
+
       if (signUpError) return setError(signUpError.message);
 
       const userId = data.user?.id;
@@ -118,12 +67,16 @@ const handleAuth = async (e: React.FormEvent) => {
         ]);
 
         if (insertError) {
-          console.error("Failed to insert user details:", insertError.message);
+          console.error("❌ Failed to insert user details:", insertError.message);
           return setError("User created, but failed to save nickname/referral.");
         }
       }
 
-      alert("Account created! Please check your email to confirm.");
+      if (data.session) {
+        window.location.href = "/";
+      } else {
+        alert("Account created, but no active session found.");
+      }
     } else {
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email,
