@@ -53,9 +53,9 @@ export default function LoginModal() {
         const { error: insertError } = await supabase.from("users").insert([
           {
             id: userId,
-            nickname: nickname,
+            nickname,
             referral_code: referralCode || null,
-            role: "user", // jei reikia galima padaryti "admin"
+            role: "user",
           },
         ]);
 
@@ -67,13 +67,16 @@ export default function LoginModal() {
 
       alert("Account created! Please check your email to confirm.");
     } else {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
+
+      console.log("🔐 signIn result:", signInData);
+
       if (signInError) return setError(signInError.message);
 
-      location.reload();
+      window.location.href = "/";
     }
   };
 
