@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { supabase } from "@/lib/supabaseClient";
 
 import LoginModal from "../components/LoginModal";
@@ -64,7 +65,7 @@ export default function Home() {
         </div>
 
         <div className="mt-10 px-8 md:ml-36">
-          <TopPlayersRow />
+          <TopPlayerOfDay />
         </div>
       </div>
 
