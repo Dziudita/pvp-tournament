@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FaUser, FaEnvelope, FaKey, FaCoins } from "react-icons/fa";
+import Image from "next/image";
+import { FaEnvelope, FaKey, FaCoins } from "react-icons/fa";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("user");
   const [bets, setBets] = useState(0);
   const [wager, setWager] = useState(0);
   const [dailyWD, setDailyWD] = useState(0);
@@ -39,11 +40,19 @@ export default function UserDropdown() {
   return (
     <div className="relative">
       <button onClick={() => setIsOpen(!isOpen)} className="focus:outline-none">
-        <img
-          src={avatarSrc}
-          alt="Avatar"
-          className="w-12 h-12 rounded-full border-2 border-pink-500 hover:brightness-110"
-        />
+        <div className="w-12 h-12 relative">
+          <Image
+            src={avatarSrc}
+            alt="Avatar"
+            fill
+            sizes="48px"
+            className="rounded-full border-2 border-pink-500 hover:brightness-110 object-cover"
+            onError={(e) => {
+              const target = e.currentTarget as HTMLImageElement;
+              target.src = "/avatars/default.png";
+            }}
+          />
+        </div>
       </button>
 
       {isOpen && (
