@@ -7,7 +7,7 @@ import { FaGamepad, FaScroll, FaQuestionCircle, FaLifeRing, FaSignOutAlt } from 
 import { supabase } from "@/lib/supabaseClient";
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true); // Inicializuojame kaip atidarytą
+  const [isOpen, setIsOpen] = useState(false); // Inicializuojame kaip uždarytą
   const handleLogout = async () => {
     console.log("🚪 Bandome atsijungti...");
 
@@ -43,8 +43,8 @@ export default function Sidebar() {
 
       {/* Šoninė juosta su animacija */}
       <aside
-        className={`bg-zinc-900 text-white w-64 min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`bg-zinc-900 text-white min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl transition-all duration-300 ${
+          isOpen ? "sidebar open" : "sidebar"
         }`}
       >
         <div>
