@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { FaComment } from "react-icons/fa";
 
 // Dinaminis emoji-mart importas be SSR
-const Picker = dynamic(() => import("emoji-mart").then(mod => mod.Picker), {
+const Picker = dynamic(() => import("emoji-mart").then((mod: any) => mod.Picker), {
   ssr: false,
 });
 
