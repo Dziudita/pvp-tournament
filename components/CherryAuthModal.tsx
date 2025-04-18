@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { Picker } from "emoji-mart";
+import "emoji-mart/css/emoji-mart.css"; // Svarbu įtraukti stilių
 
 export default function CherryAuthModal() {
   const [isLogin, setIsLogin] = useState(true);
