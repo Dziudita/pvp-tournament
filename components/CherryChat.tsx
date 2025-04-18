@@ -83,13 +83,13 @@ export default function CherryChat() {
 
             {showEmojiPicker && (
               <div className="absolute bottom-14 left-0 z-50">
-                <Picker
-                  onSelect={(emoji: any) => {
-                    setNewMessage((prev) => prev + emoji.native);
-                    setShowEmojiPicker(false);
-                  }}
-                  theme="dark"
-                />
+               <Picker
+  onEmojiSelect={(emoji: any) => {
+    setNewMessage((prev) => prev + emoji.native);
+    setShowEmojiPicker(false);
+  }}
+  theme="dark"
+/>
               </div>
             )}
 
