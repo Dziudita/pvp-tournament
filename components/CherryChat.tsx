@@ -3,11 +3,9 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { FaComment } from "react-icons/fa";
-import { Picker } from "emoji-mart";
 
 export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [messages, setMessages] = useState([
     { id: 1, user: "CherryBoss", text: "Welcome to Cherry Chat! 🍒", avatar: "/avatar1.png" },
     { id: 2, user: "PlayerX", text: "Let’s flip some cherries! 😄", avatar: "/avatar2.png" },
@@ -64,24 +62,13 @@ export default function CherryChat() {
           </div>
 
           <div className="border-t border-zinc-700 p-3 bg-zinc-900 flex items-center gap-2 relative">
+            {/* Emoji button disabled for now */}
             <button
-              className="text-xl"
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              className="text-xl cursor-not-allowed text-gray-500"
+              title="Emoji picker disabled"
             >
               😊
             </button>
-
-            {showEmojiPicker && (
-              <div className="absolute bottom-14 left-0 z-50">
-                <Picker
-                  onSelect={(emoji: any) => {
-                    setNewMessage((prev) => prev + emoji.native);
-                    setShowEmojiPicker(false);
-                  }}
-                  theme="dark"
-                />
-              </div>
-            )}
 
             <input
               type="text"
