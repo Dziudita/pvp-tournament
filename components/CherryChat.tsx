@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { FaComment } from "react-icons/fa";
 import { Picker } from "emoji-mart";
-import "emoji-mart/css/emoji-mart.css";
 
 export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
