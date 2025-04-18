@@ -36,13 +36,13 @@ export default function Home() {
   return (
     <div className="relative w-screen h-screen overflow-hidden text-white">
       {/* Background image */}
-      <Image
-        src="/assets/login-bg.png"
-        alt="Background"
-        fill
-        className="object-cover brightness-[0.2] saturate-50 -z-10"
-        priority
-      />
+     <Image
+  src="/assets/login-bg.png"
+  alt="Background"
+  fill
+  className="object-cover brightness-[0.5] saturate-100 contrast-125 -z-10"
+  priority
+/>
 
       <Sidebar />
 
