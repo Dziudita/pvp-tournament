@@ -2,13 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { FaComment } from "react-icons/fa";
-
-// Dinaminis emoji-mart importas be SSR
-const Picker = dynamic<any>(() => import("emoji-mart").then((mod) => mod.Picker), {
-  ssr: false,
-});
+import { Picker } from "emoji-mart";
+import "emoji-mart/css/emoji-mart.css";
 
 export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -40,7 +36,6 @@ export default function CherryChat() {
 
   return (
     <>
-      {/* Floating Chat Toggle Button */}
       <button
         onClick={() => setChatOpen(!chatOpen)}
         className="fixed bottom-5 right-5 bg-pink-500 text-white p-3 rounded-full shadow-lg z-50 hover:bg-pink-400 transition"
@@ -48,15 +43,12 @@ export default function CherryChat() {
         <FaComment size={24} />
       </button>
 
-      {/* Chat Window */}
       {chatOpen && (
         <div className="fixed bottom-20 right-5 w-[360px] max-h-[75vh] bg-zinc-900 rounded-2xl shadow-2xl border border-pink-600 flex flex-col overflow-hidden z-40">
-          {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-700 bg-zinc-800">
             <span className="text-pink-400 font-bold text-lg">🍒 Cherry Chat</span>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
             {messages.map((msg) => (
               <div key={msg.id} className="flex items-start gap-3">
@@ -72,7 +64,6 @@ export default function CherryChat() {
             <div ref={scrollRef} />
           </div>
 
-          {/* Input + Emoji */}
           <div className="border-t border-zinc-700 p-3 bg-zinc-900 flex items-center gap-2 relative">
             <button
               className="text-xl"
@@ -83,13 +74,13 @@ export default function CherryChat() {
 
             {showEmojiPicker && (
               <div className="absolute bottom-14 left-0 z-50">
-               <Picker
-  onEmojiSelect={(emoji: any) => {
-    setNewMessage((prev) => prev + emoji.native);
-    setShowEmojiPicker(false);
-  }}
-  theme="dark"
-/>
+                <Picker
+                  onSelect={(emoji: any) => {
+                    setNewMessage((prev) => prev + emoji.native);
+                    setShowEmojiPicker(false);
+                  }}
+                  theme="dark"
+                />
               </div>
             )}
 
