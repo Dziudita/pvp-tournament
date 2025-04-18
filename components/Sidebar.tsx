@@ -42,10 +42,11 @@ export default function Sidebar() {
       </button>
 
       {/* Šoninė juosta su animacija */}
-      <aside
-        className={`bg-zinc-900 text-white min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl transition-all duration-300 ${
-          isOpen ? "sidebar open" : "sidebar"
-        }`}
+     <aside
+  className={`bg-zinc-900 bg-opacity-80 text-white min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl transition-all duration-300 ${
+    isOpen ? "sidebar open" : "sidebar"
+  }`}
+>
       >
         <div>
           {/* User Profile Dropdown */}
