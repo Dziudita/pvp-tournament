@@ -2,10 +2,17 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { FaComment } from "react-icons/fa";
+
+// Dinaminis emoji-mart importas be SSR
+const Picker = dynamic(() => import("emoji-mart").then(mod => mod.Picker), {
+  ssr: false,
+});
 
 export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [messages, setMessages] = useState([
     { id: 1, user: "CherryBoss", text: "Welcome to Cherry Chat! 🍒", avatar: "/avatar1.png" },
     { id: 2, user: "PlayerX", text: "Let’s flip some cherries! 😄", avatar: "/avatar2.png" },
@@ -27,7 +34,6 @@ export default function CherryChat() {
     setNewMessage("");
   };
 
-  // Auto-scroll
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -66,9 +72,27 @@ export default function CherryChat() {
             <div ref={scrollRef} />
           </div>
 
-          {/* Input */}
-          <div className="border-t border-zinc-700 p-3 bg-zinc-900 flex items-center gap-2">
-            <button className="text-xl">😊</button>
+          {/* Input + Emoji */}
+          <div className="border-t border-zinc-700 p-3 bg-zinc-900 flex items-center gap-2 relative">
+            <button
+              className="text-xl"
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            >
+              😊
+            </button>
+
+            {showEmojiPicker && (
+              <div className="absolute bottom-14 left-0 z-50">
+                <Picker
+                  onSelect={(emoji: any) => {
+                    setNewMessage((prev) => prev + emoji.native);
+                    setShowEmojiPicker(false);
+                  }}
+                  theme="dark"
+                />
+              </div>
+            )}
+
             <input
               type="text"
               placeholder="Enter your message..."
