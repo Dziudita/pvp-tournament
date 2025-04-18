@@ -1,4 +1,5 @@
 import './globals.css';
+import Header from '@/components/Header';
 
 export const metadata = {
   title: 'Cherzi',
@@ -15,7 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-white">{children}</body>
+      <body className="bg-black text-white min-h-screen">
+        <Header />
+        <main>{children}</main>
+      </body>
     </html>
   );
 }
