@@ -1,3 +1,4 @@
+// ✅ Švari Topbar versija be avataro
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -18,11 +19,6 @@ export default function Topbar() {
           type="text"
           placeholder="Search..."
           className="px-3 py-1 rounded-lg bg-zinc-800 text-white outline-none text-sm"
-        />
-        <img
-          src="/avatars/default.png"
-          alt="avatar"
-          className="w-8 h-8 rounded-full border border-pink-400"
         />
       </div>
     </header>
