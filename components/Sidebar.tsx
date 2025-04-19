@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FaGamepad,
   FaScroll,
@@ -31,8 +32,8 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed top-0 left-0 w-64 h-screen bg-zinc-900 bg-opacity-80 border-r border-pink-500 p-6 text-white shadow-xl z-40">
-      <nav className="flex flex-col gap-6 text-xl mt-10">
+    <aside className="fixed top-0 left-0 w-64 h-screen bg-zinc-900 bg-opacity-80 border-r border-pink-500 p-6 text-white shadow-xl z-40 relative overflow-hidden">
+      <nav className="flex flex-col gap-6 text-xl mt-10 relative z-10">
         <Link
           href="/game"
           className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
@@ -64,6 +65,15 @@ export default function Sidebar() {
           <FaSignOutAlt size={24} /> Logout
         </button>
       </nav>
+
+      {/* Slaptas velniukas fone 👹🍒 */}
+      <Image
+        src="/cherry-mascot.png"
+        alt="Cherry Mascot"
+        width={200}
+        height={200}
+        className="absolute bottom-4 left-4 opacity-30 drop-shadow-[0_0_8px_#ff00aa] z-0 pointer-events-none select-none"
+      />
     </aside>
   );
 }
