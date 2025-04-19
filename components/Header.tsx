@@ -1,21 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { FaGlobe, FaCog } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
-import UserDropdown from "./UserDropdown"; // <- Įsitikink, kad kelias teisingas
+import UserDropdown from "./UserDropdown";
 
 // Supabase inicijavimas
 const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- sutrumpinta čia
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- supabase anon key
 );
 
 export default function Header() {
   const [balance] = useState("0.00810214");
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -25,9 +26,29 @@ export default function Header() {
         setAvatarURL(userAvatar);
       }
     };
-
     getUser();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   return (
     <header className="w-full px-6 py-3 bg-black bg-opacity-80 border-b border-pink-600 flex justify-between items-center z-50 shadow-md relative">
@@ -53,8 +74,11 @@ export default function Header() {
         </button>
 
         {/* Avataras su dropdown valdymu */}
-        <div className="relative">
-          <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="focus:outline-none"
+          >
             <Image
               src={avatarURL}
               alt="User Avatar"
@@ -64,7 +88,6 @@ export default function Header() {
             />
           </button>
 
-          {/* Dropdown tik jei aktyvuotas */}
           {isDropdownOpen && (
             <div className="absolute right-0 mt-3">
               <UserDropdown />
