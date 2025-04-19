@@ -9,20 +9,24 @@ import Sidebar from "../components/Sidebar";
 import CherryChat from "../components/CherryChat";
 import Topbar from "../components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
+import Loader from "../components/Loader"; // <- pridėta
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true); // <- pridėta
 
   useEffect(() => {
     const checkInitialSession = async () => {
       const { data } = await supabase.auth.getSession();
       setLoggedIn(!!data.session?.user);
+      setLoading(false); // <- kai gaunam sesiją, baigiam krauti
     };
     checkInitialSession();
 
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       console.log("🔄 Auth state changed:", event);
       setLoggedIn(!!session?.user);
+      setLoading(false); // <- kai keičiasi būsena, baigiam krauti
     });
 
     return () => {
@@ -30,7 +34,8 @@ export default function Home() {
     };
   }, []);
 
-  if (!loggedIn) return <LoginModal />;
+  if (loading) return <Loader />;        // <- splash ekrano rodymas
+  if (!loggedIn) return <LoginModal />;  // <- prisijungimo langas
 
   return (
     <div className="relative w-screen h-screen overflow-hidden text-white">
@@ -43,8 +48,8 @@ export default function Home() {
         priority
       />
 
-      {/* Rodyti Topbar tik jei prisijungęs */}
-      {loggedIn && <Topbar />}
+      {/* Topbar rodomas tik jei prisijungta */}
+      <Topbar />
       <Sidebar />
 
       <div className="ml-0 md:ml-[calc(6.5vw+220px)]">
