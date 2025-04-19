@@ -32,7 +32,11 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed top-0 left-0 w-64 h-screen bg-zinc-900 bg-opacity-80 border-r border-pink-500 p-6 text-white shadow-xl z-40 relative overflow-hidden">
+    <aside className="fixed top-0 left-0 w-64 h-screen bg-zinc-900 bg-opacity-80 border-r border-pink-500 p-6 text-white shadow-xl z-40 overflow-hidden">
+      {/* Neon glow fone */}
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-pink-500 to-purple-500 opacity-20 blur-2xl rounded-full z-0"></div>
+
+      {/* Navigacija */}
       <nav className="flex flex-col gap-6 text-xl mt-10 relative z-10">
         <Link
           href="/game"
@@ -65,15 +69,6 @@ export default function Sidebar() {
           <FaSignOutAlt size={24} /> Logout
         </button>
       </nav>
-
-      {/* Slaptas velniukas fone 👹🍒 */}
-     <Image
-  src="/assets/cherry-mascot.png" // <-- svarbu!
-  alt="Cherry Mascot"
-  width={200}
-  height={200}
-  className="absolute bottom-4 left-4 opacity-30 drop-shadow-[0_0_8px_#ff00aa] z-0 pointer-events-none select-none"
-/>
     </aside>
   );
 }
