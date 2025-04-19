@@ -67,13 +67,13 @@ export default function Sidebar() {
       </nav>
 
       {/* Slaptas velniukas fone 👹🍒 */}
-      <Image
-        src="/cherry-mascot.png"
-        alt="Cherry Mascot"
-        width={200}
-        height={200}
-        className="absolute bottom-4 left-4 opacity-30 drop-shadow-[0_0_8px_#ff00aa] z-0 pointer-events-none select-none"
-      />
+     <Image
+  src="/assets/cherry-mascot.png" // <-- svarbu!
+  alt="Cherry Mascot"
+  width={200}
+  height={200}
+  className="absolute bottom-4 left-4 opacity-30 drop-shadow-[0_0_8px_#ff00aa] z-0 pointer-events-none select-none"
+/>
     </aside>
   );
 }
