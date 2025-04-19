@@ -41,52 +41,49 @@ export default function Sidebar() {
       {/* Toggle mygtukas */}
       <button
         onClick={toggleSidebar}
-        className="absolute top-5 left-5 text-white text-2xl z-50"
+        className="fixed top-5 left-5 text-white text-2xl z-50"
       >
         {isOpen ? "❌" : "☰"}
       </button>
 
-      {/* Šoninė juosta su animacija */}
+      {/* Fiksuota sidebar panelė */}
       <aside
-        className={`bg-zinc-900 bg-opacity-80 text-white min-h-screen p-6 border-r border-pink-500 flex flex-col justify-between shadow-xl transition-all duration-300 ${
-          isOpen ? "sidebar open" : "sidebar"
+        className={`fixed top-0 left-0 w-64 h-screen bg-zinc-900 bg-opacity-80 border-r border-pink-500 p-6 text-white shadow-xl z-40 transition-all duration-300 ${
+          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
-        <div>
-          {/* Navigation */}
-          <nav className="flex flex-col gap-6 text-xl">
-            <Link
-              href="/game"
-              className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-            >
-              <FaGamepad size={26} /> Games
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-            >
-              <FaScroll size={26} /> Rules
-            </Link>
-            <Link
-              href="/about"
-              className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-            >
-              <FaQuestionCircle size={26} /> About
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-            >
-              <FaLifeRing size={26} /> Support
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-            >
-              <FaSignOutAlt size={24} /> Logout
-            </button>
-          </nav>
-        </div>
+        <nav className="flex flex-col gap-6 text-xl mt-10">
+          <Link
+            href="/game"
+            className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
+          >
+            <FaGamepad size={26} /> Games
+          </Link>
+          <Link
+            href="#"
+            className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
+          >
+            <FaScroll size={26} /> Rules
+          </Link>
+          <Link
+            href="/about"
+            className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
+          >
+            <FaQuestionCircle size={26} /> About
+          </Link>
+          <Link
+            href="#"
+            className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
+          >
+            <FaLifeRing size={26} /> Support
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
+          >
+            <FaSignOutAlt size={24} /> Logout
+          </button>
+        </nav>
       </aside>
     </div>
   );
