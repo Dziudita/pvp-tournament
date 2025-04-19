@@ -8,7 +8,7 @@ export default function Loader() {
       {/* Logo su švytėjimu */}
       <div className="relative w-36 h-36 animate-pulse drop-shadow-[0_0_25px_#ff00cc]">
         <Image
-          src="/assets/cherry-logo.png" // ← naudok savo logotipo kelią (pvz. /assets/cherry-logo.png)
+          src="/public/favicon.ico" // ← naudok savo logotipo kelią (pvz. /assets/cherry-logo.png)
           alt="Cherzi Logo"
           fill
           className="object-contain"
