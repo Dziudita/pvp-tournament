@@ -71,7 +71,7 @@ export default function UserDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute top-14 left-0 bg-zinc-900 border border-pink-500 rounded-xl p-4 w-64 shadow-2xl z-50">
+      <div className="absolute top-14 right-0 bg-zinc-900 border border-pink-500 rounded-xl p-4 w-64 shadow-2xl z-50">
           <div className="flex items-center gap-2 mb-2">
             <span className="bg-pink-600 text-white px-2 py-1 rounded-full text-xs font-bold">{rank} Rank</span>
             <h3 className="text-lg text-white font-bold truncate">👤 {nickname}</h3>
