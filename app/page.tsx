@@ -43,6 +43,8 @@ export default function Home() {
         priority
       />
 
+      {/* Rodyti Topbar tik jei prisijungęs */}
+      {loggedIn && <Topbar />}
       <Sidebar />
 
       <div className="ml-0 md:ml-[calc(6.5vw+220px)]">
