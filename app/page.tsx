@@ -9,7 +9,6 @@ import Sidebar from "../components/Sidebar";
 import CherryChat from "../components/CherryChat";
 import Topbar from "../components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
-import UserDropdown from "../components/UserDropdown";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
