@@ -4,16 +4,18 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaGlobe, FaCog } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
+import UserDropdown from "./UserDropdown"; // <- Įsitikink, kad kelias teisingas
 
 // Supabase inicijavimas
 const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- sutrumpinta čia
 );
 
 export default function Header() {
   const [balance] = useState("0.00810214");
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -28,7 +30,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full px-6 py-3 bg-black bg-opacity-80 border-b border-pink-600 flex justify-between items-center z-50 shadow-md">
+    <header className="w-full px-6 py-3 bg-black bg-opacity-80 border-b border-pink-600 flex justify-between items-center z-50 shadow-md relative">
       {/* Logo ir pavadinimas */}
       <div className="flex items-center gap-2">
         <Image src="/favicon.ico" alt="Logo" width={28} height={28} />
@@ -38,7 +40,7 @@ export default function Header() {
       </div>
 
       {/* Dešinė pusė */}
-      <div className="flex items-center gap-4 text-white">
+      <div className="flex items-center gap-4 text-white relative">
         {/* Balansas */}
         <div className="bg-zinc-800 px-4 py-1 rounded-xl text-sm shadow-inner border border-pink-500 flex items-center gap-2">
           <span className="text-yellow-400 text-lg">💰</span>
@@ -50,14 +52,25 @@ export default function Header() {
           💼 Wallet
         </button>
 
-        {/* Avataras */}
-        <Image
-          src={avatarURL}
-          alt="User Avatar"
-          width={32}
-          height={32}
-          className="rounded-full border border-pink-500 cursor-pointer hover:opacity-80 transition"
-        />
+        {/* Avataras su dropdown valdymu */}
+        <div className="relative">
+          <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
+            <Image
+              src={avatarURL}
+              alt="User Avatar"
+              width={32}
+              height={32}
+              className="rounded-full border border-pink-500 cursor-pointer hover:opacity-80 transition"
+            />
+          </button>
+
+          {/* Dropdown tik jei aktyvuotas */}
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-3">
+              <UserDropdown />
+            </div>
+          )}
+        </div>
 
         {/* Kalba */}
         <div className="cursor-pointer hover:text-pink-400 transition">
