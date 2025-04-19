@@ -35,30 +35,18 @@ export default function Home() {
   return (
     <div className="relative w-screen h-screen overflow-hidden text-white">
       {/* Background image */}
-     <Image
-  src="/assets/login-bg.png"
-  alt="Background"
-  fill
-  className="object-cover brightness-[0.5] saturate-100 contrast-125 -z-10"
-  priority
-/>
+      <Image
+        src="/assets/login-bg.png"
+        alt="Background"
+        fill
+        className="object-cover brightness-[0.5] saturate-100 contrast-125 -z-10"
+        priority
+      />
 
       <Sidebar />
 
       <div className="ml-0 md:ml-[calc(6.5vw+220px)]">
-        {/* Main Cherry Hero in the top center */}
-        <div className="flex justify-center mt-6">
-          <div className="text-center">
-            <Image
-              src="/assets/cherry-mascot.png"
-              alt="Main Cherry Mascot"
-              width={80}
-              height={80}
-              className="drop-shadow-[0_0_2px_#ff66dd]"
-            />
-          </div>
-        </div>
-
+        {/* Search section */}
         <div className="px-8 mt-8">
           <input
             type="text"
@@ -67,6 +55,7 @@ export default function Home() {
           />
         </div>
 
+        {/* Game buttons */}
         <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10">
           <button className="px-6 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-80 shadow-md">
             CHERRY COINFLIP
@@ -76,27 +65,13 @@ export default function Home() {
           </button>
         </div>
 
+        {/* Top player */}
         <div className="mt-10 px-8 md:ml-36">
           <TopPlayerOfDay />
         </div>
       </div>
 
-      {/* Background cherries left/right */}
-      <Image
-        src="/assets/evil-cherry.png"
-        alt="Evil Cherry"
-        width={120}
-        height={120}
-        className="absolute bottom-6 left-6 drop-shadow-[0_0_1px_#ff66dd]"
-      />
-      <Image
-        src="/assets/angry-cherry.png"
-        alt="Angry Cherry"
-        width={120}
-        height={120}
-        className="absolute bottom-6 right-6 drop-shadow-[0_0_1px_#ff66dd]"
-      />
-
+      {/* Chat */}
       <CherryChat />
     </div>
   );
