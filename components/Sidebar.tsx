@@ -10,24 +10,9 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { supabase } from "@/lib/supabaseClient";
-import Image from "next/image";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [nickname, setNickname] = useState("User");
-  const [role, setRole] = useState("user");
-
-  useEffect(() => {
-    const storedNick = localStorage.getItem("cherzi-nick");
-    const storedRole = localStorage.getItem("cherzi-role");
-    if (storedNick) setNickname(storedNick);
-    if (storedRole) setRole(storedRole);
-  }, []);
-
-  const avatarSrc =
-    role === "owner"
-      ? "/avatars/owner-avatar-cherry-steampunk.png"
-      : "/avatars/default.png";
 
   const handleLogout = async () => {
     console.log("🚪 Bandome atsijungti...");
@@ -68,18 +53,6 @@ export default function Sidebar() {
         }`}
       >
         <div>
-          {/* Tik vizualus avataras + vardas */}
-          <div className="mb-10 flex flex-col items-center">
-            <Image
-              src={avatarSrc}
-              alt="Sidebar Avatar"
-              width={64}
-              height={64}
-              className="rounded-full border-2 border-pink-500 mb-2"
-            />
-            <span className="text-white font-semibold">{nickname}</span>
-          </div>
-
           {/* Navigation */}
           <nav className="flex flex-col gap-6 text-xl">
             <Link
