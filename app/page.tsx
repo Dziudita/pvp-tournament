@@ -20,7 +20,7 @@ export default function HomePage() {
           priority
         />
 
-        {/* Topbar rodomas tik jei prisijungta */}
+        {/* Topbar */}
         <Topbar />
         <Sidebar />
 
