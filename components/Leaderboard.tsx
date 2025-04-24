@@ -3,8 +3,13 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
+type Player = {
+  nickname: string;
+  wins: number;
+};
+
 export default function Leaderboard() {
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState<Player[]>([]); // <- čia pataisėm
 
   useEffect(() => {
     const fetchTopPlayers = async () => {
@@ -17,7 +22,7 @@ export default function Leaderboard() {
       if (error) {
         console.error("❌ Klaida:", error.message);
       } else {
-        setPlayers(data);
+        setPlayers(data as Player[]); // <- čia dar aiškiai nurodom tipą
       }
     };
 
