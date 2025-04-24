@@ -79,13 +79,15 @@ export default function Header() {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="focus:outline-none"
           >
-           <Image
-  src={avatarURL}
-  alt="User Avatar"
-  width={32}
-  height={32}
-  className="rounded-full border-2 border-pink-400 shadow-[0_0_10px_rgba(255,0,255,0.6)] cursor-pointer hover:opacity-80 transition"
-/>
+         <div className="p-1 bg-white rounded-full border-2 border-pink-400 shadow-[0_0_10px_rgba(255,0,255,0.6)] cursor-pointer hover:opacity-80 transition">
+  <Image
+    src={avatarURL}
+    alt="User Avatar"
+    width={30}
+    height={30}
+    className="rounded-full"
+  />
+</div>
           </button>
 
           {isDropdownOpen && (
