@@ -9,6 +9,7 @@ type Player = {
 };
 
 export default function Leaderboard() {
+  const [players, setPlayers] = useState<Player[]>([]); // <- čia pridėjau useState
 
   useEffect(() => {
     const fetchTopPlayers = async () => {
@@ -21,7 +22,7 @@ export default function Leaderboard() {
       if (error) {
         console.error("❌ Klaida:", error.message);
       } else {
-        setPlayers(data as Player[]); // <- čia dar aiškiai nurodom tipą
+        setPlayers(data as Player[]); // <- čia viskas ok
       }
     };
 
