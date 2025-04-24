@@ -10,6 +10,16 @@ import CherryChat from "../components/CherryChat";
 import Topbar from "../components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import Loader from "../components/Loader"; // <- pridėta
+import AuthWrapper from '@/components/AuthWrapper';
+
+export default function HomePage() {
+  return (
+    <AuthWrapper>
+      {/* Tavo turinys čia */}
+      <div>Welcome to Cherry Arena!</div>
+    </AuthWrapper>
+  );
+}
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
