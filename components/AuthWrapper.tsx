@@ -1,4 +1,4 @@
-'use client'; // <- turi būti viršuje
+'use client';
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
@@ -30,8 +30,7 @@ export default function AuthWrapper({ children }: { children: React.ReactNode })
 
   return (
     <>
-      <Header />
-      {children}
+      {children} {/* Header pašalintas */}
     </>
   );
 }
