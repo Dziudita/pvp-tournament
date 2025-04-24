@@ -24,6 +24,28 @@ export default function LoginModal() {
 
   const validatePassword = (pw) => pw.length >= 5 && /\d/.test(pw);
 
+  // 🆕 FUNKCIJA įrašyti stats jei neegzistuoja
+  const createStatsIfNotExist = async (nickname: string) => {
+    const { data: existingUser, error: checkError } = await supabase
+      .from("users_stats")
+      .select("*")
+      .eq("nickname", nickname)
+      .single();
+
+    if (!existingUser && !checkError) {
+      const { error: insertError } = await supabase.from("users_stats").insert([
+        {
+          nickname: nickname,
+          wins: 0,
+          xp: 0,
+          wager: 0,
+        },
+      ]);
+      if (insertError) console.error("❌ Failed to insert stats:", insertError);
+      else console.log("✅ Stats created for:", nickname);
+    }
+  };
+
   const handleAuth = async (e) => {
     e.preventDefault();
     console.log("🚀 handleAuth pradėjo veikti");
@@ -73,6 +95,7 @@ export default function LoginModal() {
       }
 
       if (data.session) {
+        await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
         window.location.href = "/";
       } else {
         alert("Account created, but no active session found.");
@@ -87,6 +110,7 @@ export default function LoginModal() {
 
       if (signInError) return setError(signInError.message);
 
+      await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
       window.location.href = "/";
     }
   };
@@ -184,13 +208,12 @@ export default function LoginModal() {
                 <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
               </label>
             </div>
-           <button
-  type="button"
-  onClick={handleAuth}
-  className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
->
-  {isSignUp ? "Create Account" : "Enter Arena"}
-</button>
+            <button
+              type="submit"
+              className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
+            >
+              {isSignUp ? "Create Account" : "Enter Arena"}
+            </button>
           </form>
           <div className="mt-4 text-center">
             <button
