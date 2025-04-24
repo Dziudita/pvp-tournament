@@ -9,7 +9,6 @@ type Player = {
 };
 
 export default function Leaderboard() {
-  const [players, setPlayers] = useState<Player[]>([]); // <- čia pataisėm
 
   useEffect(() => {
     const fetchTopPlayers = async () => {
