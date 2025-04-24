@@ -2,11 +2,17 @@
 
 import { useState } from 'react';
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 export default function WalletConnect() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
+    if (typeof window !== 'undefined' && window.ethereum) {
       try {
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts',
