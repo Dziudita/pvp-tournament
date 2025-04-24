@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FaEnvelope, FaKey, FaCoins } from "react-icons/fa";
+import { supabase } from "@/lib/supabaseClient"; // <- Pridedam Supabase
 
 const rankThresholds = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500];
 
@@ -28,14 +29,43 @@ export default function UserDropdown() {
   const [xp, setXP] = useState(0);
 
   useEffect(() => {
-    setNickname(localStorage.getItem("cherzi-nick") || "User");
-    setEmail(localStorage.getItem("cherzi-email") || "Not set");
-    setRole(localStorage.getItem("cherzi-role") || "user");
-    setBets(Number(localStorage.getItem("cherzi-bets") || 0));
-    setWager(Number(localStorage.getItem("cherzi-wager") || 0));
-    setDailyWD(Number(localStorage.getItem("cherzi-dailyWD") || 0));
-    setDailyDeposit(Number(localStorage.getItem("cherzi-dailyDeposit") || 0));
-    setXP(Number(localStorage.getItem("cherzi-xp") || 0));
+    const fetchUserInfo = async () => {
+      // Gauti prisijungusį vartotoją
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData?.user?.id;
+      const userEmail = userData?.user?.email;
+
+      // Fallback jei Supabase neveiktų
+      setEmail(userEmail || localStorage.getItem("cherzi-email") || "Not set");
+
+      if (userId) {
+        const { data, error } = await supabase
+          .from("users")
+          .select("nickname, role")
+          .eq("id", userId)
+          .single();
+
+        if (data) {
+          setNickname(data.nickname || localStorage.getItem("cherzi-nick") || "User");
+          setRole(data.role || "user");
+        } else {
+          // Jei nerado Supabase - fallback į localStorage
+          setNickname(localStorage.getItem("cherzi-nick") || "User");
+          setRole(localStorage.getItem("cherzi-role") || "user");
+        }
+      } else {
+        // Jei negaunam user ID
+        setNickname(localStorage.getItem("cherzi-nick") || "User");
+      }
+
+      setBets(Number(localStorage.getItem("cherzi-bets") || 0));
+      setWager(Number(localStorage.getItem("cherzi-wager") || 0));
+      setDailyWD(Number(localStorage.getItem("cherzi-dailyWD") || 0));
+      setDailyDeposit(Number(localStorage.getItem("cherzi-dailyDeposit") || 0));
+      setXP(Number(localStorage.getItem("cherzi-xp") || 0));
+    };
+
+    fetchUserInfo();
   }, []);
 
   const { rank, progress } = calculateRank(xp);
