@@ -34,8 +34,8 @@ export default function Home() {
     };
   }, []);
 
-  if (loading) return <Loader />;        // <- splash ekrano rodymas
-  if (!loggedIn) return <LoginModal />;  // <- prisijungimo langas
+if (loading) return <Loader />; // Kraunasi
+if (!loggedIn) return <LoginModal />; // Tik modalas ir nieko daugiau
 
   return (
     <div className="relative w-screen h-screen overflow-hidden text-white">
