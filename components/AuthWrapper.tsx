@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
-import Header from './Header';
 import LoginModal from './LoginModal';
 import Loader from './Loader';
 
