@@ -1,24 +1,22 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { FaGlobe, FaCog } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
 import UserDropdown from "./UserDropdown";
 
 const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- supabase anon key
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- anon key
 );
 
-export default function Topbar() {
+export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const [nickname, setNickname] = useState("Cherry");
   const [wallet, setWallet] = useState<string | null>(null);
-  const [balance, setBalance] = useState<number>(0); // Tikras balansas
+  const [balance, setBalance] = useState("0.000000"); // <- realus
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [showDepositModal, setShowDepositModal] = useState(false);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,27 +41,6 @@ export default function Topbar() {
     };
     getUser();
   }, []);
-
-  // Tikras balansas iš Supabase
-  useEffect(() => {
-    const fetchBalance = async () => {
-      if (!wallet) return;
-
-      const { data, error } = await supabase
-        .from('users')
-        .select('balance')
-        .eq('wallet', wallet.toLowerCase())
-        .single();
-
-      if (data && data.balance !== undefined) {
-        setBalance(parseFloat(data.balance));
-      } else {
-        console.error("❌ Nepavyko gauti balanso:", error);
-      }
-    };
-
-    fetchBalance();
-  }, [wallet]);
 
   const connectWallet = async () => {
     if ((window as any).ethereum) {
@@ -97,7 +74,9 @@ export default function Topbar() {
   }, [isDropdownOpen]);
 
   return (
-    <header className="fixed top-0 left-56 right-0 h-16 bg-zinc-900 border-b border-pink-500 flex items-center justify-between px-6 z-40">
+    <header
+      className={`fixed top-0 ${collapsed ? "left-20" : "left-64"} right-0 h-16 bg-zinc-900 border-b border-pink-500 flex items-center justify-between px-6 z-40 transition-all duration-300`}
+    >
       {/* Nickname */}
       <div className="text-white text-lg font-bold">
         🍒 Welcome back, {nickname}!
@@ -105,16 +84,16 @@ export default function Topbar() {
 
       {/* Right Section */}
       <div className="flex items-center gap-4 text-white relative">
-        {/* Tikras balansas */}
+        {/* Balance */}
         <div className="bg-zinc-800 px-4 py-1 rounded-xl text-sm shadow-inner border border-pink-500 flex items-center gap-2">
           <span className="text-yellow-400 text-lg">💰</span>
-         <span>{balance.toFixed(6)}</span>
+          <span>{balance}</span>
         </div>
 
         {/* Deposit USDC */}
         {wallet && (
           <button
-            onClick={() => setShowDepositModal(true)}
+            onClick={() => alert("Deposit modal")}
             className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-500 text-sm"
           >
             Deposit USDC
@@ -159,30 +138,6 @@ export default function Topbar() {
         <FaGlobe size={20} className="cursor-pointer hover:text-pink-400 transition" />
         <FaCog size={20} className="cursor-pointer hover:text-pink-400 transition" />
       </div>
-
-      {/* Deposit Modal */}
-      {showDepositModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="bg-zinc-800 p-6 rounded-xl w-96 text-white">
-            <h2 className="text-xl font-bold mb-4">Deposit USDC</h2>
-            {wallet && (
-              <>
-                <p>Send USDC to:</p>
-                <div className="bg-gray-700 p-2 rounded mt-2 mb-4 break-all border border-pink-500">
-                  {wallet}
-                </div>
-                <p className="text-sm mb-4">Deposits are detected automatically. You will be credited after confirmation.</p>
-              </>
-            )}
-            <button
-              onClick={() => setShowDepositModal(false)}
-              className="mt-4 bg-pink-600 px-4 py-2 rounded hover:bg-pink-500"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
