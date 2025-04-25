@@ -1,7 +1,4 @@
-"use client";
-
-import React, { useEffect, useState, useRef } from "react";
-import Image from "next/image";
+// ... importai tie patys ...
 import { FaGlobe, FaCog } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
 import UserDropdown from "./UserDropdown";
@@ -17,6 +14,8 @@ export default function Topbar() {
   const [balance] = useState("0.00810214");
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showDepositModal, setShowDepositModal] = useState(false); // <- pridėta
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -88,6 +87,16 @@ export default function Topbar() {
           <span>{balance} CHERZ</span>
         </div>
 
+        {/* Deposit USDC */}
+        {wallet && (
+          <button
+            onClick={() => setShowDepositModal(true)}
+            className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-500 text-sm"
+          >
+            Deposit USDC
+          </button>
+        )}
+
         {/* Wallet */}
         {wallet ? (
           <div className="flex items-center gap-2 text-sm">
@@ -126,6 +135,30 @@ export default function Topbar() {
         <FaGlobe size={20} className="cursor-pointer hover:text-pink-400 transition" />
         <FaCog size={20} className="cursor-pointer hover:text-pink-400 transition" />
       </div>
+
+      {/* Deposit Modal */}
+      {showDepositModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+          <div className="bg-zinc-800 p-6 rounded-xl w-96 text-white">
+            <h2 className="text-xl font-bold mb-4">Deposit USDC</h2>
+            {wallet && (
+              <>
+                <p>Send USDC to:</p>
+                <div className="bg-gray-700 p-2 rounded mt-2 mb-4 break-all border border-pink-500">
+                  {wallet}
+                </div>
+                <p className="text-sm mb-4">Deposits are detected automatically. You will be credited after confirmation.</p>
+              </>
+            )}
+            <button
+              onClick={() => setShowDepositModal(false)}
+              className="mt-4 bg-pink-600 px-4 py-2 rounded hover:bg-pink-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
