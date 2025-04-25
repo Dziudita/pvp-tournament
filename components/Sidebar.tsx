@@ -36,8 +36,10 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed top-0 left-0 ${collapsed ? "w-20" : "w-64"} h-screen bg-zinc-900 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden`}
-    >
+     <aside
+  className={`fixed top-0 left-0 ${collapsed ? "w-16" : "w-52"} h-screen bg-zinc-900 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden`}
+>
+
       {/* Suskleidimo mygtukas */}
       <div className="flex justify-end p-2">
         <button
