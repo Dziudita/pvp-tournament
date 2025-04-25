@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   FaGamepad,
   FaScroll,
@@ -14,9 +12,13 @@ import {
 } from "react-icons/fa";
 import { supabase } from "@/lib/supabaseClient";
 
-export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false); // <- suskleidimas
+// ✅ Props tipai
+interface SidebarProps {
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   const handleLogout = async () => {
     console.log("🚪 Bandome atsijungti...");
     const { error } = await supabase.auth.signOut();
@@ -51,38 +53,23 @@ export default function Sidebar() {
 
       {/* Navigacija */}
       <nav className="flex flex-col gap-6 text-lg mt-10 relative z-10 px-4">
-        <Link
-          href="/game"
-          className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-        >
+        <Link href="/game" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
           <FaGamepad size={22} />
           {!collapsed && <span>Games</span>}
         </Link>
-        <Link
-          href="#"
-          className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-        >
+        <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
           <FaScroll size={22} />
           {!collapsed && <span>Rules</span>}
         </Link>
-        <Link
-          href="/about"
-          className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-        >
+        <Link href="/about" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
           <FaQuestionCircle size={22} />
           {!collapsed && <span>About</span>}
         </Link>
-        <Link
-          href="#"
-          className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-        >
+        <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
           <FaLifeRing size={22} />
           {!collapsed && <span>Support</span>}
         </Link>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-4 text-pink-100 hover:text-pink-400"
-        >
+        <button onClick={handleLogout} className="flex items-center gap-4 text-pink-100 hover:text-pink-400">
           <FaSignOutAlt size={22} />
           {!collapsed && <span>Logout</span>}
         </button>
