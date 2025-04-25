@@ -108,7 +108,7 @@ export default function Topbar() {
         {/* Tikras balansas */}
         <div className="bg-zinc-800 px-4 py-1 rounded-xl text-sm shadow-inner border border-pink-500 flex items-center gap-2">
           <span className="text-yellow-400 text-lg">💰</span>
-          <span>{balance.toFixed(6)} CHERZ</span>
+         <span>{balance.toFixed(6)}</span>
         </div>
 
         {/* Deposit USDC */}
