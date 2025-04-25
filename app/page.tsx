@@ -6,8 +6,11 @@ import CherryChat from "../components/CherryChat";
 import Topbar from "@/components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import AuthWrapper from '@/components/AuthWrapper';
+import { useState } from "react";
 
 export default function HomePage() {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
     <AuthWrapper>
       <div className="relative w-screen h-screen overflow-hidden text-white">
@@ -20,11 +23,14 @@ export default function HomePage() {
           priority
         />
 
-        {/* Topbar */}
-        <Topbar />
-        <Sidebar />
+        {/* Sidebar */}
+        <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-        <div className="ml-0 md:ml-[calc(6.5vw+220px)]">
+        {/* Topbar */}
+        <Topbar collapsed={collapsed} />
+
+        {/* Main content - padding priklauso nuo sidebar */}
+        <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300`}>
           {/* Search section */}
           <div className="px-8 mt-8">
             <input
