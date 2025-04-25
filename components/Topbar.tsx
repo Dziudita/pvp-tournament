@@ -1,10 +1,10 @@
-// ... importai tie patys ...
+"use client";
+
+import React, { useEffect, useState, useRef } from "react";
+import Image from "next/legacy/image";
 import { FaGlobe, FaCog } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
 import UserDropdown from "./UserDropdown";
-import React, { useEffect, useState, useRef } from "react";
-import Image from "next/legacy/image";
-
 
 const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
@@ -14,10 +14,10 @@ const supabase = createClient(
 export default function Topbar() {
   const [nickname, setNickname] = useState("Cherry");
   const [wallet, setWallet] = useState<string | null>(null);
-  const [balance] = useState("0.00810214");
+  const [balance, setBalance] = useState<number>(0); // Tikras balansas
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [showDepositModal, setShowDepositModal] = useState(false); // <- pridėta
+  const [showDepositModal, setShowDepositModal] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +43,27 @@ export default function Topbar() {
     };
     getUser();
   }, []);
+
+  // Tikras balansas iš Supabase
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (!wallet) return;
+
+      const { data, error } = await supabase
+        .from('users')
+        .select('balance')
+        .eq('wallet', wallet.toLowerCase())
+        .single();
+
+      if (data && data.balance !== undefined) {
+        setBalance(parseFloat(data.balance));
+      } else {
+        console.error("❌ Nepavyko gauti balanso:", error);
+      }
+    };
+
+    fetchBalance();
+  }, [wallet]);
 
   const connectWallet = async () => {
     if ((window as any).ethereum) {
@@ -84,10 +105,10 @@ export default function Topbar() {
 
       {/* Right Section */}
       <div className="flex items-center gap-4 text-white relative">
-        {/* Balance */}
+        {/* Tikras balansas */}
         <div className="bg-zinc-800 px-4 py-1 rounded-xl text-sm shadow-inner border border-pink-500 flex items-center gap-2">
           <span className="text-yellow-400 text-lg">💰</span>
-          <span>{balance} CHERZ</span>
+          <span>{balance.toFixed(6)} CHERZ</span>
         </div>
 
         {/* Deposit USDC */}
