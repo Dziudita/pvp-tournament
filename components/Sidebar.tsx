@@ -12,7 +12,6 @@ import {
 } from "react-icons/fa";
 import { supabase } from "@/lib/supabaseClient";
 
-// ✅ Props tipai
 interface SidebarProps {
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,10 +35,8 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
 
   return (
     <aside
-     <aside
-  className={`fixed top-0 left-0 ${collapsed ? "w-16" : "w-52"} h-screen bg-zinc-900 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden`}
->
-
+      className={`fixed top-0 left-0 ${collapsed ? "w-16" : "w-52"} h-screen bg-zinc-900 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden`}
+    >
       {/* Suskleidimo mygtukas */}
       <div className="flex justify-end p-2">
         <button
@@ -51,7 +48,7 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
       </div>
 
       {/* Neon glow fone */}
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-pink-500 to-purple-500 opacity-20 blur-2xl rounded-full z-0"></div>
+      <div className="absolute bottom-0 left-0 w-52 h-52 bg-gradient-to-tr from-pink-500 to-purple-500 opacity-20 blur-2xl rounded-full z-0"></div>
 
       {/* Navigacija */}
       <nav className="flex flex-col gap-6 text-lg mt-10 relative z-10 px-4">
