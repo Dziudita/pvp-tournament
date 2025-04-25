@@ -3,15 +3,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { FaGlobe, FaCog } from "react-icons/fa";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";
 import UserDropdown from "./UserDropdown";
 
-const supabase = createClient(
-  "https://innwjrnhjwxlwaimquex.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- anon key
-);
+// Props tipas
+interface TopbarProps {
+  collapsed: boolean;
+}
 
-export default function Topbar({ collapsed }: { collapsed: boolean }) {
+export default function Topbar({ collapsed }: TopbarProps) {
   const [nickname, setNickname] = useState("Cherry");
   const [wallet, setWallet] = useState<string | null>(null);
   const [balance, setBalance] = useState("0.000000"); // <- realus
@@ -24,7 +24,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
     if (stored) setNickname(stored);
 
     const checkWallet = async () => {
-      if (typeof window !== "undefined" && (window as any).ethereum) {
+      if ((window as any).ethereum) {
         const accounts = await (window as any).ethereum.request({ method: "eth_accounts" });
         if (accounts.length > 0) setWallet(accounts[0]);
       }
@@ -35,9 +35,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
       const userAvatar = data?.user?.user_metadata?.avatar;
-      if (userAvatar) {
-        setAvatarURL(userAvatar);
-      }
+      if (userAvatar) setAvatarURL(userAvatar);
     };
     getUser();
   }, []);
@@ -64,8 +62,6 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
 
     if (isDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
