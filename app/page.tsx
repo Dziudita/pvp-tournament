@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Sidebar from "../components/Sidebar";
 import CherryChat from "../components/CherryChat";
-import Topbar from "../components/Topbar";
+import Topbar from "@/components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import AuthWrapper from '@/components/AuthWrapper';
 
