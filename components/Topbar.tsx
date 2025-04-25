@@ -2,6 +2,8 @@
 import { FaGlobe, FaCog } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
 import UserDropdown from "./UserDropdown";
+import React, { useEffect, useState, useRef } from "react";
+
 
 const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
