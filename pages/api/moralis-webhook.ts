@@ -1,3 +1,6 @@
+console.log('🔍 Received headers:', JSON.stringify(req.headers, null, 2));
+console.log('🔍 Received body:', JSON.stringify(req.body, null, 2));
+
 // pages/api/moralis-webhook.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import crypto from 'crypto';
