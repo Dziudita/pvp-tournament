@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
   'https://innwjrnhjwxlwaimquex.supabase.co',
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 );
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -12,9 +12,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Only POST requests allowed' });
   }
 
-  const secretHeader = req.headers['x-signature'];
+  // Jei Moralis siunčia testą be signatūros, tiesiog grąžink 200
+  if (!req.headers['x-signature']) {
+    return res.status(200).json({ message: 'Received test' });
+  }
 
-  // Patikrinam ar ateina iš Moralis
+  const secretHeader = req.headers['x-signature'];
   if (secretHeader !== process.env.MORALIS_SECRET) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
@@ -22,41 +25,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const data = req.body;
   console.log("🔥 Naujas USDC depo:", JSON.stringify(data, null, 2));
 
-  try {
-    const tx = data.txs[0];
-    const wallet = tx.to_address.toLowerCase(); // Normalize wallet
-    const value = parseFloat(tx.value); // Pridėti tiek USDC
+  // Logika: įrašyti depo (čia galima tobulinti)
+  const walletAddress = data?.txs?.[0]?.to_address;
+  const value = data?.txs?.[0]?.value; // USD reikšmė
 
-    // Surandam vartotoją pagal wallet
-    const { data: users, error } = await supabase
+  if (walletAddress && value) {
+    await supabase
       .from('users')
-      .select('id, balance')
-      .eq('wallet', wallet)
-      .single();
-
-    if (!users) {
-      console.error("❌ Wallet nerastas:", wallet, error);
-      return res.status(404).json({ message: 'Wallet not found' });
-    }
-
-    // Atnaujinam balansą
-    const newBalance = parseFloat(users.balance) + value;
-
-    const { error: updateError } = await supabase
-      .from('users')
-      .update({ balance: newBalance })
-      .eq('id', users.id);
-
-    if (updateError) {
-      console.error("❌ Nepavyko atnaujinti balanso:", updateError);
-      return res.status(500).json({ message: 'Balance update failed' });
-    }
-
-    console.log(`✅ Pridėta ${value} USDC vartotojui: ${wallet}, naujas balansas: ${newBalance}`);
-    res.status(200).json({ message: 'Balance updated' });
-
-  } catch (err) {
-    console.error("❌ Klaida procese:", err);
-    res.status(500).json({ message: 'Internal server error' });
+      .update({ balance: value })
+      .eq('wallet', walletAddress);
   }
+
+  return res.status(200).json({ message: 'OK' });
 }
