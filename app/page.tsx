@@ -9,7 +9,7 @@ import AuthWrapper from '@/components/AuthWrapper';
 import { useState } from "react";
 
 export default function HomePage() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false); // valdom sidebar ir topbar
 
   return (
     <AuthWrapper>
@@ -23,13 +23,10 @@ export default function HomePage() {
           priority
         />
 
-        {/* Sidebar */}
+        {/* Topbar prisitaiko */}
+        <Topbar collapsed={collapsed} />
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-        {/* Topbar */}
-        <Topbar collapsed={collapsed} />
-
-        {/* Main content - padding priklauso nuo sidebar */}
         <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300`}>
           {/* Search section */}
           <div className="px-8 mt-8">
