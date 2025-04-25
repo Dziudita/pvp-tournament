@@ -3,28 +3,24 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { FaGlobe, FaCog } from "react-icons/fa";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 import UserDropdown from "./UserDropdown";
 
-// Props tipas
-interface TopbarProps {
-  collapsed: boolean;
-}
+const supabase = createClient(
+  "https://innwjrnhjwxlwaimquex.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- anon key
+);
 
-export default function Topbar({ collapsed }: TopbarProps) {
-  const [nickname, setNickname] = useState("Cherry");
+export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const [wallet, setWallet] = useState<string | null>(null);
-  const [balance, setBalance] = useState("0.000000"); // <- realus
+  const [balance, setBalance] = useState("0.000000"); // <- realus balansas
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("nickname");
-    if (stored) setNickname(stored);
-
     const checkWallet = async () => {
-      if ((window as any).ethereum) {
+      if (typeof window !== "undefined" && (window as any).ethereum) {
         const accounts = await (window as any).ethereum.request({ method: "eth_accounts" });
         if (accounts.length > 0) setWallet(accounts[0]);
       }
@@ -35,7 +31,9 @@ export default function Topbar({ collapsed }: TopbarProps) {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
       const userAvatar = data?.user?.user_metadata?.avatar;
-      if (userAvatar) setAvatarURL(userAvatar);
+      if (userAvatar) {
+        setAvatarURL(userAvatar);
+      }
     };
     getUser();
   }, []);
@@ -62,6 +60,8 @@ export default function Topbar({ collapsed }: TopbarProps) {
 
     if (isDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
@@ -73,9 +73,16 @@ export default function Topbar({ collapsed }: TopbarProps) {
     <header
       className={`fixed top-0 ${collapsed ? "left-20" : "left-64"} right-0 h-16 bg-zinc-900 border-b border-pink-500 flex items-center justify-between px-6 z-40 transition-all duration-300`}
     >
-      {/* Nickname */}
-      <div className="text-white text-lg font-bold">
-        🍒 Welcome back, {nickname}!
+      {/* Logo ir CHERZI ARENA */}
+      <div className="flex items-center gap-3 text-white text-lg font-bold">
+        <Image
+          src="/favicon.ico"
+          alt="Cherzi Logo"
+          width={32}
+          height={32}
+          className="rounded-md"
+        />
+        <span>CHERZI ARENA</span>
       </div>
 
       {/* Right Section */}
