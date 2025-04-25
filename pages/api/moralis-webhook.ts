@@ -2,11 +2,23 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // 👇 Visada log'insim
-  console.log('🔍 Received method:', req.method);
-  console.log('🔍 Received headers:', JSON.stringify(req.headers, null, 2));
-  console.log('🔍 Received body:', JSON.stringify(req.body, null, 2));
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Only POST requests allowed' });
+  }
 
-  // Atsakykim visada 200, nes norim tik patikrinti ar Moralis pasiekia
-  return res.status(200).json({ message: 'Received' });
+  const secretHeader = req.headers['x-signature'];
+
+  // Tikrinam ar Moralis siunčia
+  if (secretHeader !== process.env.MORALIS_SECRET) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  const data = req.body;
+
+  console.log("🔥 Naujas USDC depo:", JSON.stringify(data, null, 2));
+
+  // Apdorojimas: gali daryti ką nori su data
+  // Pvz.: const to = data.txs[0].to_address; const amount = data.txs[0].value;
+
+  res.status(200).json({ message: 'OK' });
 }
