@@ -18,5 +18,8 @@ html {
     50% { transform: rotate(-5deg); }
     75% { transform: rotate(4deg); }
   }
-}
 
+  .animate-spin-slow {
+    animation: spin 10s linear infinite;
+  }
+}
