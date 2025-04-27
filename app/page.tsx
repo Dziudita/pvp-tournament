@@ -6,10 +6,19 @@ import CherryChat from "../components/CherryChat";
 import Topbar from "@/components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import AuthWrapper from '@/components/AuthWrapper';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function HomePage() {
-  const [collapsed, setCollapsed] = useState(false); // valdom sidebar ir topbar
+  const [collapsed, setCollapsed] = useState(false);
+  const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
+
+  // Nuskaitom avatar iš localStorage
+  useEffect(() => {
+    const storedAvatar = localStorage.getItem("cherzi-avatar");
+    if (storedAvatar) {
+      setAvatarURL(storedAvatar);
+    }
+  }, []);
 
   return (
     <AuthWrapper>
@@ -23,16 +32,16 @@ export default function HomePage() {
           priority
         />
 
-        {/* Topbar per visą ekraną */}
-        <Topbar collapsed={collapsed} />
+        {/* Topbar su avatarURL ir setAvatarURL */}
+        <Topbar collapsed={collapsed} avatarURL={avatarURL} setAvatarURL={setAvatarURL} />
 
-        {/* Sidebar šone */}
+        {/* Sidebar */}
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-        {/* Turinys po viršutine juosta */}
+        {/* Turinys */}
         <div className="pt-16 flex">
           <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300 w-full`}>
-            {/* Search section */}
+            {/* Search */}
             <div className="px-8 mt-8">
               <input
                 type="text"
@@ -58,7 +67,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Chat apačioje */}
+        {/* Chat */}
         <CherryChat />
       </div>
     </AuthWrapper>
