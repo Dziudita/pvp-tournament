@@ -34,8 +34,8 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   };
 
   return (
-   <aside
-  className={`fixed top-16 left-0 ${collapsed ? "w-16" : "w-52"} h-[calc(100vh-4rem)] bg-zinc-900 bg-opacity-90 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden shadow-[0_0_15px_rgba(255,0,255,0.3)]`}
+ <aside
+  className={`fixed top-16 left-0 ${collapsed ? "w-14" : "w-40"} h-[calc(100vh-4rem)] bg-zinc-900 bg-opacity-90 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden shadow-[0_0_15px_rgba(255,0,255,0.3)]`}
 >
       {/* Suskleidimo mygtukas */}
       <div className="flex justify-end p-2">
@@ -51,7 +51,7 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
       <div className="absolute bottom-0 left-0 w-52 h-52 bg-gradient-to-tr from-pink-500 to-purple-500 opacity-20 blur-2xl rounded-full z-0"></div>
 
       {/* Navigacija */}
-      <nav className="flex flex-col gap-6 text-lg mt-10 relative z-10 px-4">
+      <nav className="flex flex-col gap-5 text-md mt-8 relative z-10 px-3">
         <Link href="/game" className="flex items-center gap-4 text-pink-100 hover:text-pink-400 hover:scale-105 transition transform">
           <FaGamepad size={22} />
           {!collapsed && <span>Games</span>}
