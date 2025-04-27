@@ -28,8 +28,9 @@ export default function HomePage() {
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
         <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300`}>
-          {/* Search section */}
-          <div className="px-8 mt-8">
+  <div className="pt-16">
+    {/* Search section */}
+    <div className="px-8 mt-8">
             <input
               type="text"
               placeholder="Search users or players..."
