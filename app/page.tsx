@@ -19,7 +19,7 @@ export default function HomePage() {
   src="/assets/cherry-arena-bg.png" // <- Naujas fonas čia
   alt="Background"
   fill
-  className="object-cover brightness-[0.5] saturate-100 contrast-125 -z-10"
+  className="object-cover brightness-[0.8] saturate-150 contrast-125 -z-10"
   priority
 />
 
