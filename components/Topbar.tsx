@@ -193,3 +193,10 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
     </div>
   </div>
 </header>
+
+{isWalletModalOpen && <WalletModal />}
+{isAvatarModalOpen && <AvatarModal />}
+</>
+  );
+}
+
