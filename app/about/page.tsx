@@ -11,7 +11,7 @@ export default function Page() {
 
       {/* Pagrindinis turinys */}
       <div className="relative z-10 max-w-3xl mx-auto min-h-[120vh]">
-        <h1 className="text-4xl font-bold mb-4 text-pink-500 animate-pulse">About Cherzi Arena</h1>
+        <h1 className="text-4xl font-bold mb-4 text-pink-500">About Cherzi Arena</h1>
 
         <p className="mb-6 text-lg">
           Welcome to <span className="text-yellow-400 font-semibold">Cherzi Arena</span>, where neon lights meet fierce PvP battles! 
@@ -19,37 +19,49 @@ export default function Page() {
           or just here for the thrill – we've got you covered.
         </p>
 
-        {/* ... (gali įdėti likusį turinį čia, jei nori) */}
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-2 text-pink-400">🌟 Our Mission</h2>
+          <p>
+            At Cherzi Arena, we believe in creating a unique PvP experience where every player has a chance to shine.
+            We're dedicated to building a fair, exciting, and community-driven environment. The arena is your stage – show us what you've got!
+          </p>
+        </section>
 
-        <p className="mt-8 text-center text-pink-400 font-bold animate-bounce">
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-2 text-pink-400">🔥 What Makes Us Different?</h2>
+          <ul className="list-disc list-inside space-y-2">
+            <li>🍒 <span className="text-yellow-400">Cherry-Themed Action</span> – games with vibrant neon cherry vibes.</li>
+            <li>🏆 <span className="text-yellow-400">Leaderboards</span> – earn XP, level up, and unlock rare avatars.</li>
+            <li>🎁 <span className="text-yellow-400">Daily Bonuses</span> – log in and grab free rewards every day!</li>
+            <li>💎 <span className="text-yellow-400">Custom Avatars</span> – show your mood with angry, happy, or crazy cherries.</li>
+            <li>⚔️ <span className="text-yellow-400">Provably Fair</span> – transparent gameplay with verified results.</li>
+          </ul>
+        </section>
+
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-2 text-pink-400">🚀 Future Plans</h2>
+          <p>
+            We're just getting started! Soon, expect to see:
+          </p>
+          <ul className="list-disc list-inside space-y-2 mt-2">
+            <li>🌐 Tournaments with big prize pools.</li>
+            <li>💰 $CHERZI token integration for staking and rewards.</li>
+            <li>🎮 More PvP games to test your skills.</li>
+            <li>📱 Mobile version for gaming on the go.</li>
+          </ul>
+        </section>
+
+        <p className="mt-8 text-center text-pink-400 font-bold">
           Ready to dominate the arena? Let's go! 🍒
         </p>
       </div>
-
-      {/* Vyšnių animacijos stiliai */}
-      <style jsx>{`
-        .cherry {
-          animation: float 6s ease-in-out infinite, rotate 10s linear infinite;
-        }
-
-        @keyframes float {
-          0% { transform: translateY(0); opacity: 0.8; }
-          50% { transform: translateY(-20px) scale(1.1); opacity: 1; }
-          100% { transform: translateY(0); opacity: 0.8; }
-        }
-
-        @keyframes rotate {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
     </main>
   );
 }
 
-// Vyšnių komponentas
+// Vyšnių komponentas be animacijos
 function CherryRain() {
-  const cherries = Array.from({ length: 12 }); // 12 vyšnių
+  const cherries = Array.from({ length: 15 }); // 15 vyšnių
 
   return (
     <>
@@ -58,15 +70,14 @@ function CherryRain() {
           key={idx}
           src="/assets/neon-cherry.png"
           alt="Cherry"
-          width={40 + idx * 3}
-          height={40 + idx * 3}
-          className="absolute cherry"
+          width={40 + (idx % 3) * 10}
+          height={40 + (idx % 3) * 10}
+          className="absolute"
           style={{
             top: `${Math.random() * 100}%`,
             left: `${Math.random() * 100}%`,
-            opacity: 0.3 + Math.random() * 0.5,
-            animationDelay: `${Math.random() * 5}s`,
-            zIndex: 0, // fonui
+            opacity: 0.1 + Math.random() * 0.2,
+            zIndex: 0, // fone
           }}
         />
       ))}
