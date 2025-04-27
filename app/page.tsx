@@ -25,7 +25,7 @@ export default function HomePage() {
         />
 
         {/* Topbar su avatarURL ir setAvatarURL */}
-        <Topbar collapsed={collapsed} avatarURL={avatarURL} setAvatarURL={setAvatarURL} />
+        <Topbar collapsed={collapsed} />
 
         {/* Sidebar */}
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
