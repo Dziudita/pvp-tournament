@@ -101,7 +101,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   return (
     <>
       <header
-        className={`fixed top-0 ${collapsed ? "left-16" : "left-52"} right-0 h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300`}
+        className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300"
       >
         {/* Logo */} 
         <div className="flex items-center gap-3 text-white text-lg font-bold">
