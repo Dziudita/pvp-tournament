@@ -1,6 +1,5 @@
-'use client';
+"use client";
 
-import Image from "next/image";
 import Sidebar from "../components/Sidebar";
 import CherryChat from "../components/CherryChat";
 import Topbar from "@/components/Topbar";
@@ -10,31 +9,27 @@ import { useState } from "react";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false); 
-  const [avatarURL, setAvatarURL] = useState("/avatars/default.png"); // <- nauja
 
   return (
     <AuthWrapper>
-      <div className="relative w-screen h-screen overflow-hidden text-white">
-        {/* Background image */}
-        <Image
-          src="/assets/cherry-arena-bg.png"
-          alt="Background"
-          fill
-          className="object-cover brightness-[0.8] saturate-150 contrast-125 -z-10"
-          priority
-        />
+      <div 
+        className="relative min-h-screen bg-cover bg-center text-white"
+        style={{ backgroundImage: "url('/assets/neon-cherry.png')" }} // <- Neon cherry fono paveikslėlis
+      >
+        {/* Overlay darken */}
+        <div className="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
 
-        {/* Topbar su avatarURL ir setAvatarURL */}
+        {/* Topbar */}
         <Topbar collapsed={collapsed} />
 
         {/* Sidebar */}
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-        {/* Turinys po viršutine juosta */}
-        <div className="pt-16 flex">
+        {/* Content */}
+        <div className="pt-16 flex relative z-10">
           <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300 w-full`}>
-
-            {/* Game buttons */}
+            
+            {/* Game Buttons */}
             <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10">
               <button className="px-6 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-80 shadow-md">
                 CHERRY COINFLIP
@@ -44,14 +39,14 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* Top player */}
+            {/* Leaderboard */}
             <div className="mt-10 px-8 md:ml-36">
               <TopPlayerOfDay />
             </div>
           </div>
         </div>
 
-        {/* Chat apačioje */}
+        {/* Chat */}
         <CherryChat />
       </div>
     </AuthWrapper>
