@@ -161,9 +161,9 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
           {/* Avatar */}
           <div className="relative" ref={dropdownRef}>
             <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
-              <div className="p-[2px] bg-gradient-to-tr from-blue-800 via-blue-500 to-blue-800 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
-                <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
-              </div>
+              <div className="p-[2px] bg-black bg-opacity-80 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
+  <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
+</div>
             </button>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-3">
