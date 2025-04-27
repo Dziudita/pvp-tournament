@@ -106,9 +106,7 @@ export default function UserDropdown() {
             <FaEnvelope className="text-pink-300" />
             <span className="text-white">{email}</span>
           </div>
-          <div className="flex items-center gap-2 cursor-pointer hover:text-pink-400" onClick={() => setShowAvatarModal(true)}>
-            <span className="text-white">Change Avatar</span>
-          </div>
+          
           <div className="flex items-center gap-2">
             <FaKey className="text-pink-300" />
             <span className="text-white">Change Password</span>
