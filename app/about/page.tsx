@@ -38,7 +38,7 @@ export default function Page() {
           </ul>
         </section>
 {/* 💡 Why Join Cherzi Arena? sekcija */}
-<section className="mt-8">
+<section className="mb-12"> {/* <- padidintas tarpas */}
   <h2 className="text-2xl font-semibold mb-2 text-pink-400">💡 Why Join Cherzi Arena?</h2>
   <ul className="list-disc list-inside space-y-2">
     <li>⚡ Fast-paced PvP games designed for thrill-seekers.</li>
@@ -48,18 +48,19 @@ export default function Page() {
   </ul>
 </section>
 
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-2 text-pink-400">🚀 Future Plans</h2>
-          <p>
-            We're just getting started! Soon, expect to see:
-          </p>
-          <ul className="list-disc list-inside space-y-2 mt-2">
-            <li>🌐 Tournaments with big prize pools.</li>
-            <li>💰 $CHERZI token integration for staking and rewards.</li>
-            <li>🎮 More PvP games to test your skills.</li>
-            <li>📱 Mobile version for gaming on the go.</li>
-          </ul>
-        </section>
+<section className="mb-6">
+  <h2 className="text-2xl font-semibold mb-2 text-pink-400">🚀 Future Plans</h2>
+  <p>
+    We're just getting started! Soon, expect to see:
+  </p>
+  <ul className="list-disc list-inside space-y-2 mt-2">
+    <li>🌐 Tournaments with big prize pools.</li>
+    <li>💰 $CHERZI token integration for staking and rewards.</li>
+    <li>🎮 More PvP games to test your skills.</li>
+    <li>📱 Mobile version for gaming on the go.</li>
+  </ul>
+</section>
+
 
         <p className="mt-8 text-center text-pink-400 font-bold">
           Ready to dominate the arena? Let's go! 🍒
