@@ -83,12 +83,14 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
         <div className="grid grid-cols-2 gap-4">
           {avatars.map((avatar) => (
             <div
-              key={avatar.name}
-              className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-gradient-to-tr from-blue-800 via-blue-600 to-blue-800"
-              onClick={() => handleSelectAvatar(avatar.src)}
-            >
-              <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
-            </div>
+             <div
+  key={avatar.name}
+  className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-gradient-to-tr from-blue-950 via-blue-900 to-blue-950 shadow-[0_0_10px_rgba(0,0,255,0.6)]"
+  onClick={() => handleSelectAvatar(avatar.src)}
+>
+  <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
+</div>
+
           ))}
         </div>
         <button
