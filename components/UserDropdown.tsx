@@ -70,12 +70,12 @@ export default function UserDropdown() {
 
   const { rank, progress } = calculateRank(xp);
 
-  const avatars = [
-    "/avatars/owner-cherry.png",
-    "/avatars/happy-cherry.png",
-    "/avatars/sad-cherry.png",
-    "/avatars/crazy-cherry.png",
-  ];
+ const avatars = [
+  "/avatars/0rankangry.png",
+  "/avatars/0rankhappy.png",
+  "/avatars/0ranksad.png",
+  "/avatars/0rankcrazy.png",
+];
 
   const handleSelectAvatar = (url: string) => {
     setAvatarURL(url);
