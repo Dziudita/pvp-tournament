@@ -56,10 +56,11 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
           <FaGamepad size={22} />
           {!collapsed && <span>Games</span>}
         </Link>
-        <Link href="#" className="flex items-center gap-4 text-pink-100 hover:text-pink-400 hover:scale-105 transition transform">
-          <FaScroll size={22} />
-          {!collapsed && <span>Rules</span>}
-        </Link>
+        <Link href="/rules" className="flex items-center gap-4 text-pink-100 hover:text-pink-400 hover:scale-105 transition transform">
+  <FaScroll size={22} />
+  {!collapsed && <span>Rules</span>}
+</Link>
+
         <Link href="/about" className="flex items-center gap-4 text-pink-100 hover:text-pink-400 hover:scale-105 transition transform">
           <FaQuestionCircle size={22} />
           {!collapsed && <span>About</span>}
