@@ -18,6 +18,8 @@ const avatars = [
 ];
 
 export default function Topbar({ collapsed }: { collapsed: boolean }) {
+  // ... tavo visas kodas čia kaip jau pateikei (teisingas) ...
+}
   const [wallet, setWallet] = useState<string | null>(null);
   const [balance, setBalance] = useState("0.00");
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
