@@ -71,6 +71,76 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   }, [isDropdownOpen]);
 
   // Avatar Modal komponentas
+  // ... likę importai ...
+
+const avatars = [
+  { src: "/avatars/0rankangry.png", name: "angry" },
+  { src: "/avatars/0rankhappy.png", name: "happy" },
+  { src: "/avatars/0ranksad.png", name: "sad" },
+  { src: "/avatars/0rankcrazy.png", name: "crazy" },
+];
+
+export default function Topbar({ collapsed }: { collapsed: boolean }) {
+  const [wallet, setWallet] = useState<string | null>(null);
+  const [balance, setBalance] = useState("0.00");
+  const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkWallet = async () => {
+      if ((window as any).ethereum) {
+        const accounts = await (window as any).ethereum.request({ method: "eth_accounts" });
+        if (accounts.length > 0) setWallet(accounts[0]);
+      }
+    };
+    checkWallet();
+
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      const userAvatar = data?.user?.user_metadata?.avatar || localStorage.getItem("cherzi-avatar");
+      if (userAvatar) setAvatarURL(userAvatar);
+    };
+    getUser();
+  }, []);
+
+  const connectWallet = async () => {
+    if ((window as any).ethereum) {
+      const accounts = await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+      setWallet(accounts[0]);
+    } else {
+      alert("MetaMask not detected!");
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isDropdownOpen]);
+
+  const handleSelectAvatar = async (avatarPath: string) => {
+    setAvatarURL(avatarPath);
+    localStorage.setItem("cherzi-avatar", avatarPath);
+    const { data: userData } = await supabase.auth.getUser();
+    const userId = userData?.user?.id;
+    if (userId) {
+      await supabase.from("users").update({ avatar: avatarPath }).eq("id", userId);
+    }
+    setIsAvatarModalOpen(false);
+  };
+
+  // Avatar Modal
   const AvatarModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-zinc-900 p-6 rounded-lg shadow-lg text-white">
@@ -79,7 +149,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
           {avatars.map((avatar) => (
             <div
               key={avatar.name}
-              className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition"
+              className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-gradient-to-tr from-blue-800 via-blue-600 to-blue-800"
               onClick={() => handleSelectAvatar(avatar.src)}
             >
               <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
@@ -95,17 +165,6 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
       </div>
     </div>
   );
-
-  const handleSelectAvatar = async (avatarPath: string) => {
-    setAvatarURL(avatarPath);
-    localStorage.setItem("cherzi-avatar", avatarPath);
-    const { data: userData } = await supabase.auth.getUser();
-    const userId = userData?.user?.id;
-    if (userId) {
-      await supabase.from("users").update({ avatar: avatarPath }).eq("id", userId);
-    }
-    setIsAvatarModalOpen(false);
-  };
 
   // Wallet Modal
   const WalletModal = () => (
@@ -150,12 +209,12 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
 
         {/* Right Section */}
         <div className="flex items-center gap-4 text-white relative">
-          {/* Balansas */}
+          {/* Balance */}
           <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
             <span>${balance}</span>
           </div>
 
-          {/* Wallet Mygtukas */}
+          {/* Wallet Button */}
           <button
             onClick={() => (wallet ? setIsWalletModalOpen(true) : connectWallet())}
             className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
@@ -166,7 +225,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
           {/* Avatar */}
           <div className="relative" ref={dropdownRef}>
             <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
-            <div className="p-[2px] bg-zinc-800 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
+              <div className="p-[2px] bg-gradient-to-tr from-blue-800 via-blue-500 to-blue-800 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
                 <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
               </div>
             </button>
