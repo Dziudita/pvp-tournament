@@ -142,6 +142,10 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
         <div className="flex items-center">
           <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
         </div>
+ <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold px-3 py-1 rounded-lg shadow-md hover:opacity-90 transition text-sm">
+    🎁 Bonus
+  </button>
+</div>
 
         {/* Right Section */}
         <div className="flex items-center gap-4 text-white relative">
