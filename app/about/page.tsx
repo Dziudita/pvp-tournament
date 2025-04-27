@@ -37,6 +37,16 @@ export default function Page() {
             <li>⚔️ <span className="text-yellow-400">Provably Fair</span> – transparent gameplay with verified results.</li>
           </ul>
         </section>
+{/* 💡 Why Join Cherzi Arena? sekcija */}
+<section className="mt-8">
+  <h2 className="text-2xl font-semibold mb-2 text-pink-400">💡 Why Join Cherzi Arena?</h2>
+  <ul className="list-disc list-inside space-y-2">
+    <li>⚡ Fast-paced PvP games designed for thrill-seekers.</li>
+    <li>💰 Earn rewards, XP, and climb the leaderboard.</li>
+    <li>🌐 Built for the community – your feedback shapes our future.</li>
+    <li>🔒 Secure wallet integration and fair gameplay.</li>
+  </ul>
+</section>
 
         <section className="mb-6">
           <h2 className="text-2xl font-semibold mb-2 text-pink-400">🚀 Future Plans</h2>
