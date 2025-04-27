@@ -15,13 +15,13 @@ export default function HomePage() {
     <AuthWrapper>
       <div className="relative w-screen h-screen overflow-hidden text-white">
         {/* Background image */}
-        <Image
-          src="/assets/login-bg.png"
-          alt="Background"
-          fill
-          className="object-cover brightness-[0.5] saturate-100 contrast-125 -z-10"
-          priority
-        />
+       <Image
+  src="/assets/cherry-arena-bg.png" // <- Naujas fonas čia
+  alt="Background"
+  fill
+  className="object-cover brightness-[0.5] saturate-100 contrast-125 -z-10"
+  priority
+/>
 
         {/* Topbar prisitaiko */}
         <Topbar collapsed={collapsed} />
