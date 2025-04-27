@@ -17,12 +17,13 @@ export default function HomePage() {
         
         {/* VS Veikėjų Fonas */}
         <Image
-          src="/assets/vs-cherries-bg.png" // <- Naujas fonas!
-          alt="VS Cherries Background"
-          fill
-          className="object-cover brightness-[0.9] saturate-150 contrast-125 -z-10"
-          priority
-        />
+  src="/assets/vs-cherries-bg.png"
+  alt="VS Cherries Background"
+  fill
+  className="object-cover brightness-[0.4] saturate-125 contrast-110 blur-sm -z-10"
+  priority
+/>
+
 
         {/* Topbar */}
         <Topbar collapsed={collapsed} />
