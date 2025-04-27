@@ -10,13 +10,6 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- anon key
 );
 
-const avatars = [
-  { src: "/avatars/0rankangry.png", name: "angry" },
-  { src: "/avatars/0rankhappy.png", name: "happy" },
-  { src: "/avatars/0ranksad.png", name: "sad" },
-  { src: "/avatars/0rankcrazy.png", name: "crazy" },
-];
-
 export default function Topbar({ collapsed }: { collapsed: boolean }) {
   // ... tavo visas kodas čia kaip jau pateikei (teisingas) ...
 }
