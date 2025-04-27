@@ -98,9 +98,10 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
       >
         Close
       </button>
-    </div>
-  </div> // Šitas uždaro tik vieną, kaip reikia.
-);
+      </div>
+</div>
+); // ← taip turi būti!
+
 
 
   const WalletModal = () => (
