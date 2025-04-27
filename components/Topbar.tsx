@@ -9,6 +9,7 @@ const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- anon key
 );
+
 const avatars = [
   { src: "/avatars/0rankangry.png", name: "angry" },
   { src: "/avatars/0rankhappy.png", name: "happy" },
@@ -83,14 +84,12 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
         <div className="grid grid-cols-2 gap-4">
           {avatars.map((avatar) => (
             <div
-             <div
-  key={avatar.name}
-  className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-gradient-to-tr from-blue-950 via-blue-900 to-blue-950 shadow-[0_0_10px_rgba(0,0,255,0.6)]"
-  onClick={() => handleSelectAvatar(avatar.src)}
->
-  <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
-</div>
-
+              key={avatar.name}
+              className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-gradient-to-tr from-blue-950 via-blue-900 to-blue-950 shadow-[0_0_10px_rgba(0,0,255,0.6)]"
+              onClick={() => handleSelectAvatar(avatar.src)}
+            >
+              <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
+            </div>
           ))}
         </div>
         <button
@@ -138,15 +137,19 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300">
+        {/* Logo */}
         <div className="flex items-center">
           <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
         </div>
 
+        {/* Right Section */}
         <div className="flex items-center gap-4 text-white relative">
+          {/* Balance */}
           <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
             <span>${balance}</span>
           </div>
 
+          {/* Wallet Button */}
           <button
             onClick={() => (wallet ? setIsWalletModalOpen(true) : connectWallet())}
             className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
@@ -154,6 +157,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
             Wallet
           </button>
 
+          {/* Avatar */}
           <div className="relative" ref={dropdownRef}>
             <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
               <div className="p-[2px] bg-gradient-to-tr from-blue-800 via-blue-500 to-blue-800 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
