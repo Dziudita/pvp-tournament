@@ -103,7 +103,6 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
 ); // ← taip turi būti!
 
 
-
   const WalletModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-zinc-900 p-6 rounded-lg shadow-lg text-white w-80">
