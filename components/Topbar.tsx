@@ -116,12 +116,16 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center gap-4 text-white relative">
-          {/* Balansas */}
-          <div className="flex items-center gap-2 bg-zinc-800 px-3 py-1 rounded-lg text-white text-sm shadow-inner">
-            <Image src="/assets/token-icon.png" alt="Token" width={20} height={20} />
-            <span>${balance}</span>
-          </div>
+       <div className="flex items-center">
+  <Image
+    src="/assets/cherzi-arena-logo.png" // <- tavo naujas logotipas
+    alt="Cherzi Arena Logo"
+    width={160} // gali keisti dydį jei reikia
+    height={40}
+    priority
+  />
+</div>
+
 
           {/* Wallet Mygtukas */}
           <button
