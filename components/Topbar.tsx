@@ -137,58 +137,59 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300">
-        {/* Logo */}
-        <div className="flex items-center">
-          <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
+     <header className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300">
+  {/* Kairė pusė – Logo + Bonus */}
+  <div className="flex items-center gap-4">
+    <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
+    
+    <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold px-3 py-1 rounded-lg shadow-md hover:opacity-90 transition text-sm">
+      🎁 Bonus
+    </button>
+  </div>
+
+  {/* Dešinė pusė – Search + Balance + Wallet + Avatar */}
+  <div className="flex items-center gap-3 text-white relative">
+    {/* Mini Search */}
+    <input
+      type="text"
+      placeholder="Search..."
+      className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
+    />
+
+    {/* Balance */}
+    <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
+      <span>${balance}</span>
+    </div>
+
+    {/* Wallet Button */}
+    <button
+      onClick={() => (wallet ? setIsWalletModalOpen(true) : connectWallet())}
+      className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
+    >
+      Wallet
+    </button>
+
+    {/* Avatar */}
+    <div className="relative" ref={dropdownRef}>
+      <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
+        <div className="p-[2px] bg-black bg-opacity-80 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
+          <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
         </div>
- <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold px-3 py-1 rounded-lg shadow-md hover:opacity-90 transition text-sm">
-    🎁 Bonus
-  </button>
-</div>
-
-        {/* Right Section */}
-        <div className="flex items-center gap-4 text-white relative">
-          {/* Balance */}
-          <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
-            <span>${balance}</span>
-          </div>
-
-          {/* Wallet Button */}
+      </button>
+      {isDropdownOpen && (
+        <div className="absolute right-0 mt-3">
+          <UserDropdown />
           <button
-            onClick={() => (wallet ? setIsWalletModalOpen(true) : connectWallet())}
-            className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
+            onClick={() => {
+              setIsAvatarModalOpen(true);
+              setIsDropdownOpen(false);
+            }}
+            className="mt-2 w-full bg-pink-500 text-white px-3 py-1 rounded hover:bg-pink-400 text-sm"
           >
-            Wallet
+            Change Avatar
           </button>
-
-          {/* Avatar */}
-          <div className="relative" ref={dropdownRef}>
-            <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
-              <div className="p-[2px] bg-black bg-opacity-80 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
-  <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
-</div>
-            </button>
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-3">
-                <UserDropdown />
-                <button
-                  onClick={() => {
-                    setIsAvatarModalOpen(true);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="mt-2 w-full bg-pink-500 text-white px-3 py-1 rounded hover:bg-pink-400 text-sm"
-                >
-                  Change Avatar
-                </button>
-              </div>
-            )}
-          </div>
         </div>
-      </header>
-
-      {isWalletModalOpen && <WalletModal />}
-      {isAvatarModalOpen && <AvatarModal />}
-    </>
-  );
-}
+      )}
+    </div>
+  </div>
+</header>
