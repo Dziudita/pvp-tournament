@@ -98,61 +98,62 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
     </div>
   );
 
-return (
-  <>
-    <header
-      className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300"
-    >
-      {/* Naujas Logo */} 
-      <div className="flex items-center">
-        <Image
-          src="/assets/cherzi-arena-logo.png"
-          alt="Cherzi Arena Logo"
-          width={160}
-          height={40}
-          priority
-        />
-      </div>
-
-      {/* Right Section */}
-      <div className="flex items-center gap-4 text-white relative">
-        {/* Balansas */}
-        <div className="flex items-center gap-2 bg-zinc-800 px-3 py-1 rounded-lg text-white text-sm shadow-inner">
-          <Image src="/assets/token-icon.png" alt="Token" width={20} height={20} />
-          <span>${balance}</span>
+  return (
+    <>
+      <header
+        className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300"
+      >
+        {/* Logo */}
+        <div className="flex items-center">
+          <Image
+            src="/assets/cherzi-arena-logo.png"
+            alt="Cherzi Arena Logo"
+            width={160}
+            height={40}
+            priority
+          />
         </div>
 
-        {/* Wallet Mygtukas */}
-        <button
-          onClick={() => {
-            if (wallet) {
-              setIsWalletModalOpen(true);
-            } else {
-              connectWallet();
-            }
-          }}
-          className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
-        >
-          Wallet
-        </button>
+        {/* Right Section */}
+        <div className="flex items-center gap-4 text-white relative">
+          {/* Balansas */}
+          <div className="flex items-center gap-2 bg-zinc-800 px-3 py-1 rounded-lg text-white text-sm shadow-inner">
+            <Image src="/assets/token-icon.png" alt="Token" width={20} height={20} />
+            <span>${balance}</span>
+          </div>
 
-        {/* Avatar su status */}
-        <div className="relative" ref={dropdownRef}>
-          <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
-            <div className="p-[2px] bg-zinc-800 rounded-full border-2 border-green-500">
-              <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
-            </div>
+          {/* Wallet Mygtukas */}
+          <button
+            onClick={() => {
+              if (wallet) {
+                setIsWalletModalOpen(true);
+              } else {
+                connectWallet();
+              }
+            }}
+            className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
+          >
+            Wallet
           </button>
-          {isDropdownOpen && (
-            <div className="absolute right-0 mt-3">
-              <UserDropdown />
-            </div>
-          )}
-        </div>
-      </div>
-    </header>
 
-    {/* Modalas */}
-    {isWalletModalOpen && <WalletModal />}
-  </>
-);
+          {/* Avatar su status */}
+          <div className="relative" ref={dropdownRef}>
+            <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
+              <div className="p-[2px] bg-zinc-800 rounded-full border-2 border-green-500">
+                <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
+              </div>
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-3">
+                <UserDropdown />
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Modalas */}
+      {isWalletModalOpen && <WalletModal />}
+    </>
+  );
+}
