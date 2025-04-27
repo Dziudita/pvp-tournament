@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false); 
-  const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
+  const [avatarURL, setAvatarURL] = useState("/avatars/default.png"); // <- nauja
 
   return (
     <AuthWrapper>
@@ -30,12 +30,9 @@ export default function HomePage() {
         {/* Sidebar */}
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-        {/* Turinys po viršutine juosta su tamsiai mėlynu fonu */}
+        {/* Turinys po viršutine juosta */}
         <div className="pt-16 flex">
-          <div
-            className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300 w-full`}
-            style={{ backgroundColor: '#01043b' }}
-          >
+          <div className={${collapsed ? "ml-20" : "ml-64"} transition-all duration-300 w-full}>
             {/* Search section */}
             <div className="px-8 mt-8">
               <input
