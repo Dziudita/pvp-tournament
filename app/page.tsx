@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false); 
-  const [avatarURL, setAvatarURL] = useState("/avatars/default.png"); // <- nauja
+  const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
 
   return (
     <AuthWrapper>
@@ -24,12 +24,24 @@ export default function HomePage() {
           priority
         />
 
-        {/* Topbar su avatarURL ir setAvatarURL */}
-        <Topbar collapsed={collapsed} />
+        {/* Topbar with avatarURL and setAvatarURL */}
+        <Topbar avatarURL={avatarURL} setAvatarURL={setAvatarURL} collapsed={collapsed} />
 
         {/* Sidebar */}
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-        {/* Turinys po viršutine juosta */}
-        <div className="pt-16 flex">
-          <div className={`${collapsed ? "ml-20" : "ml-64"
+        {/* Content below the top bar */}
+        <div className={`pt-16 flex ${collapsed ? "ml-20" : "ml-64"} transition-all duration-300`}>
+          {/* Main content area */}
+          <div className="flex-grow">
+            {/* Your main page content here */}
+            <TopPlayerOfDay />
+          </div>
+
+          {/* CherryChat component */}
+          <CherryChat />
+        </div>
+      </div>
+    </AuthWrapper>
+  );
+}
