@@ -6,18 +6,32 @@ import Topbar from "@/components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import AuthWrapper from '@/components/AuthWrapper';
 import { useState } from "react";
+import Image from "next/image";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false); 
 
   return (
     <AuthWrapper>
-      <div 
-        className="relative min-h-screen bg-cover bg-center text-white"
-        style={{ backgroundImage: "url('/assets/neon-cherry.png')" }} // <- Neon cherry fono paveikslėlis
-      >
-        {/* Overlay darken */}
-        <div className="absolute inset-0 bg-black bg-opacity-50 z-0"></div>
+      <div className="relative min-h-screen text-white overflow-hidden">
+        {/* Neon Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-blue-950 to-black opacity-90 z-0" />
+
+        {/* Vyšnios fone */}
+        <Image
+          src="/assets/neon-cherry.png"
+          alt="Cherry"
+          width={200}
+          height={200}
+          className="absolute top-10 left-10 opacity-10 animate-swing"
+        />
+        <Image
+          src="/assets/neon-cherry.png"
+          alt="Cherry"
+          width={150}
+          height={150}
+          className="absolute bottom-10 right-10 opacity-10 animate-spin-slow"
+        />
 
         {/* Topbar */}
         <Topbar collapsed={collapsed} />
