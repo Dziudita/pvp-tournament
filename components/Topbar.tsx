@@ -78,28 +78,30 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   };
 
   const AvatarModal = () => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
     <div className="bg-gradient-to-br from-black via-blue-950 to-black p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,150,0.5)] text-white">
-        <h2 className="text-xl font-bold mb-4">Choose Your Avatar</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {avatars.map((avatar) => (
-            <div
-              key={avatar.name}
-              className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-gradient-to-tr from-blue-950 via-blue-900 to-blue-950 shadow-[0_0_10px_rgba(0,0,255,0.6)]"
-              onClick={() => handleSelectAvatar(avatar.src)}
-            >
-              <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
-            </div>
-          ))}
-        </div>
-        <button
-          onClick={() => setIsAvatarModalOpen(false)}
-          className="w-full mt-4 text-pink-400 hover:text-pink-300 text-sm"
-        >
-          Close
-        </button>
+      <h2 className="text-xl font-bold mb-4">Choose Your Avatar</h2>
+      <div className="grid grid-cols-2 gap-4">
+        {avatars.map((avatar) => (
+          <div
+            key={avatar.name}
+            className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-gradient-to-tr from-blue-950 via-blue-900 to-blue-950 shadow-[0_0_10px_rgba(0,0,255,0.6)]"
+            onClick={() => handleSelectAvatar(avatar.src)}
+          >
+            <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
+          </div>
+        ))}
       </div>
+      <button
+        onClick={() => setIsAvatarModalOpen(false)}
+        className="w-full mt-4 text-pink-400 hover:text-pink-300 text-sm"
+      >
+        Close
+      </button>
     </div>
-  );
+  </div> // Šitas uždaro tik vieną, kaip reikia.
+);
+
 
   const WalletModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
