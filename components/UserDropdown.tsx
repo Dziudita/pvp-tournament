@@ -133,7 +133,7 @@ export default function UserDropdown() {
 
       {showAvatarModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-zinc-900 p-6 rounded-lg shadow-lg text-white">
+          <div className="bg-gradient-to-br from-blue-950 via-blue-900 to-black p-6 rounded-lg shadow-[0_0_25px_rgba(0,0,255,0.5)] text-white">
             <h2 className="text-lg font-bold mb-4">Choose Your Avatar</h2>
             <div className="grid grid-cols-2 gap-4">
               {avatars.map((url, idx) => (
