@@ -9,7 +9,6 @@ const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." // <- anon key
 );
-
 const avatars = [
   { src: "/avatars/0rankangry.png", name: "angry" },
   { src: "/avatars/0rankhappy.png", name: "happy" },
