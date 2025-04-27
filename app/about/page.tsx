@@ -10,7 +10,7 @@ export default function Page() {
       <CherryRain />
 
       {/* Pagrindinis turinys */}
-      <div className="relative z-10 max-w-3xl mx-auto">
+      <div className="relative z-10 max-w-3xl mx-auto min-h-[120vh]">
         <h1 className="text-4xl font-bold mb-4 text-pink-500 animate-pulse">About Cherzi Arena</h1>
 
         <p className="mb-6 text-lg">
@@ -19,7 +19,7 @@ export default function Page() {
           or just here for the thrill – we've got you covered.
         </p>
 
-        {/* ... (likęs turinys paliktas kaip buvo) */}
+        {/* ... (gali įdėti likusį turinį čia, jei nori) */}
 
         <p className="mt-8 text-center text-pink-400 font-bold animate-bounce">
           Ready to dominate the arena? Let's go! 🍒
@@ -49,7 +49,7 @@ export default function Page() {
 
 // Vyšnių komponentas
 function CherryRain() {
-  const cherries = Array.from({ length: 8 }); // 8 vyšnios
+  const cherries = Array.from({ length: 12 }); // 12 vyšnių
 
   return (
     <>
@@ -58,14 +58,15 @@ function CherryRain() {
           key={idx}
           src="/assets/neon-cherry.png"
           alt="Cherry"
-          width={50 + idx * 5}
-          height={50 + idx * 5}
+          width={40 + idx * 3}
+          height={40 + idx * 3}
           className="absolute cherry"
           style={{
-            top: `${Math.random() * 90}%`,
-            left: `${Math.random() * 90}%`,
-            opacity: 0.5 + Math.random() * 0.5,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            opacity: 0.3 + Math.random() * 0.5,
             animationDelay: `${Math.random() * 5}s`,
+            zIndex: 0, // fonui
           }}
         />
       ))}
