@@ -28,9 +28,9 @@ export default function CherryChat() {
           .eq("id", userId)
           .single();
 
-       if (profile) {
-  nickname = profile.nickname || nickname;
-  avatar = profile.avatar || avatar;
+        if (profile) {
+          nickname = profile.nickname || nickname;
+          avatar = profile.avatar || avatar;
 
           // Saugojimas į localStorage
           localStorage.setItem("cherzi-nick", nickname);
@@ -51,20 +51,16 @@ export default function CherryChat() {
 
     fetchUserAndMessages();
 
-    // Realtime Broadcast ir DB changes
-    const chatChannel = supabase.channel('cherry-chat-broadcast');
-
-    chatChannel
-      .on('broadcast', { event: 'new-message' }, (payload) => {
-        setMessages((prev) => [...prev, payload.payload]);
-      })
+    // Realtime - tik DB changes (be Broadcast)
+    const subscription = supabase
+      .channel('chat-realtime')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
         setMessages((prev) => [...prev, payload.new]);
       })
       .subscribe();
 
     return () => {
-      supabase.removeChannel(chatChannel);
+      supabase.removeChannel(subscription);
     };
   }, []);
 
@@ -75,29 +71,19 @@ export default function CherryChat() {
     }
   }, [messages, chatOpen]);
 
-  // Siunčiam žinutę į Supabase ir Broadcastinam
+  // Siunčiam žinutę į Supabase
   const handleSend = async () => {
     if (newMessage.trim() === "") return;
 
     const { nickname, avatar } = userInfo;
-
     const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
 
     const { error } = await supabase
       .from("chat_messages")
       .insert([newChat]);
 
-    // Broadcast visiems langams
-    await supabase
-      .channel('cherry-chat-broadcast')
-      .send({
-        type: 'broadcast',
-        event: 'new-message',
-        payload: newChat,
-      });
-
     if (!error) {
-      setNewMessage("");
+      setNewMessage(""); // Nebepridedam lokaliai į messages, laukiam realtime
     }
   };
 
