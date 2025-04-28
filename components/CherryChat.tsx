@@ -51,7 +51,7 @@ export default function CherryChat() {
 
     fetchUserAndMessages();
 
-    // Realtime - tik DB changes (be Broadcast)
+    // Realtime - tik DB changes
     const subscription = supabase
       .channel('chat-realtime')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
@@ -73,21 +73,20 @@ export default function CherryChat() {
 
   // Siunčiam žinutę į Supabase
   const handleSend = async () => {
-const handleSend = async () => {
-  if (newMessage.trim() === "") return;
+    if (newMessage.trim() === "") return;
 
-  const { nickname, avatar } = userInfo;
-  const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
+    const { nickname, avatar } = userInfo;
+    const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
 
-  const { error } = await supabase
-    .from("chat_messages")
-    .insert([newChat]);
+    const { error } = await supabase
+      .from("chat_messages")
+      .insert([newChat]);
 
-  if (!error) {
-    setMessages((prev) => [...prev, newChat]); // Pridedam lokaliai SAU
-    setNewMessage("");
-  }
-};
+    if (!error) {
+      setMessages((prev) => [...prev, newChat]); // Pridedam lokaliai tau
+      setNewMessage("");
+    }
+  };
 
   return (
     <>
