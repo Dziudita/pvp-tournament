@@ -73,19 +73,21 @@ export default function CherryChat() {
 
   // Siunčiam žinutę į Supabase
   const handleSend = async () => {
-    if (newMessage.trim() === "") return;
+const handleSend = async () => {
+  if (newMessage.trim() === "") return;
 
-    const { nickname, avatar } = userInfo;
-    const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
+  const { nickname, avatar } = userInfo;
+  const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
 
-    const { error } = await supabase
-      .from("chat_messages")
-      .insert([newChat]);
+  const { error } = await supabase
+    .from("chat_messages")
+    .insert([newChat]);
 
-    if (!error) {
-      setNewMessage(""); // Nebepridedam lokaliai į messages, laukiam realtime
-    }
-  };
+  if (!error) {
+    setMessages((prev) => [...prev, newChat]); // Pridedam lokaliai SAU
+    setNewMessage("");
+  }
+};
 
   return (
     <>
