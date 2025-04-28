@@ -71,10 +71,14 @@ export default function UserDropdown() {
   const { rank, progress } = calculateRank(xp);
 
  const avatars = [
-  "/avatars/0rankangry.png",
-  "/avatars/0rankhappy.png",
-  "/avatars/0ranksad.png",
-  "/avatars/0rankcrazy.png",
+  { src: "/avatars/0rankangry.png", unlockRank: 0 },
+  { src: "/avatars/0rankhappy.png", unlockRank: 0 },
+  { src: "/avatars/0ranksad.png", unlockRank: 0 },
+  { src: "/avatars/0rankcrazy.png", unlockRank: 0 },
+  { src: "/avatars/1rankangry.png", unlockRank: 1 },
+  { src: "/avatars/1rankhappy.png", unlockRank: 1 },
+  { src: "/avatars/1ranksad.png", unlockRank: 1 },
+  { src: "/avatars/1rankcrazy.png", unlockRank: 1 },
 ];
 
   const handleSelectAvatar = (url: string) => {
@@ -136,21 +140,27 @@ export default function UserDropdown() {
         <div className="bg-gradient-to-br from-black via-blue-950 to-black p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,150,0.5)] text-white">
             <h2 className="text-lg font-bold mb-4">Choose Your Avatar</h2>
             <div className="grid grid-cols-2 gap-4">
-              {avatars.map((url, idx) => (
-                <button key={idx} onClick={() => handleSelectAvatar(url)}>
-                  <Image src={url} alt="Avatar" width={80} height={80} className="rounded-full border-2 border-pink-500 hover:scale-105 transition" />
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={() => setShowAvatarModal(false)}
-              className="w-full mt-4 text-sm text-pink-400 hover:text-pink-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+            {avatars.map((avatar, idx) => {
+  const isLocked = rank < avatar.unlockRank;
+  return (
+    <button
+      key={idx}
+      onClick={() => !isLocked && handleSelectAvatar(avatar.src)}
+      disabled={isLocked}
+      className={`relative ${isLocked ? "opacity-50 cursor-not-allowed" : "hover:scale-105"} transition`}
+    >
+      <Image
+        src={avatar.src}
+        alt="Avatar"
+        width={80}
+        height={80}
+        className="rounded-full border-2 border-pink-500"
+      />
+      {isLocked && (
+        <span className="absolute inset-0 flex items-center justify-center text-xs text-gray-400 font-bold">
+          Rank {avatar.unlockRank}
+        </span>
       )}
-    </>
+    </button>
   );
-}
+})}
