@@ -8,10 +8,13 @@ import AuthWrapper from '@/components/AuthWrapper';
 import TournamentRoomModal from "@/components/TournamentRoomModal"; // Importuojame tikrą modalą
 import { useState } from "react";
 import Image from "next/image";
+import TournamentSelectModal from "@/components/TournamentSelectModal";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false);
   const [showTournamentModal, setShowTournamentModal] = useState(false);
+const [showTournamentSelectModal, setShowTournamentSelectModal] = useState(false);
+const [selectedTournament, setSelectedTournament] = useState<string | null>(null);
 
   // Testiniai žaidėjai turnyrui
   const testPlayers = [
@@ -54,13 +57,13 @@ export default function HomePage() {
 
               {/* Tournament Button as Image */}
               <Image
-                src="/assets/tournament-button.png"
-                alt="Tournament Button"
-                width={240}
-                height={80}
-                onClick={() => setShowTournamentModal(true)}
-                className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
-              />
+  src="/assets/tournament-button.png"
+  alt="Tournament Button"
+  width={240}
+  height={80}
+  onClick={() => setShowTournamentSelectModal(true)}
+  className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
+/>
             </div>
 
             {/* Leaderboard */}
@@ -71,14 +74,16 @@ export default function HomePage() {
         </div>
 
         {/* Tournament Modal */}
-        {showTournamentModal && (
-          <TournamentRoomModal
-            players={testPlayers}
-            roomName="Room 3 – Sound Clash Arena"
-            status="waiting"
-            countdown={5}
-          />
-        )}
+        {showTournamentSelectModal && (
+  <TournamentSelectModal
+    onSelect={(type: string) => {
+      setSelectedTournament(type);
+      setShowTournamentSelectModal(false);
+      setShowTournamentModal(true);
+    }}
+    onClose={() => setShowTournamentSelectModal(false)}
+  />
+)}
 
         {/* Chat */}
         <CherryChat />
