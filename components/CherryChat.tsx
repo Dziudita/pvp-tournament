@@ -31,9 +31,14 @@ export default function CherryChat() {
         if (profile) {
           nickname = profile.nickname || nickname;
           avatar = profile.avatar || avatar;
+
+          // Saugojimas į localStorage
+          localStorage.setItem("cherzi-nick", nickname);
+          localStorage.setItem("cherzi-avatar", avatar);
         }
       }
 
+      console.log("User Info:", { nickname, avatar });
       setUserInfo({ nickname, avatar });
 
       // Fetch messages
@@ -73,6 +78,8 @@ export default function CherryChat() {
 
     const { nickname, avatar } = userInfo;
     const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
+
+    console.log("Sending:", newChat);
 
     const { error } = await supabase
       .from("chat_messages")
