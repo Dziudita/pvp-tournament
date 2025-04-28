@@ -38,7 +38,6 @@ export default function CherryChat() {
         }
       }
 
-      console.log("User Info:", { nickname, avatar });
       setUserInfo({ nickname, avatar });
 
       // Fetch messages
@@ -52,16 +51,20 @@ export default function CherryChat() {
 
     fetchUserAndMessages();
 
-    // Realtime
-    const subscription = supabase
-      .channel('chat-realtime')
+    // Realtime Broadcast ir DB changes
+    const chatChannel = supabase.channel('cherry-chat-broadcast');
+
+    chatChannel
+      .on('broadcast', { event: 'new-message' }, (payload) => {
+        setMessages((prev) => [...prev, payload.payload]);
+      })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
         setMessages((prev) => [...prev, payload.new]);
       })
       .subscribe();
 
     return () => {
-      supabase.removeChannel(subscription);
+      supabase.removeChannel(chatChannel);
     };
   }, []);
 
@@ -72,28 +75,32 @@ export default function CherryChat() {
     }
   }, [messages, chatOpen]);
 
-  // Siunčiam žinutę į Supabase ir lokaliai
-const handleSend = async () => {
-  if (newMessage.trim() === "") return;
+  // Siunčiam žinutę į Supabase ir Broadcastinam
+  const handleSend = async () => {
+    if (newMessage.trim() === "") return;
 
-  const { nickname, avatar } = userInfo;
+    const { nickname, avatar } = userInfo;
 
-  console.log("BANDOM SIŲSTI SU:", { nickname, avatar });
+    const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
 
-  const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
+    const { error } = await supabase
+      .from("chat_messages")
+      .insert([newChat]);
 
-  const { error } = await supabase
-    .from("chat_messages")
-    .insert([newChat]);
+    // Broadcast visiems langams
+    await supabase
+      .channel('cherry-chat-broadcast')
+      .send({
+        type: 'broadcast',
+        event: 'new-message',
+        payload: newChat,
+      });
 
-  if (error) {
-    console.error("Insert Error:", error.message);
-  } else {
-    setMessages((prev) => [...prev, newChat]); // Pridedam iškart
-    setNewMessage("");
-  }
-};
-
+    if (!error) {
+      setMessages((prev) => [...prev, newChat]);
+      setNewMessage("");
+    }
+  };
 
   return (
     <>
