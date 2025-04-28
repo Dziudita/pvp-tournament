@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { FaComment } from "react-icons/fa";
-import { supabase } from "@/lib/supabaseClient"; // Tavo Supabase client
+import { supabase } from "@/lib/supabaseClient";
 
 export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -14,17 +14,23 @@ export default function CherryChat() {
   // Fetch messages iš Supabase
   useEffect(() => {
     const fetchMessages = async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("chat_messages")
         .select("*")
         .order("timestamp", { ascending: true });
-      setMessages(data || []);
+
+      if (error) {
+        console.error("Fetch Error:", error.message);
+      } else {
+        setMessages(data || []);
+      }
     };
+
     fetchMessages();
 
-    // Optional: Real-time naujoms žinutėms
+    // Real-time naujoms žinutėms
     const subscription = supabase
-      .channel('chat')
+      .channel('chat-realtime')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
         setMessages((prev) => [...prev, payload.new]);
       })
@@ -37,8 +43,10 @@ export default function CherryChat() {
 
   // Scroll į apačią
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (chatOpen) {
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, chatOpen]);
 
   // Siunčiam žinutę į Supabase
   const handleSend = async () => {
@@ -51,7 +59,9 @@ export default function CherryChat() {
       .from("chat_messages")
       .insert([{ avatar, nickname, message: newMessage, timestamp: Date.now() }]);
 
-    if (!error) {
+    if (error) {
+      console.error("Insert Error:", error.message);
+    } else {
       setNewMessage("");
     }
   };
