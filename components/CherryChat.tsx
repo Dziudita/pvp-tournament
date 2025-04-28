@@ -9,26 +9,45 @@ export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [userInfo, setUserInfo] = useState({ nickname: "User", avatar: "/avatars/default.png" });
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch messages iš Supabase
+  // Fetch user info + messages
   useEffect(() => {
-    const fetchMessages = async () => {
-      const { data, error } = await supabase
+    const fetchUserAndMessages = async () => {
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData?.user?.id;
+
+      let nickname = localStorage.getItem("cherzi-nick") || "User";
+      let avatar = localStorage.getItem("cherzi-avatar") || "/avatars/default.png";
+
+      if (userId) {
+        const { data: profile } = await supabase
+          .from("users")
+          .select("nickname, avatar")
+          .eq("id", userId)
+          .single();
+
+        if (profile) {
+          nickname = profile.nickname || nickname;
+          avatar = profile.avatar || avatar;
+        }
+      }
+
+      setUserInfo({ nickname, avatar });
+
+      // Fetch messages
+      const { data: chatData, error } = await supabase
         .from("chat_messages")
         .select("*")
         .order("timestamp", { ascending: true });
 
-      if (error) {
-        console.error("Fetch Error:", error.message);
-      } else {
-        setMessages(data || []);
-      }
+      if (!error) setMessages(chatData || []);
     };
 
-    fetchMessages();
+    fetchUserAndMessages();
 
-    // Real-time naujoms žinutėms
+    // Realtime
     const subscription = supabase
       .channel('chat-realtime')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
@@ -48,20 +67,21 @@ export default function CherryChat() {
     }
   }, [messages, chatOpen]);
 
-  // Siunčiam žinutę į Supabase
+  // Siunčiam žinutę į Supabase ir lokaliai
   const handleSend = async () => {
     if (newMessage.trim() === "") return;
 
-    const avatar = localStorage.getItem("cherzi-avatar") || "/avatars/default.png";
-    const nickname = localStorage.getItem("cherzi-nick") || "User";
+    const { nickname, avatar } = userInfo;
+    const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
 
     const { error } = await supabase
       .from("chat_messages")
-      .insert([{ avatar, nickname, message: newMessage, timestamp: Date.now() }]);
+      .insert([newChat]);
 
     if (error) {
       console.error("Insert Error:", error.message);
     } else {
+      setMessages((prev) => [...prev, newChat]); // Pridedam iškart
       setNewMessage("");
     }
   };
@@ -83,7 +103,7 @@ export default function CherryChat() {
 
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
             {messages.map((msg) => (
-              <div key={msg.id} className="flex items-start gap-3">
+              <div key={msg.timestamp} className="flex items-start gap-3">
                 <Image src={msg.avatar} alt="avatar" width={32} height={32} className="rounded-full" />
                 <div>
                   <p className="text-sm text-pink-300 font-semibold">{msg.nickname}</p>
