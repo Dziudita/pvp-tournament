@@ -135,32 +135,45 @@ export default function UserDropdown() {
         </div>
       </div>
 
-      {showAvatarModal && (
+          {showAvatarModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-gradient-to-br from-black via-blue-950 to-black p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,150,0.5)] text-white">
+          <div className="bg-gradient-to-br from-black via-blue-950 to-black p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,150,0.5)] text-white">
             <h2 className="text-lg font-bold mb-4">Choose Your Avatar</h2>
             <div className="grid grid-cols-2 gap-4">
-            {avatars.map((avatar, idx) => {
-  const isLocked = rank < avatar.unlockRank;
-  return (
-    <button
-      key={idx}
-      onClick={() => !isLocked && handleSelectAvatar(avatar.src)}
-      disabled={isLocked}
-      className={`relative ${isLocked ? "opacity-50 cursor-not-allowed" : "hover:scale-105"} transition`}
-    >
-      <Image
-        src={avatar.src}
-        alt="Avatar"
-        width={80}
-        height={80}
-        className="rounded-full border-2 border-pink-500"
-      />
-      {isLocked && (
-        <span className="absolute inset-0 flex items-center justify-center text-xs text-gray-400 font-bold">
-          Rank {avatar.unlockRank}
-        </span>
+              {avatars.map((avatar, idx) => {
+                const isLocked = rank < avatar.unlockRank;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => !isLocked && handleSelectAvatar(avatar.src)}
+                    disabled={isLocked}
+                    className={`relative ${isLocked ? "opacity-50 cursor-not-allowed" : "hover:scale-105"} transition`}
+                  >
+                    <Image
+                      src={avatar.src}
+                      alt="Avatar"
+                      width={80}
+                      height={80}
+                      className="rounded-full border-2 border-pink-500"
+                    />
+                    {isLocked && (
+                      <span className="absolute inset-0 flex items-center justify-center text-xs text-gray-400 font-bold">
+                        Rank {avatar.unlockRank}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              onClick={() => setShowAvatarModal(false)}
+              className="w-full mt-4 text-sm text-pink-400 hover:text-pink-300"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
-    </button>
+    </>
   );
-})}
+}
