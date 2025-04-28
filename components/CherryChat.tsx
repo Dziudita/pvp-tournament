@@ -28,9 +28,9 @@ export default function CherryChat() {
           .eq("id", userId)
           .single();
 
-        if (profile) {
-          nickname = profile.nickname || nickname;
-          avatar = profile.avatar || avatar;
+       if (profile) {
+  nickname = profile.nickname || nickname;
+  avatar = profile.avatar || avatar;
 
           // Saugojimas į localStorage
           localStorage.setItem("cherzi-nick", nickname);
@@ -97,7 +97,6 @@ export default function CherryChat() {
       });
 
     if (!error) {
-      setMessages((prev) => [...prev, newChat]);
       setNewMessage("");
     }
   };
