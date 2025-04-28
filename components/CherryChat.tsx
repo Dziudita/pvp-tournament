@@ -3,33 +3,58 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { FaComment } from "react-icons/fa";
+import { supabase } from "@/lib/supabaseClient"; // Tavo Supabase client
 
 export default function CherryChat() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { id: 1, user: "CherryBoss", text: "Welcome to Cherry Chat! 🍒", avatar: "/avatar1.png" },
-    { id: 2, user: "PlayerX", text: "Let’s flip some cherries! 😄", avatar: "/avatar2.png" },
-  ]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const handleSend = () => {
-    if (newMessage.trim() === "") return;
-
-    const newMsg = {
-      id: Date.now(),
-      user: "You",
-      text: newMessage,
-      avatar: "/avatar-you.png",
+  // Fetch messages iš Supabase
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const { data } = await supabase
+        .from("chat_messages")
+        .select("*")
+        .order("timestamp", { ascending: true });
+      setMessages(data || []);
     };
+    fetchMessages();
 
-    setMessages((prev) => [...prev, newMsg]);
-    setNewMessage("");
-  };
+    // Optional: Real-time naujoms žinutėms
+    const subscription = supabase
+      .channel('chat')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
+        setMessages((prev) => [...prev, payload.new]);
+      })
+      .subscribe();
 
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, []);
+
+  // Scroll į apačią
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Siunčiam žinutę į Supabase
+  const handleSend = async () => {
+    if (newMessage.trim() === "") return;
+
+    const avatar = localStorage.getItem("cherzi-avatar") || "/avatars/default.png";
+    const nickname = localStorage.getItem("cherzi-nick") || "User";
+
+    const { error } = await supabase
+      .from("chat_messages")
+      .insert([{ avatar, nickname, message: newMessage, timestamp: Date.now() }]);
+
+    if (!error) {
+      setNewMessage("");
+    }
+  };
 
   return (
     <>
@@ -51,9 +76,9 @@ export default function CherryChat() {
               <div key={msg.id} className="flex items-start gap-3">
                 <Image src={msg.avatar} alt="avatar" width={32} height={32} className="rounded-full" />
                 <div>
-                  <p className="text-sm text-pink-300 font-semibold">{msg.user}</p>
+                  <p className="text-sm text-pink-300 font-semibold">{msg.nickname}</p>
                   <div className="bg-zinc-800 px-3 py-2 rounded-xl text-sm text-white max-w-[240px] break-words">
-                    {msg.text}
+                    {msg.message}
                   </div>
                 </div>
               </div>
@@ -62,14 +87,6 @@ export default function CherryChat() {
           </div>
 
           <div className="border-t border-zinc-700 p-3 bg-zinc-900 flex items-center gap-2 relative">
-            {/* Emoji button disabled for now */}
-            <button
-              className="text-xl cursor-not-allowed text-gray-500"
-              title="Emoji picker disabled"
-            >
-              😊
-            </button>
-
             <input
               type="text"
               placeholder="Enter your message..."
