@@ -5,12 +5,23 @@ import CherryChat from "../components/CherryChat";
 import Topbar from "@/components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import AuthWrapper from '@/components/AuthWrapper';
+import TournamentRoomModal from "@/components/TournamentRoomModal"; // Importuojame tikrą modalą
 import { useState } from "react";
 import Image from "next/image";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false);
   const [showTournamentModal, setShowTournamentModal] = useState(false);
+
+  // Testiniai žaidėjai turnyrui
+  const testPlayers = [
+    { avatar: "/avatars/0rankangry.png", name: "CherryKing" },
+    { avatar: "/avatars/0rankcrazy.png", name: "BoomBoom" },
+    { avatar: "/avatars/0rankhappy.png", name: "Sweetie" },
+    { avatar: "/avatars/0ranksad.png", name: "Tears" },
+    { avatar: "/avatars/1rankangry.png", name: "FireFury" },
+    { avatar: "/avatars/1rankcrazy.png", name: "Thunder" },
+  ];
 
   return (
     <AuthWrapper>
@@ -61,18 +72,12 @@ export default function HomePage() {
 
         {/* Tournament Modal */}
         {showTournamentModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="bg-zinc-900 p-8 rounded-2xl shadow-2xl w-full max-w-md">
-              <h2 className="text-2xl font-bold mb-4 text-pink-400">🎮 Tournaments Coming Soon!</h2>
-              <p className="mb-6">Get ready to join thrilling PvP tournaments and win big prizes! More info coming soon.</p>
-              <button
-                onClick={() => setShowTournamentModal(false)}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold hover:opacity-80 transition"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+          <TournamentRoomModal
+            players={testPlayers}
+            roomName="Room 3 – Sound Clash Arena"
+            status="waiting"
+            countdown={5}
+          />
         )}
 
         {/* Chat */}
