@@ -78,15 +78,9 @@ const handleSend = async () => {
 
   const { nickname, avatar } = userInfo;
 
-  // NELEIDŽIAM jei nickname dar User
-  if (nickname === "User") {
-    console.warn("Laukiam, kol bus gauti teisingi userInfo duomenys...");
-    return;
-  }
+  console.log("BANDOM SIŲSTI SU:", { nickname, avatar });
 
   const newChat = { avatar, nickname, message: newMessage, timestamp: Date.now() };
-
-  console.log("Sending:", newChat);
 
   const { error } = await supabase
     .from("chat_messages")
