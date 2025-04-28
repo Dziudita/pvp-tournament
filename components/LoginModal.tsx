@@ -1,233 +1,99 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginModal() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [referralCode, setReferralCode] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
-  const [confirmAge, setConfirmAge] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("✅ LoginModal komponentas įkeltas");
-  }, []);
-
-  const validatePassword = (pw) => pw.length >= 5 && /\d/.test(pw);
-
-  // 🆕 FUNKCIJA įrašyti stats jei neegzistuoja
-  const createStatsIfNotExist = async (nickname: string) => {
-    const { data: existingUser, error: checkError } = await supabase
-      .from("users_stats")
-      .select("*")
-      .eq("nickname", nickname)
-      .single();
-
-    if (!existingUser && !checkError) {
-      const { error: insertError } = await supabase.from("users_stats").insert([
-        {
-          nickname: nickname,
-          wins: 0,
-          xp: 0,
-          wager: 0,
-        },
-      ]);
-      if (insertError) console.error("❌ Failed to insert stats:", insertError);
-      else console.log("✅ Stats created for:", nickname);
-    }
-  };
-
-  const handleAuth = async (e) => {
-    e.preventDefault();
-    console.log("🚀 handleAuth pradėjo veikti");
+  const handleSignup = async () => {
+    setLoading(true);
     setError("");
 
-    if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
-      return setError("Please fill in all required fields.");
+    // Registruojam vartotoją su email ir password
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signUpError) {
+      setLoading(false);
+      return setError(signUpError.message);
     }
 
-    if (!confirmAge) {
-      return setError("You must confirm that you're at least 18 years old.");
+    const userId = signUpData.user?.id;
+
+    if (userId) {
+      // Patikrinam kiek jau yra vartotojų
+      const { count, error: countError } = await supabase
+        .from("users")
+        .select("id", { count: "exact", head: true });
+
+      let role = "user"; // default
+
+      if (countError) {
+        console.error("Count Error:", countError.message);
+      } else if (count === 0) {
+        role = "owner"; // Jei tai pirmasis vartotojas
+      }
+
+      // Įrašom vartotojo detales su teisinga role
+      const { error: insertError } = await supabase.from("users").insert([
+        {
+          id: userId,
+          nickname,
+          referral_code: referralCode || null,
+          role: role,
+        },
+      ]);
+
+      if (insertError) {
+        console.error("Failed to insert user details:", insertError.message);
+        setLoading(false);
+        return setError("User created, but failed to save nickname/referral.");
+      }
     }
 
-    if (isSignUp) {
-      if (!validatePassword(password)) {
-        return setError("Password must be at least 5 characters and include a number.");
-      }
-      if (password !== confirmPassword) {
-        return setError("Passwords do not match.");
-      }
-
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      console.log("🟢 signUp result:", data);
-
-      if (signUpError) return setError(signUpError.message);
-
-      const userId = data.user?.id;
-
-      if (userId) {
-        const { error: insertError } = await supabase.from("users").insert([
-          {
-            id: userId,
-            nickname,
-            referral_code: referralCode || null,
-            role: "user",
-          },
-        ]);
-
-        if (insertError) {
-          console.error("❌ Failed to insert user details:", insertError.message);
-          return setError("User created, but failed to save nickname/referral.");
-        }
-      }
-
-      if (data.session) {
-        await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
-        window.location.href = "/";
-      } else {
-        alert("Account created, but no active session found.");
-      }
-    } else {
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      console.log("🔐 signIn result:", signInData);
-
-      if (signInError) return setError(signInError.message);
-
-      await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
-      window.location.href = "/";
-    }
+    setLoading(false);
+    // Čia gali redirect/intformuoti kad viskas ok
   };
 
   return (
-    <div className="fixed inset-0 z-40">
-      <Image
-        src="/assets/login-bg.png"
-        alt="Background"
-        fill
-        className="object-cover brightness-110 contrast-110 hidden md:block"
-        priority
+    <div>
+      <h2>Register</h2>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
       />
-      <div className="block md:hidden absolute inset-0 bg-black" />
-      <div className="absolute inset-0 bg-black/50 flex items-center justify-center px-4 py-8 overflow-y-auto">
-        <div className="w-full max-w-xs bg-black/80 p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
-          <div className="flex flex-col items-center mb-4">
-            <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={70} height={70} />
-            <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
-          </div>
-          <h2 className="text-lg font-semibold text-center mb-3 text-white">
-            {isSignUp ? "Sign Up" : "Login"}
-          </h2>
-          {error && <p className="text-red-400 text-center mb-3 font-semibold">{error}</p>}
-          <form onSubmit={handleAuth}>
-            {isSignUp && (
-              <input
-                type="text"
-                placeholder="Nickname"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-                className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
-              />
-            )}
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
-            />
-            <div className="relative mb-3">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-2 text-pink-300 hover:text-pink-400"
-              >
-                {showPassword ? <FaEye /> : <FaEyeSlash />}
-              </button>
-            </div>
-            {isSignUp && (
-              <>
-                <div className="relative mb-3">
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-2 text-pink-300 hover:text-pink-400"
-                  >
-                    {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Referral Code (optional)"
-                  value={referralCode}
-                  onChange={(e) => setReferralCode(e.target.value)}
-                  className="w-full mb-3 px-4 py-2 rounded-lg bg-zinc-800 text-white placeholder-pink-200 outline-none"
-                />
-              </>
-            )}
-            <div className="flex items-start mb-3 text-xs text-gray-300">
-              <input
-                type="checkbox"
-                className="mr-2 mt-1"
-                checked={confirmAge}
-                onChange={() => setConfirmAge(!confirmAge)}
-              />
-              <label>
-                I confirm that I am 18 years old and I have read the{" "}
-                <Link href="/terms" className="text-blue-400 hover:underline">Terms of Service</Link> and{" "}
-                <Link href="/privacy" className="text-blue-400 hover:underline">Privacy Policy</Link>
-              </label>
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-lg transition"
-            >
-              {isSignUp ? "Create Account" : "Enter Arena"}
-            </button>
-          </form>
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => {
-                setError("");
-                setIsSignUp(!isSignUp);
-              }}
-              className="text-xs text-pink-300 hover:underline"
-            >
-              {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
-            </button>
-          </div>
-        </div>
-      </div>
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <input
+        type="text"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+        placeholder="Nickname"
+      />
+      <input
+        type="text"
+        value={referralCode}
+        onChange={(e) => setReferralCode(e.target.value)}
+        placeholder="Referral Code (optional)"
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button onClick={handleSignup} disabled={loading}>
+        {loading ? "Loading..." : "Sign Up"}
+      </button>
     </div>
   );
 }
