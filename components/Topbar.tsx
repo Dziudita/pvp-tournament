@@ -50,6 +50,7 @@ const refreshBalance = async () => {
 };
 
   // 🔄 Realtime balance listener
+  // 🔄 Realtime balance listener
   useEffect(() => {
     if (!wallet) return;
 
@@ -63,10 +64,10 @@ const refreshBalance = async () => {
           table: "wallet_balances",
           filter: `wallet=eq.${wallet}`,
         },
-        (payload) => {
+        (payload: any) => {
           const newBalance = payload.new?.balance;
-          if (newBalance !== undefined) {
-            setBalance(parseFloat(newBalance).toFixed(2));
+          if (typeof newBalance === "number") {
+            setBalance(newBalance.toFixed(2));
           }
         }
       )
@@ -76,6 +77,7 @@ const refreshBalance = async () => {
       supabase.removeChannel(channel);
     };
   }, [wallet]);
+
 
   // 👤 Avatar + Wallet init
   useEffect(() => {
