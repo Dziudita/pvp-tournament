@@ -102,39 +102,6 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
 </div>
 ); // ← taip turi būti!
 
-
-  const WalletModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-zinc-900 p-6 rounded-lg shadow-lg text-white w-80">
-        <h2 className="text-lg font-bold mb-4">Wallet Options</h2>
-        <button
-          onClick={() => {
-            setIsWalletModalOpen(false);
-            alert("Deposit modal");
-          }}
-          className="w-full bg-green-600 py-2 rounded mb-2 hover:bg-green-500 transition"
-        >
-          Deposit
-        </button>
-        <button
-          onClick={() => {
-            setIsWalletModalOpen(false);
-            alert("Withdraw modal");
-          }}
-          className="w-full bg-yellow-500 py-2 rounded hover:bg-yellow-400 transition"
-        >
-          Withdraw
-        </button>
-        <button
-          onClick={() => setIsWalletModalOpen(false)}
-          className="w-full mt-4 text-sm text-pink-400 hover:text-pink-300"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
-
   return (
     <>
      <header className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300">
