@@ -28,26 +28,26 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // ✅ FIXED balance fetch
-  const refreshBalance = async () => {
-    if (!wallet) return;
+const refreshBalance = async () => {
+  if (!wallet) return;
 
-    const { data, error } = await supabase
-      .from("wallet_balances")
-      .select("balance")
-      .eq("wallet", wallet)
-      .single();
+  const { data, error }: { data: { balance: number } | null, error: any } = await supabase
+    .from("wallet_balances")
+    .select("balance")
+    .eq("wallet", wallet)
+    .single();
 
-    if (error) {
-      console.error("❌ Klaida gaunant balansą:", error.message);
-      return;
-    }
+  if (error) {
+    console.error("❌ Klaida gaunant balansą:", error.message);
+    return;
+  }
 
-    if (data && "balance" in data && typeof data.balance === "number") {
-      setBalance(data.balance.toFixed(2));
-    } else {
-      console.warn("⚠️ Balansas nerastas arba neteisingas formatas.");
-    }
-  };
+  if (data && typeof data.balance === "number") {
+    setBalance(data.balance.toFixed(2));
+  } else {
+    console.warn("⚠️ Balansas nerastas arba neteisingas formatas.");
+  }
+};
 
   // 🔄 Realtime balance listener
   useEffect(() => {
