@@ -29,17 +29,21 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
 
   // ⏱️ Balance fetch
   const refreshBalance = async () => {
-    if (!wallet) return;
-    const { data, error } = await supabase
-      .from("wallet_balances")
-      .select("balance")
-      .eq("wallet", wallet)
-      .single();
+  if (!wallet) return;
 
-    if (data?.balance !== undefined) {
-      setBalance(parseFloat(data.balance).toFixed(2));
-    }
-  };
+  const { data, error } = await supabase
+    .from("wallet_balances")
+    .select("balance")
+    .eq("wallet", wallet)
+    .single();
+
+  const balance = (data as { balance: number })?.balance;
+
+  if (balance !== undefined) {
+    setBalance(balance.toFixed(2));
+  }
+};
+
 
   // 🎧 Realtime balance listener
   useEffect(() => {
