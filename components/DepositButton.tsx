@@ -14,19 +14,19 @@ export default function DepositButton({
 
   console.log("🚀 DepositButton RODOMAS su userId:", userId);
 
-  const handleDeposit = async () => {
-    try {
-      setLoading(true);
-      const txHash = await depositUSDC(amount, userId);
-      alert(`✅ Deposit sėkmingas! Tx hash: ${txHash}`);
-      onSuccess(); // <- iškviesti balansą iš naujo
-    } catch (err) {
-      alert("🛑 Klaida atliekant depozitą");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const handleDeposit = async () => {
+  try {
+    setLoading(true);
+    const txHash = await depositUSDC(amount, userId);
+    alert(`✅ Deposit sėkmingas! Tx hash: ${txHash}`);
+    onSuccess?.(); // <- SAUGU!
+  } catch (err) {
+    alert("🛑 Klaida atliekant depozitą");
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="text-white">
