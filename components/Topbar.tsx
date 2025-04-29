@@ -31,16 +31,23 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const refreshBalance = async () => {
   if (!wallet) return;
 
- const { data }: { data: { balance: number } | null } = await supabase
-  .from("wallet_balances")
-  .select("balance")
-  .eq("wallet", wallet)
-  .single();
+  const { data, error } = await supabase
+    .from("wallet_balances")
+    .select("balance")
+    .eq("wallet", wallet)
+    .single();
 
-if (data?.balance !== undefined) {
-  setBalance(data.balance.toFixed(2));
-}
+  if (error) {
+    console.error("❌ Klaida gaunant balansą:", error.message);
+    return;
+  }
+
+  const balance = (data as { balance: number })?.balance;
+  if (balance !== undefined) {
+    setBalance(balance.toFixed(2));
+  }
 };
+
 
 
   // 🎧 Realtime balance listener
