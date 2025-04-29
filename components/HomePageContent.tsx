@@ -19,32 +19,34 @@ export default function HomePageContent() {
   const { user } = useUser();
 
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      {/* Background image */}
-      <Image
-        src="/assets/vs-cherries-bg.png"
-        alt="VS Cherries Background"
-        fill
-        className="object-cover brightness-[0.4] saturate-125 contrast-110 blur-sm -z-10"
-        priority
-      />
+    <div className="relative min-h-screen text-white">
+      {/* 🌸 Fonas – šiek tiek neryškus ir patamsintas */}
+      <div className="fixed top-0 left-0 w-full h-full -z-10">
+        <Image
+          src="/assets/cherry-arena-bg.png"
+          alt="Cherry Arena Background"
+          fill
+          className="object-cover brightness-[0.4] saturate-125 contrast-110 blur-sm"
+          priority
+        />
+      </div>
 
-      {/* Fixed Sidebar */}
+      {/* 🔒 Sidebar – visada kairėje */}
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-      {/* Fixed Topbar */}
+      {/* 🔝 Topbar – visada viršuje */}
       <Topbar collapsed={collapsed} />
 
-      {/* Scrollable Main Content */}
-      <div
+      {/* 🧱 Pagrindinis turinys */}
+      <main
         className={`
-          pt-20 pb-32 pr-4 pl-4
           transition-all duration-300
           ${collapsed ? 'ml-14' : 'ml-40'}
+          pt-20 pb-32 pr-4 pl-4
           h-screen overflow-y-auto relative z-10
         `}
       >
-        {/* Tournament button */}
+        {/* 🎯 Turnyro mygtukas */}
         <div className="mt-8 flex justify-start">
           <Image
             src="/assets/tournament-button.png"
@@ -56,13 +58,13 @@ export default function HomePageContent() {
           />
         </div>
 
-        {/* Top Player of the Day */}
+        {/* 🏆 Dienos žaidėjas */}
         <div className="mt-12">
           <TopPlayerOfDay />
         </div>
-      </div>
+      </main>
 
-      {/* Tournament Selection Modal */}
+      {/* 🪩 Modals */}
       {showTournamentSelectModal && (
         <TournamentSelectModal
           onSelect={(type: string) => {
@@ -74,7 +76,6 @@ export default function HomePageContent() {
         />
       )}
 
-      {/* Tournament Room Modal */}
       {showTournamentModal && selectedTournament && (
         <TournamentRoomModal
           tournamentType={selectedTournament}
@@ -82,7 +83,7 @@ export default function HomePageContent() {
         />
       )}
 
-      {/* Fixed CherryChat at the bottom */}
+      {/* 💬 Chatas – visada apačioje */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <CherryChat />
       </div>
