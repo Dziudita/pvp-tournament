@@ -1,26 +1,24 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
+import AuthWrapper from '@/components/AuthWrapper';
 import Sidebar from "../components/Sidebar";
 import CherryChat from "../components/CherryChat";
 import Topbar from "@/components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
-import AuthWrapper from '@/components/AuthWrapper';
-import TournamentRoomModal from "@/components/TournamentRoomModal"; // Importuojame tikrą modalą
-import { useState } from "react";
-import Image from "next/image";
+import TournamentRoomModal from "@/components/TournamentRoomModal";
 import TournamentSelectModal from "@/components/TournamentSelectModal";
 import DepositButton from "@/components/DepositButton";
-import useUser from "@/hooks/useUser"; // jeigu hooks folderis tavo /src ar / pagrinde
+import useUser from "@/hooks/useUser"; // saugu naudoti viduje
 
 export default function HomePage() {
- const { user, loading } = useUser();
   const [collapsed, setCollapsed] = useState(false);
   const [showTournamentModal, setShowTournamentModal] = useState(false);
-const [showTournamentSelectModal, setShowTournamentSelectModal] = useState(false);
-const [selectedTournament, setSelectedTournament] = useState<string | null>(null);
+  const [showTournamentSelectModal, setShowTournamentSelectModal] = useState(false);
+  const [selectedTournament, setSelectedTournament] = useState<string | null>(null);
 
- if (loading) return <div className="text-white p-4">Loading user...</div>;
-  if (!user) return <div className="text-white p-4">Please log in</div>;
+  const { user } = useUser(); // dabar saugu naudoti, LoginModal jau parodytas AuthWrapper
 
   // Testiniai žaidėjai turnyrui
   const testPlayers = [
@@ -63,19 +61,22 @@ const [selectedTournament, setSelectedTournament] = useState<string | null>(null
 
               {/* Tournament Button as Image */}
               <Image
-  src="/assets/tournament-button.png"
-  alt="Tournament Button"
-  width={240}
-  height={80}
-  onClick={() => setShowTournamentSelectModal(true)}
-  className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
-/>
+                src="/assets/tournament-button.png"
+                alt="Tournament Button"
+                width={240}
+                height={80}
+                onClick={() => setShowTournamentSelectModal(true)}
+                className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
+              />
             </div>
- {/* 💸 Deposit sekcija */}
-        <div className="mt-6 px-8">
-          <h2 className="text-lg font-bold mb-2">💰 Deposit USDC</h2>
-          <DepositButton userId={user.id} />
-        </div>
+
+            {/* 💸 Deposit sekcija */}
+            {user && (
+              <div className="mt-6 px-8">
+                <h2 className="text-lg font-bold mb-2">💰 Deposit USDC</h2>
+                <DepositButton userId={user.id} />
+              </div>
+            )}
 
             {/* Leaderboard */}
             <div className="mt-10 px-8 md:ml-36">
@@ -86,15 +87,15 @@ const [selectedTournament, setSelectedTournament] = useState<string | null>(null
 
         {/* Tournament Modal */}
         {showTournamentSelectModal && (
-  <TournamentSelectModal
-    onSelect={(type: string) => {
-      setSelectedTournament(type);
-      setShowTournamentSelectModal(false);
-      setShowTournamentModal(true);
-    }}
-    onClose={() => setShowTournamentSelectModal(false)}
-  />
-)}
+          <TournamentSelectModal
+            onSelect={(type: string) => {
+              setSelectedTournament(type);
+              setShowTournamentSelectModal(false);
+              setShowTournamentModal(true);
+            }}
+            onClose={() => setShowTournamentSelectModal(false)}
+          />
+        )}
 
         {/* Chat */}
         <CherryChat />
