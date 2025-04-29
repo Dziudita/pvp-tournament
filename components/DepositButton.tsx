@@ -7,26 +7,26 @@ export default function DepositButton({
   onSuccess,
 }: {
   userId: string;
-  onSuccess?: () => void; // <- callback prop
+  onSuccess?: () => void;
 }) {
-  const [amount, setAmount] = useState(1); // default: 1 USDC
+  const [amount, setAmount] = useState(1);
   const [loading, setLoading] = useState(false);
 
   console.log("🚀 DepositButton RODOMAS su userId:", userId);
 
- const handleDeposit = async () => {
-  try {
-    setLoading(true);
-    const txHash = await depositUSDC(amount, userId);
-    alert(`✅ Deposit sėkmingas! Tx hash: ${txHash}`);
-    onSuccess?.(); // <- SAUGU!
-  } catch (err) {
-    alert("🛑 Klaida atliekant depozitą");
-    console.error(err);
-  } finally {
-    setLoading(false);
-  }
-};
+  const handleDeposit = async () => {
+    try {
+      setLoading(true);
+      const txHash = await depositUSDC(amount, userId);
+      alert(`✅ Deposit sėkmingas! Tx hash: ${txHash}`);
+      onSuccess?.(); // saugu!
+    } catch (err) {
+      alert("🛑 Klaida atliekant depozitą");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="text-white">
