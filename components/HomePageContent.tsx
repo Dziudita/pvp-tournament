@@ -58,13 +58,6 @@ export default function HomePageContent() {
             />
           </div>
 
-          {user && (
-            <div className="mt-6 px-8">
-              <h2 className="text-lg font-bold mb-2">\ud83d\udcb0 Deposit USDC</h2>
-              <DepositButton userId={user.id} />
-            </div>
-          )}
-
           <div className="mt-10 px-8 md:ml-36">
             <TopPlayerOfDay />
           </div>
