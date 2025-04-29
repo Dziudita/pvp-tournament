@@ -28,7 +28,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // ⏱️ Balance fetch
-  const refreshBalance = async () => {
+ const refreshBalance = async () => {
   if (!wallet) return;
 
   const { data, error } = await supabase
