@@ -21,6 +21,7 @@ export default function HomePageContent() {
 
   return (
     <div className="relative min-h-screen text-white overflow-hidden">
+      {/* Fonas */}
       <Image
         src="/assets/vs-cherries-bg.png"
         alt="VS Cherries Background"
@@ -29,12 +30,14 @@ export default function HomePageContent() {
         priority
       />
 
-      <Topbar collapsed={collapsed} />
+      {/* Sidebar ir Topbar */}
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Topbar collapsed={collapsed} />
 
-      <div className="pt-16 relative z-10">
-        {/* Turnyro mygtukas - viršuje */}
-        <div className="absolute top-[130px] left-[100px] z-20">
+      {/* Pagrindinis turinys su korekcija į dešinę */}
+      <div className={`pt-16 pl-4 pr-4 pb-16 transition-all duration-300 ${collapsed ? 'ml-14' : 'ml-40'}`}>
+        {/* Turnyro mygtukas */}
+        <div className="mt-8">
           <Image
             src="/assets/tournament-button.png"
             alt="Tournament Button"
@@ -45,12 +48,13 @@ export default function HomePageContent() {
           />
         </div>
 
-        {/* Top Players Today - žemiau */}
-        <div className="absolute top-[310px] left-[100px] z-20">
+        {/* Top žaidėjas */}
+        <div className="mt-12">
           <TopPlayerOfDay />
         </div>
       </div>
 
+      {/* Modals */}
       {showTournamentSelectModal && (
         <TournamentSelectModal
           onSelect={(type: string) => {
@@ -62,6 +66,14 @@ export default function HomePageContent() {
         />
       )}
 
+      {showTournamentModal && selectedTournament && (
+        <TournamentRoomModal
+          tournamentType={selectedTournament}
+          onClose={() => setShowTournamentModal(false)}
+        />
+      )}
+
+      {/* Chat visada apačioje */}
       <CherryChat />
     </div>
   );
