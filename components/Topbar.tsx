@@ -31,9 +31,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const refreshBalance = async () => {
   if (!wallet) return;
 
-if (data && "balance" in data && typeof data.balance === "number") {
-  setBalance(data.balance.toFixed(2));
-}
+  const { data, error } = await supabase
     .from("wallet_balances")
     .select("balance")
     .eq("wallet", wallet)
@@ -44,11 +42,13 @@ if (data && "balance" in data && typeof data.balance === "number") {
     return;
   }
 
-  const balance = (data as { balance: number })?.balance;
-  if (balance !== undefined) {
-    setBalance(balance.toFixed(2));
+  if (data && "balance" in data && typeof data.balance === "number") {
+    setBalance(data.balance.toFixed(2));
+  } else {
+    console.warn("⚠️ Balansas nerastas arba neteisingas formatas.");
   }
 };
+
 
 
 
