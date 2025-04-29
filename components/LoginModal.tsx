@@ -111,7 +111,7 @@ export default function LoginModal() {
       if (signInError) return setError(signInError.message);
 
       await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
-      window.location.href = "/";
+      window.location.reload(); // ✅ vietoj href
     }
   };
 
