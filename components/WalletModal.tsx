@@ -3,7 +3,13 @@ import { useState } from "react";
 import DepositButton from "@/components/DepositButton";
 import useUser from "@/hooks/useUser";
 
-export default function WalletModal({ onClose }: { onClose: () => void }) {
+export default function WalletModal({
+  onClose,
+  refreshBalance,
+}: {
+  onClose: () => void;
+  refreshBalance: () => void;
+}) {
   const [showDeposit, setShowDeposit] = useState(false);
   const { user, loading } = useUser();
 
@@ -40,7 +46,7 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
           </>
         ) : (
           <>
-            <DepositButton userId={user.id} />
+            <DepositButton userId={user.id} onSuccess={refreshBalance} />
             <button
               onClick={() => setShowDeposit(false)}
               className="text-pink-400 mt-4 hover:underline"
