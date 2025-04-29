@@ -19,15 +19,6 @@ export default function HomePageContent() {
 
   const { user } = useUser();
 
-  const testPlayers = [
-    { avatar: "/avatars/0rankangry.png", name: "CherryKing" },
-    { avatar: "/avatars/0rankcrazy.png", name: "BoomBoom" },
-    { avatar: "/avatars/0rankhappy.png", name: "Sweetie" },
-    { avatar: "/avatars/0ranksad.png", name: "Tears" },
-    { avatar: "/avatars/1rankangry.png", name: "FireFury" },
-    { avatar: "/avatars/1rankcrazy.png", name: "Thunder" },
-  ];
-
   return (
     <div className="relative min-h-screen text-white overflow-hidden">
       <Image
@@ -41,27 +32,22 @@ export default function HomePageContent() {
       <Topbar collapsed={collapsed} />
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-      <div className="pt-16 flex relative z-10">
-        <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300 w-full`}>
-        <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10 gap-6">
-  {/* Perkeltas TopPlayerOfDay į kairę */}
-<div className={`mt-10 px-4 ${collapsed ? "ml-24" : "ml-64"} transition-all duration-300`}>
-  <TopPlayerOfDay />
-</div>
+      <div className="pt-16 relative z-10">
+        {/* Turnyro mygtukas - viršuje */}
+        <div className="absolute top-[130px] left-[100px] z-20">
+          <Image
+            src="/assets/tournament-button.png"
+            alt="Tournament Button"
+            width={240}
+            height={80}
+            onClick={() => setShowTournamentSelectModal(true)}
+            className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
+          />
+        </div>
 
-
-
-  {/* Turnyro mygtukas dešinėje */}
-  <Image
-    src="/assets/tournament-button.png"
-    alt="Tournament Button"
-    width={240}
-    height={80}
-    onClick={() => setShowTournamentSelectModal(true)}
-    className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
-  />
-</div>
-
+        {/* Top Players Today - žemiau */}
+        <div className="absolute top-[310px] left-[100px] z-20">
+          <TopPlayerOfDay />
         </div>
       </div>
 
