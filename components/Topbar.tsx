@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import UserDropdown from "./UserDropdown";
+import WalletModal from "@/components/WalletModal"; // ✅ tai yra mūsų modalas su DepositButton
+
 
 const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
