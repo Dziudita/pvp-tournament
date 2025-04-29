@@ -19,11 +19,7 @@ export default function DepositButton({
       setLoading(true);
       const txHash = await depositUSDC(amount, userId);
       alert(`✅ Deposit sėkmingas! Tx hash: ${txHash}`);
-
-      // 🟢 Po sėkmingo depozito atnaujink balansą
-      if (onSuccess) {
-        onSuccess();
-      }
+      onSuccess(); // <- iškviesti balansą iš naujo
     } catch (err) {
       alert("🛑 Klaida atliekant depozitą");
       console.error(err);
