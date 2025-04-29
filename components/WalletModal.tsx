@@ -23,12 +23,14 @@ export default function WalletModal({ onClose }: { onClose: () => void }) {
             >
               Deposit
             </button>
+
             <button
               disabled
               className="bg-yellow-500 w-full py-2 rounded font-semibold opacity-50 cursor-not-allowed"
             >
               Withdraw (soon)
             </button>
+
             <button
               onClick={onClose}
               className="text-pink-400 mt-4 hover:underline"
