@@ -9,6 +9,7 @@ import TournamentRoomModal from "@/components/TournamentRoomModal"; // Importuoj
 import { useState } from "react";
 import Image from "next/image";
 import TournamentSelectModal from "@/components/TournamentSelectModal";
+import DepositButton from "@/components/DepositButton";
 
 export default function HomePage() {
   const [collapsed, setCollapsed] = useState(false);
@@ -65,6 +66,11 @@ const [selectedTournament, setSelectedTournament] = useState<string | null>(null
   className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
 />
             </div>
+{/* 💸 Deposit sekcija */}
+<div className="mt-6 px-8">
+  <h2 className="text-lg font-bold mb-2">💰 Deposit USDC</h2>
+  <DepositButton userId={"TAVO_USER_ID"} />
+</div>
 
             {/* Leaderboard */}
             <div className="mt-10 px-8 md:ml-36">
