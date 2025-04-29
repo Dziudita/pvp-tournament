@@ -1,90 +1,85 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
-import Sidebar from "../components/Sidebar";
-import Topbar from "@/components/Topbar";
-import TopPlayerOfDay from "../components/TopPlayerOfDay";
-import TournamentRoomModal from "@/components/TournamentRoomModal";
-import TournamentSelectModal from "@/components/TournamentSelectModal";
-import CherryChat from "@/components/CherryChat";
-import useUser from "@/hooks/useUser";
-
-export default function HomePageContent() {
-  const [collapsed, setCollapsed] = useState(false);
-  const [showTournamentModal, setShowTournamentModal] = useState(false);
-  const [showTournamentSelectModal, setShowTournamentSelectModal] = useState(false);
-  const [selectedTournament, setSelectedTournament] = useState<string | null>(null);
-
-  const { user } = useUser();
-
-  return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      {/* Background */}
-      <Image
-        src="/assets/vs-cherries-bg.png"
-        alt="VS Cherries Background"
-        fill
-        className="object-cover brightness-[0.4] saturate-125 contrast-110 blur-sm -z-10"
-        priority
-      />
-
-      {/* Fixed Sidebar */}
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-
-      {/* Fixed Topbar */}
-      <Topbar collapsed={collapsed} />
-
-      {/* Scrollable main content */}
-      <div
-        className={`
-          pt-16 pb-32 pr-4 pl-4
-          transition-all duration-300
-          ${collapsed ? 'ml-14' : 'ml-40'}
-          h-screen overflow-y-auto relative z-10
-        `}
-      >
-        {/* Tournament button */}
-        <div className="mt-8">
-          <Image
-            src="/assets/tournament-button.png"
-            alt="Tournament Button"
-            width={240}
-            height={80}
-            onClick={() => setShowTournamentSelectModal(true)}
-            className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
-          />
-        </div>
-
-        {/* Top player of the day */}
-        <div className="mt-12">
-          <TopPlayerOfDay />
-        </div>
-      </div>
-
-      {/* Modals */}
-      {showTournamentSelectModal && (
-        <TournamentSelectModal
-          onSelect={(type: string) => {
-            setSelectedTournament(type);
-            setShowTournamentSelectModal(false);
-            setShowTournamentModal(true);
-          }}
-          onClose={() => setShowTournamentSelectModal(false)}
-        />
-      )}
-
-      {showTournamentModal && selectedTournament && (
-        <TournamentRoomModal
-          tournamentType={selectedTournament}
-          onClose={() => setShowTournamentModal(false)}
-        />
-      )}
-
-      {/* Fixed Chat at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 z-50">
-        <CherryChat />
-      </div>
-    </div>
-  );
-}
+'use client';
+ 
+ import { useState } from 'react';
+ import Link from 'next/link';
+ "use client";
+ import { useState } from "react";
+ import Link from "next/link";
+ import {
+   FaGamepad,
+   FaScroll,
+ @@ -11,9 +10,9 @@ import {
+   FaChevronLeft,
+   FaChevronRight,
+   FaWallet,
+ } from 'react-icons/fa';
+ import { supabase } from '@/lib/supabaseClient';
+ import WalletModal from '@/components/WalletModal';
+ } from "react-icons/fa";
+ import { supabase } from "@/lib/supabaseClient";
+ import WalletModal from "@/components/WalletModal";
+ 
+ interface SidebarProps {
+   collapsed: boolean;
+ @@ -24,14 +23,12 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+   const [showWalletModal, setShowWalletModal] = useState(false);
+ 
+   const handleLogout = async () => {
+     console.log('🚪 Bandome atsijungti...');
+     const { error } = await supabase.auth.signOut();
+     if (error) {
+       console.error('❌ Atsijungimo klaida:', error.message);
+       console.error("❌ Atsijungimo klaida:", error.message);
+     } else {
+       console.log('✅ Atsijungta iš Supabase');
+       localStorage.removeItem('cherzi-nick');
+       localStorage.removeItem('cherzi-pass');
+       localStorage.removeItem("cherzi-nick");
+       localStorage.removeItem("cherzi-pass");
+       setTimeout(() => {
+         window.location.reload();
+       }, 500);
+ @@ -41,26 +38,19 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+   return (
+     <>
+       <aside
+         className={`fixed top-16 left-0 ${collapsed ? 'w-14' : 'w-40'} h-[calc(100vh-4rem)] bg-zinc-900 bg-opacity-90 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden shadow-[0_0_15px_rgba(255,0,255,0.3)]`}
+         className={`fixed top-16 left-0 ${collapsed ? "w-14" : "w-40"} h-[calc(100vh-4rem)] bg-zinc-900 bg-opacity-90 border-r border-pink-500 text-white shadow-xl z-40 transition-all duration-300 overflow-hidden shadow-[0_0_15px_rgba(255,0,255,0.3)]`}
+       >
+         {/* Suskleidimo mygtukas */}
+         <div className="flex justify-end p-2">
+           <button
+             onClick={() => setCollapsed(!collapsed)}
+             className="text-pink-400 hover:text-pink-300"
+           >
+             {collapsed ? (
+               <FaChevronRight size={20} />
+             ) : (
+               <FaChevronLeft size={20} />
+             )}
+             {collapsed ? <FaChevronRight size={20} /> : <FaChevronLeft size={20} />}
+           </button>
+         </div>
+ 
+         {/* Neon glow fone */}
+         <div className="absolute bottom-0 left-0 w-52 h-52 bg-gradient-to-tr from-pink-500 to-purple-500 opacity-20 blur-2xl rounded-full z-0"></div>
+ 
+         {/* Navigacija */}
+         <nav className="flex flex-col gap-5 text-md mt-8 relative z-10 px-3">
+           <Link
+             href="/game"
+ @@ -113,10 +103,10 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+       </aside>
+ 
+       {showWalletModal && (
+        <WalletModal
+   onClose={() => setShowWalletModal(false)}
+   refreshBalance={() => {}}
+ />
+         <WalletModal
+           onClose={() => setShowWalletModal(false)}
+           refreshBalance={() => {}} // galima perdaryti jei nori iš Sidebar
+         />
+       )}
+     </>
+   );
