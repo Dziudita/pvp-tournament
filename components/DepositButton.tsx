@@ -15,11 +15,16 @@ export default function DepositButton({
   console.log("🚀 DepositButton RODOMAS su userId:", userId);
 
   const handleDeposit = async () => {
+    if (amount < 0.1) {
+      alert("💡 Minimalus depozitas yra 0.1 USDC");
+      return;
+    }
+
     try {
       setLoading(true);
       const txHash = await depositUSDC(amount, userId);
       alert(`✅ Deposit sėkmingas! Tx hash: ${txHash}`);
-      onSuccess?.(); // saugu!
+      onSuccess?.();
     } catch (err) {
       alert("🛑 Klaida atliekant depozitą");
       console.error(err);
@@ -30,14 +35,14 @@ export default function DepositButton({
 
   return (
     <div className="text-white">
-     <input
-  type="number"
-  value={amount}
-  min={0.1} // 👈 sumažintas minimumas
-  step={0.01} // 👈 leidžia įvesti dešimtaines reikšmes
-  onChange={(e) => setAmount(Number(e.target.value))}
-  className="text-black p-1 rounded mr-2"
-/>
+      <input
+        type="number"
+        value={amount}
+        min={0.1}
+        step={0.01}
+        onChange={(e) => setAmount(Number(e.target.value))}
+        className="text-black p-1 rounded mr-2"
+      />
       <button
         onClick={handleDeposit}
         className="bg-green-600 px-4 py-2 rounded hover:bg-green-500 transition"
