@@ -31,7 +31,9 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const refreshBalance = async () => {
   if (!wallet) return;
 
-  const { data, error } = await supabase
+if (data && "balance" in data && typeof data.balance === "number") {
+  setBalance(data.balance.toFixed(2));
+}
     .from("wallet_balances")
     .select("balance")
     .eq("wallet", wallet)
