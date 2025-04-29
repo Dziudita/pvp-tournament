@@ -12,12 +12,16 @@ export async function depositUSDC(amount: number, userId: string) {
   try {
     if (!window.ethereum) throw new Error("MetaMask not found");
 
+    if (amount < 0.1) throw new Error("Minimalus depozitas yra 0.1 USDC");
+
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const userAddress = await signer.getAddress();
 
     const usdc = new ethers.Contract(usdcAddress, usdcAbi, signer);
-    const parsedAmount = ethers.utils.parseUnits(amount.toString(), 6);
+
+    // Naudojame toFixed(6), kad visada būtų tinkamas formatas su 6 skaitmenimis
+    const parsedAmount = ethers.utils.parseUnits(amount.toFixed(6), 6);
 
     const tx = await usdc.transfer(vaultAddress, parsedAmount);
     await tx.wait();
