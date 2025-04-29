@@ -43,24 +43,23 @@ export default function HomePageContent() {
 
       <div className="pt-16 flex relative z-10">
         <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300 w-full`}>
-          <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10 gap-6">
-            <button className="px-6 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xl hover:opacity-80 shadow-md">
-              CHERRY COINFLIP
-            </button>
+        <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10 gap-6">
+  {/* Perkeltas TopPlayerOfDay į kairę */}
+  <div className="w-full md:w-1/2 max-w-md">
+    <TopPlayerOfDay />
+  </div>
 
-            <Image
-              src="/assets/tournament-button.png"
-              alt="Tournament Button"
-              width={240}
-              height={80}
-              onClick={() => setShowTournamentSelectModal(true)}
-              className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
-            />
-          </div>
+  {/* Turnyro mygtukas dešinėje */}
+  <Image
+    src="/assets/tournament-button.png"
+    alt="Tournament Button"
+    width={240}
+    height={80}
+    onClick={() => setShowTournamentSelectModal(true)}
+    className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
+  />
+</div>
 
-          <div className="mt-10 px-8 md:ml-36">
-            <TopPlayerOfDay />
-          </div>
         </div>
       </div>
 
