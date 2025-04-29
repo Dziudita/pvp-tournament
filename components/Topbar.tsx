@@ -4,8 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import UserDropdown from "./UserDropdown";
-import WalletModal from "@/components/WalletModal"; // ✅ tai yra mūsų modalas su DepositButton
-
+import WalletModal from "@/components/WalletModal";
 
 const supabase = createClient(
   "https://innwjrnhjwxlwaimquex.supabase.co",
@@ -28,11 +27,55 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // ⏱️ Balance fetch
+  const refreshBalance = async () => {
+    if (!wallet) return;
+    const { data, error } = await supabase
+      .from("wallet_balances")
+      .select("balance")
+      .eq("wallet", wallet)
+      .single();
+
+    if (data?.balance !== undefined) {
+      setBalance(parseFloat(data.balance).toFixed(2));
+    }
+  };
+
+  // 🎧 Realtime balance listener
+  useEffect(() => {
+    if (!wallet) return;
+
+    const channel = supabase
+      .channel("realtime-wallet-balance")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "wallet_balances",
+          filter: `wallet=eq.${wallet}`,
+        },
+        (payload) => {
+          const newBalance = payload.new?.balance;
+          if (newBalance !== undefined) {
+            setBalance(parseFloat(newBalance).toFixed(2));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [wallet]);
+
   useEffect(() => {
     const checkWallet = async () => {
       if ((window as any).ethereum) {
         const accounts = await (window as any).ethereum.request({ method: "eth_accounts" });
-        if (accounts.length > 0) setWallet(accounts[0]);
+        if (accounts.length > 0) {
+          setWallet(accounts[0]);
+        }
       }
     };
     checkWallet();
@@ -80,95 +123,87 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   };
 
   const AvatarModal = () => (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-    <div className="bg-gradient-to-br from-black via-blue-950 to-black p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,150,0.5)] text-white">
-      <h2 className="text-xl font-bold mb-4">Choose Your Avatar</h2>
-      <div className="grid grid-cols-2 gap-4">
-        {avatars.map((avatar) => (
-          <div
-            key={avatar.name}
-            className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-black bg-opacity-80 shadow-[0_0_10px_rgba(0,0,255,0.4)]"
-            onClick={() => handleSelectAvatar(avatar.src)}
-          >
-            <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
-          </div>
-        ))}
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-gradient-to-br from-black via-blue-950 to-black p-6 rounded-lg shadow-[0_0_30px_rgba(0,0,150,0.5)] text-white">
+        <h2 className="text-xl font-bold mb-4">Choose Your Avatar</h2>
+        <div className="grid grid-cols-2 gap-4">
+          {avatars.map((avatar) => (
+            <div
+              key={avatar.name}
+              className="p-1 border-2 border-pink-500 rounded-full cursor-pointer hover:scale-105 transition bg-black bg-opacity-80 shadow-[0_0_10px_rgba(0,0,255,0.4)]"
+              onClick={() => handleSelectAvatar(avatar.src)}
+            >
+              <Image src={avatar.src} alt={avatar.name} width={80} height={80} className="rounded-full" />
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={() => setIsAvatarModalOpen(false)}
+          className="w-full mt-4 text-pink-400 hover:text-pink-300 text-sm"
+        >
+          Close
+        </button>
       </div>
-      <button
-        onClick={() => setIsAvatarModalOpen(false)}
-        className="w-full mt-4 text-pink-400 hover:text-pink-300 text-sm"
-      >
-        Close
-      </button>
-      </div>
-</div>
-); // ← taip turi būti!
+    </div>
+  );
 
   return (
     <>
-     <header className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300">
-  {/* Kairė pusė – Logo + Bonus */}
-  <div className="flex items-center gap-4">
-    <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
-    
-    <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold px-3 py-1 rounded-lg shadow-md hover:opacity-90 transition text-sm">
-      🎁 Bonus
-    </button>
-  </div>
-
-  {/* Dešinė pusė – Search + Balance + Wallet + Avatar */}
-  <div className="flex items-center gap-3 text-white relative">
-    {/* Mini Search */}
-    <input
-      type="text"
-      placeholder="Search..."
-      className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
-    />
-
-    {/* Balance */}
-    <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
-      <span>${balance}</span>
-    </div>
-
-    {/* Wallet Button */}
-    <button
-      onClick={() => (wallet ? setIsWalletModalOpen(true) : connectWallet())}
-      className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
-    >
-      Wallet
-    </button>
-
-    {/* Avatar */}
-    <div className="relative" ref={dropdownRef}>
-      <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
-        <div className="p-[2px] bg-black bg-opacity-80 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
-          <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
-        </div>
-      </button>
-      {isDropdownOpen && (
-        <div className="absolute right-0 mt-3">
-          <UserDropdown />
-          <button
-            onClick={() => {
-              setIsAvatarModalOpen(true);
-              setIsDropdownOpen(false);
-            }}
-            className="mt-2 w-full bg-pink-500 text-white px-3 py-1 rounded hover:bg-pink-400 text-sm"
-          >
-            Change Avatar
+      <header className="fixed top-0 left-0 right-0 w-full h-16 bg-zinc-900 bg-opacity-90 border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300">
+        <div className="flex items-center gap-4">
+          <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
+          <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold px-3 py-1 rounded-lg shadow-md hover:opacity-90 transition text-sm">
+            🎁 Bonus
           </button>
         </div>
+
+        <div className="flex items-center gap-3 text-white relative">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
+          />
+
+          <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
+            <span>${balance}</span>
+          </div>
+
+          <button
+            onClick={() => (wallet ? setIsWalletModalOpen(true) : connectWallet())}
+            className="bg-red-600 px-4 py-1 rounded-lg text-white text-sm shadow-md hover:opacity-80 transition"
+          >
+            Wallet
+          </button>
+
+          <div className="relative" ref={dropdownRef}>
+            <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="focus:outline-none">
+              <div className="p-[2px] bg-black bg-opacity-80 rounded-full border-2 border-pink-500 shadow-[0_0_10px_rgba(255,0,255,0.7)]">
+                <Image src={avatarURL} alt="User Avatar" width={36} height={36} className="rounded-full" />
+              </div>
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-3">
+                <UserDropdown />
+                <button
+                  onClick={() => {
+                    setIsAvatarModalOpen(true);
+                    setIsDropdownOpen(false);
+                  }}
+                  className="mt-2 w-full bg-pink-500 text-white px-3 py-1 rounded hover:bg-pink-400 text-sm"
+                >
+                  Change Avatar
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {isWalletModalOpen && (
+        <WalletModal onClose={() => setIsWalletModalOpen(false)} refreshBalance={refreshBalance} />
       )}
-    </div>
-  </div>
-</header>
 
-{isWalletModalOpen && (
-  <WalletModal onClose={() => setIsWalletModalOpen(false)} />
-)}
-
-{isAvatarModalOpen && <AvatarModal />}
-</>
+      {isAvatarModalOpen && <AvatarModal />}
+    </>
   );
 }
-
