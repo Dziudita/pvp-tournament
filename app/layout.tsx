@@ -1,4 +1,5 @@
 import './globals.css';
+import Footer from '@/components/Footer'; // būtinai importuok
 
 export const metadata = {
   title: 'Cherzi',
@@ -15,8 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-white min-h-screen">
-        {children}
+      <body className="bg-black text-white min-h-screen flex flex-col">
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer /> {/* Footer čia, visada puslapio apačioje */}
       </body>
     </html>
   );
