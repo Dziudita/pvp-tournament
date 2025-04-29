@@ -6,31 +6,34 @@ import LoginModal from './LoginModal';
 import Loader from './Loader';
 
 export default function AuthWrapper({ children }: { children: React.ReactNode }) {
-  const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
-    const checkSession = async () => {
+    const getSession = async () => {
       const { data } = await supabase.auth.getSession();
-      setLoggedIn(!!data.session?.user);
+      setSession(data.session);
       setLoading(false);
     };
-    checkSession();
+
+    getSession();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setLoggedIn(!!session?.user);
+      setSession(session);
       setLoading(false);
     });
 
-    return () => listener.subscription.unsubscribe();
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   if (loading) return <Loader />;
-  if (!loggedIn) return <LoginModal />;
+  if (!session) return <LoginModal />;
 
-  return (
-    <>
-      {children} {/* Header pašalintas */}
+  return <>{children}</>;
+}
+
     </>
   );
 }
