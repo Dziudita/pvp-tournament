@@ -2,16 +2,28 @@
 import { useState } from "react";
 import { depositUSDC } from "@/lib/usdc";
 
-export default function DepositButton({ userId }: { userId: string }) {
+export default function DepositButton({
+  userId,
+  onSuccess,
+}: {
+  userId: string;
+  onSuccess?: () => void; // <- callback prop
+}) {
   const [amount, setAmount] = useState(1); // default: 1 USDC
   const [loading, setLoading] = useState(false);
-console.log("🚀 DepositButton RODOMAS su userId:", userId); // ← PRIDĖK ŠITĄ
+
+  console.log("🚀 DepositButton RODOMAS su userId:", userId);
 
   const handleDeposit = async () => {
     try {
       setLoading(true);
       const txHash = await depositUSDC(amount, userId);
       alert(`✅ Deposit sėkmingas! Tx hash: ${txHash}`);
+
+      // 🟢 Po sėkmingo depozito atnaujink balansą
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (err) {
       alert("🛑 Klaida atliekant depozitą");
       console.error(err);
