@@ -5,6 +5,7 @@ import { depositUSDC } from "@/lib/usdc";
 export default function DepositButton({ userId }: { userId: string }) {
   const [amount, setAmount] = useState(1); // default: 1 USDC
   const [loading, setLoading] = useState(false);
+console.log("🚀 DepositButton RODOMAS su userId:", userId); // ← PRIDĖK ŠITĄ
 
   const handleDeposit = async () => {
     try {
