@@ -113,7 +113,10 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
       </aside>
 
       {showWalletModal && (
-        <WalletModal onClose={() => setShowWalletModal(false)} />
+       <WalletModal
+  onClose={() => setShowWalletModal(false)}
+  refreshBalance={() => {}}
+/>
       )}
     </>
   );
