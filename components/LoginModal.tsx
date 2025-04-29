@@ -96,7 +96,7 @@ export default function LoginModal() {
 
       if (data.session) {
         await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
-        window.location.href = "/";
+       window.location.reload();
       } else {
         alert("Account created, but no active session found.");
       }
