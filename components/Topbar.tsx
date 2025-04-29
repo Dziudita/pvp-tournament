@@ -27,32 +27,29 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // ⏱️ Balance fetch
- const refreshBalance = async () => {
-  if (!wallet) return;
+  // ✅ FIXED balance fetch
+  const refreshBalance = async () => {
+    if (!wallet) return;
 
-  const { data, error } = await supabase
-    .from("wallet_balances")
-    .select("balance")
-    .eq("wallet", wallet)
-    .single();
+    const { data, error } = await supabase
+      .from("wallet_balances")
+      .select("balance")
+      .eq("wallet", wallet)
+      .single();
 
-  if (error) {
-    console.error("❌ Klaida gaunant balansą:", error.message);
-    return;
-  }
+    if (error) {
+      console.error("❌ Klaida gaunant balansą:", error.message);
+      return;
+    }
 
-  if (data && "balance" in data && typeof data.balance === "number") {
-    setBalance(data.balance.toFixed(2));
-  } else {
-    console.warn("⚠️ Balansas nerastas arba neteisingas formatas.");
-  }
-};
+    if (data && "balance" in data && typeof data.balance === "number") {
+      setBalance(data.balance.toFixed(2));
+    } else {
+      console.warn("⚠️ Balansas nerastas arba neteisingas formatas.");
+    }
+  };
 
-
-
-
-  // 🎧 Realtime balance listener
+  // 🔄 Realtime balance listener
   useEffect(() => {
     if (!wallet) return;
 
@@ -80,6 +77,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
     };
   }, [wallet]);
 
+  // 👤 Avatar + Wallet init
   useEffect(() => {
     const checkWallet = async () => {
       if ((window as any).ethereum) {
