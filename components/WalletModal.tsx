@@ -46,7 +46,7 @@ export default function WalletModal({
           </>
         ) : (
           <>
-           <DepositButton userId={user.id} onSuccess={refreshBalance} />
+            <DepositButton userId={user.id} onSuccess={refreshBalance} />
             <button
               onClick={() => setShowDeposit(false)}
               className="text-pink-400 mt-4 hover:underline"
