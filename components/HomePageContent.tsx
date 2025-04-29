@@ -45,9 +45,10 @@ export default function HomePageContent() {
         <div className={`${collapsed ? "ml-20" : "ml-64"} transition-all duration-300 w-full`}>
         <div className="flex flex-col md:flex-row justify-between items-start px-8 mt-10 gap-6">
   {/* Perkeltas TopPlayerOfDay į kairę */}
-  <div className="w-full md:w-1/2 max-w-md">
-    <TopPlayerOfDay />
-  </div>
+ <div className={`mt-10 px-4 ${collapsed ? "ml-24" : "ml-64"}`}>
+  <TopPlayerOfDay />
+</div>
+
 
   {/* Turnyro mygtukas dešinėje */}
   <Image
