@@ -10,12 +10,17 @@ import { useState } from "react";
 import Image from "next/image";
 import TournamentSelectModal from "@/components/TournamentSelectModal";
 import DepositButton from "@/components/DepositButton";
+import useUser from "@/hooks/useUser"; // jeigu hooks folderis tavo /src ar / pagrinde
 
 export default function HomePage() {
+ const { user, loading } = useUser();
   const [collapsed, setCollapsed] = useState(false);
   const [showTournamentModal, setShowTournamentModal] = useState(false);
 const [showTournamentSelectModal, setShowTournamentSelectModal] = useState(false);
 const [selectedTournament, setSelectedTournament] = useState<string | null>(null);
+
+ if (loading) return <div className="text-white p-4">Loading user...</div>;
+  if (!user) return <div className="text-white p-4">Please log in</div>;
 
   // Testiniai žaidėjai turnyrui
   const testPlayers = [
@@ -66,11 +71,11 @@ const [selectedTournament, setSelectedTournament] = useState<string | null>(null
   className="cursor-pointer hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_15px_rgba(255,0,255,0.7)]"
 />
             </div>
-{/* 💸 Deposit sekcija */}
-<div className="mt-6 px-8">
-  <h2 className="text-lg font-bold mb-2">💰 Deposit USDC</h2>
-  <DepositButton userId={"TAVO_USER_ID"} />
-</div>
+ {/* 💸 Deposit sekcija */}
+        <div className="mt-6 px-8">
+          <h2 className="text-lg font-bold mb-2">💰 Deposit USDC</h2>
+          <DepositButton userId={user.id} />
+        </div>
 
             {/* Leaderboard */}
             <div className="mt-10 px-8 md:ml-36">
