@@ -3,12 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import Sidebar from "../components/Sidebar";
-import CherryChat from "../components/CherryChat";
 import Topbar from "@/components/Topbar";
 import TopPlayerOfDay from "../components/TopPlayerOfDay";
 import TournamentRoomModal from "@/components/TournamentRoomModal";
 import TournamentSelectModal from "@/components/TournamentSelectModal";
-import DepositButton from "@/components/DepositButton";
+import CherryChat from "@/components/CherryChat";
 import useUser from "@/hooks/useUser";
 
 export default function HomePageContent() {
@@ -20,8 +19,8 @@ export default function HomePageContent() {
   const { user } = useUser();
 
   return (
-    <div className="relative min-h-screen text-white overflow-hidden">
-      {/* Fonas */}
+    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      {/* Background */}
       <Image
         src="/assets/vs-cherries-bg.png"
         alt="VS Cherries Background"
@@ -30,13 +29,22 @@ export default function HomePageContent() {
         priority
       />
 
-      {/* Sidebar ir Topbar */}
+      {/* Fixed Sidebar */}
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+
+      {/* Fixed Topbar */}
       <Topbar collapsed={collapsed} />
 
-      {/* Pagrindinis turinys su korekcija į dešinę */}
-      <div className={`pt-16 pl-4 pr-4 pb-16 transition-all duration-300 ${collapsed ? 'ml-14' : 'ml-40'}`}>
-        {/* Turnyro mygtukas */}
+      {/* Scrollable main content */}
+      <div
+        className={`
+          pt-16 pb-32 pr-4 pl-4
+          transition-all duration-300
+          ${collapsed ? 'ml-14' : 'ml-40'}
+          h-screen overflow-y-auto relative z-10
+        `}
+      >
+        {/* Tournament button */}
         <div className="mt-8">
           <Image
             src="/assets/tournament-button.png"
@@ -48,7 +56,7 @@ export default function HomePageContent() {
           />
         </div>
 
-        {/* Top žaidėjas */}
+        {/* Top player of the day */}
         <div className="mt-12">
           <TopPlayerOfDay />
         </div>
@@ -73,8 +81,10 @@ export default function HomePageContent() {
         />
       )}
 
-      {/* Chat visada apačioje */}
-      <CherryChat />
+      {/* Fixed Chat at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <CherryChat />
+      </div>
     </div>
   );
 }
