@@ -85,11 +85,13 @@ export default function CherryChat() {
     const avatar = profile?.avatar || "/avatars/default.png";
 
     const newChat = {
-      avatar,
-      nickname,
-      message: newMessage,
-      timestamp: Date.now(),
-    };
+  user_id: user.id,
+  avatar,
+  nickname,
+  message: newMessage,
+  timestamp: Date.now(),
+};
+
 
     const { error: insertError } = await supabase.from("chat_messages").insert([newChat]);
 
