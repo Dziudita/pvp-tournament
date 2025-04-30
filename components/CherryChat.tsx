@@ -93,28 +93,22 @@ export default function CherryChat() {
     }
   }, [messages, chatOpen]);
 
-  const handleSend = async () => {
-    if (newMessage.trim() === "") return;
+const handleSend = async () => {
+  if (newMessage.trim() === "") return;
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
 
-    const { data: profile } = await supabase
-      .from("users")
-      .select("nickname, avatar")
-      .eq("id", user.id)
-      .single();
-
-    const newChat = {
-  user_id: user.id,
-  message: newMessage,
-  timestamp: Date.now(),
-};
-
-
-    const { error } = await supabase.from("chat_messages").insert([newChat]);
-    if (!error) setNewMessage("");
+  const newChat = {
+    user_id: user.id,
+    message: newMessage,
+    timestamp: Date.now(),
   };
+
+  const { error } = await supabase.from("chat_messages").insert([newChat]);
+  if (error) console.error("❌ Insert error:", error);
+  else setNewMessage("");
+};
 
   return (
     <>
