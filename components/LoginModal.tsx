@@ -18,13 +18,8 @@ export default function LoginModal() {
   const [error, setError] = useState("");
   const [confirmAge, setConfirmAge] = useState(false);
 
-  useEffect(() => {
-    console.log("✅ LoginModal komponentas įkeltas");
-  }, []);
+  const validatePassword = (pw: string) => pw.length >= 5 && /\d/.test(pw);
 
-  const validatePassword = (pw) => pw.length >= 5 && /\d/.test(pw);
-
-  // 🆕 FUNKCIJA įrašyti stats jei neegzistuoja
   const createStatsIfNotExist = async (nickname: string) => {
     const { data: existingUser, error: checkError } = await supabase
       .from("users_stats")
@@ -35,20 +30,18 @@ export default function LoginModal() {
     if (!existingUser && !checkError) {
       const { error: insertError } = await supabase.from("users_stats").insert([
         {
-          nickname: nickname,
+          nickname,
           wins: 0,
           xp: 0,
           wager: 0,
         },
       ]);
       if (insertError) console.error("❌ Failed to insert stats:", insertError);
-      else console.log("✅ Stats created for:", nickname);
     }
   };
 
-  const handleAuth = async (e) => {
+  const handleAuth = async (e: any) => {
     e.preventDefault();
-    console.log("🚀 handleAuth pradėjo veikti");
     setError("");
 
     if (!email || !password || (isSignUp && (!confirmPassword || !nickname))) {
@@ -72,8 +65,6 @@ export default function LoginModal() {
         password,
       });
 
-      console.log("🟢 signUp result:", data);
-
       if (signUpError) return setError(signUpError.message);
 
       const userId = data.user?.id;
@@ -85,6 +76,7 @@ export default function LoginModal() {
             nickname,
             referral_code: referralCode || null,
             role: "user",
+            avatar: "/avatars/default.png",
           },
         ]);
 
@@ -92,13 +84,12 @@ export default function LoginModal() {
           console.error("❌ Failed to insert user details:", insertError.message);
           return setError("User created, but failed to save nickname/referral.");
         }
-      }
 
-      if (data.session) {
-        await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
-       window.location.reload();
-      } else {
-        alert("Account created, but no active session found.");
+        localStorage.setItem("cherzi-nick", nickname);
+        localStorage.setItem("cherzi-avatar", "/avatars/default.png");
+
+        await createStatsIfNotExist(nickname);
+        window.location.reload();
       }
     } else {
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
@@ -106,27 +97,35 @@ export default function LoginModal() {
         password,
       });
 
-      console.log("🔐 signIn result:", signInData);
-
       if (signInError) return setError(signInError.message);
 
-      await createStatsIfNotExist(nickname); // 🆕 Pridėta čia
-      window.location.reload(); // ✅ vietoj href
+      const userId = signInData.user?.id;
+
+      if (userId) {
+        const { data: profile } = await supabase
+          .from("users")
+          .select("nickname, avatar")
+          .eq("id", userId)
+          .single();
+
+        if (profile) {
+          localStorage.setItem("cherzi-nick", profile.nickname);
+          localStorage.setItem("cherzi-avatar", profile.avatar || "/avatars/default.png");
+
+          await createStatsIfNotExist(profile.nickname);
+        }
+      }
+
+      window.location.reload();
     }
   };
 
   return (
     <div className="fixed inset-0 z-40">
-      <Image
-        src="/assets/login-bg.png"
-        alt="Background"
-        fill
-        className="object-cover brightness-110 contrast-110 hidden md:block"
-        priority
-      />
+      <Image src="/assets/login-bg.png" alt="Background" fill className="object-cover hidden md:block" priority />
       <div className="block md:hidden absolute inset-0 bg-black" />
       <div className="absolute inset-0 bg-black/50 flex items-center justify-center px-4 py-8 overflow-y-auto">
-        <div className="w-full max-w-xs bg-black/80 p-6 rounded-2xl border border-pink-500 shadow-[0_0_30px_rgba(255,0,255,0.3)] relative z-50">
+        <div className="w-full max-w-xs bg-black/80 p-6 rounded-2xl border border-pink-500 shadow-lg relative z-50">
           <div className="flex flex-col items-center mb-4">
             <Image src="/assets/cherry-mascot.png" alt="Cherzi Mascot" width={70} height={70} />
             <h2 className="text-2xl font-bold text-pink-400 mt-2">CHERZI ARENA</h2>
