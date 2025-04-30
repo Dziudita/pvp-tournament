@@ -2,24 +2,37 @@
 
 import React from 'react';
 
-const dailyRooms = [
-  { id: 'alpha', name: 'Arena Alpha', entry: '$1 Entry', players: '2 / 4' },
-  { id: 'bravo', name: 'Arena Bravo', entry: '$2 Entry', players: '1 / 4' },
-];
+type TournamentRoom = {
+  id: string;
+  name: string;
+  entry_amount: number;
+  max_players: number;
+  players_joined: number;
+  is_open: boolean;
+  created_at: string;
+};
 
-export default function DailyTournamentRooms({ onBack }: { onBack: () => void }) {
+export default function DailyTournamentRooms({
+  rooms,
+  onBack,
+}: {
+  rooms: TournamentRoom[];
+  onBack: () => void;
+}) {
   return (
     <div className="text-center p-6 border border-pink-500 rounded-xl bg-black text-white max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-pink-400">🏆 Daily Tournament Rooms</h2>
 
       <div className="space-y-4">
-        {dailyRooms.map((room) => (
+        {rooms.map((room) => (
           <div
             key={room.id}
             className="bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg p-4 shadow-md"
           >
             <h3 className="text-lg font-semibold">{room.name}</h3>
-            <p>{room.entry} · Players: {room.players}</p>
+            <p>
+              ${room.entry_amount} Entry · Players: {room.players_joined} / {room.max_players}
+            </p>
             <button className="mt-2 bg-black text-white font-bold py-1 px-4 rounded hover:bg-gray-900">
               Join
             </button>
@@ -27,10 +40,7 @@ export default function DailyTournamentRooms({ onBack }: { onBack: () => void })
         ))}
       </div>
 
-      <button
-        className="mt-6 text-pink-400 hover:underline"
-        onClick={onBack}
-      >
+      <button className="mt-6 text-pink-400 hover:underline" onClick={onBack}>
         ← Back
       </button>
     </div>
