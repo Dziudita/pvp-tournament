@@ -96,7 +96,6 @@ export default function CherryChat() {
     const { error: insertError } = await supabase.from("chat_messages").insert([newChat]);
 
     if (!insertError) {
-      setMessages((prev) => [...prev, newChat]);
       setNewMessage("");
     }
   };
