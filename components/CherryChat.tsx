@@ -18,11 +18,11 @@ export default function CherryChat() {
       const userId = userData?.user?.id;
 
       if (!userId) {
-        console.warn("⛔ Vartotojas neprisijungęs – chat'as tik readonly.");
+        console.warn("⛔ Vartotojas neprisijungęs – chat'as readonly režimu.");
         return;
       }
 
-      const { data: profile, error } = await supabase
+      const { data: profile } = await supabase
         .from("users")
         .select("nickname, avatar")
         .eq("id", userId)
@@ -31,27 +31,54 @@ export default function CherryChat() {
       const nickname = profile?.nickname || "User";
       const avatar = profile?.avatar || "/avatars/default.png";
 
-      // Saugojimas į localStorage (jei nori naudoti kitur)
       localStorage.setItem("cherzi-nick", nickname);
       localStorage.setItem("cherzi-avatar", avatar);
 
       setUserInfo({ nickname, avatar });
 
-      // Fetch messages
-      const { data: chatData, error: msgError } = await supabase
+      const { data: chatData } = await supabase
         .from("chat_messages")
         .select("*")
         .order("timestamp", { ascending: true });
 
-      if (!msgError) setMessages(chatData || []);
+      const enriched = await Promise.all(
+        (chatData || []).map(async (msg) => {
+          const { data: user } = await supabase
+            .from("users")
+            .select("nickname, avatar")
+            .eq("id", msg.user_id)
+            .single();
+
+          return {
+            ...msg,
+            nickname: user?.nickname || "User",
+            avatar: user?.avatar || "/avatars/default.png",
+          };
+        })
+      );
+
+      setMessages(enriched);
     };
 
     fetchUserAndMessages();
 
     const subscription = supabase
       .channel("chat-realtime")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (payload) => {
-        setMessages((prev) => [...prev, payload.new]);
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, async (payload) => {
+        const msg = payload.new;
+        const { data: profile } = await supabase
+          .from("users")
+          .select("nickname, avatar")
+          .eq("id", msg.user_id)
+          .single();
+
+        const enrichedMsg = {
+          ...msg,
+          nickname: profile?.nickname || "User",
+          avatar: profile?.avatar || "/avatars/default.png",
+        };
+
+        setMessages((prev) => [...prev, enrichedMsg]);
       })
       .subscribe();
 
@@ -70,34 +97,24 @@ export default function CherryChat() {
     if (newMessage.trim() === "") return;
 
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      alert("❌ You must be logged in to send messages.");
-      return;
-    }
+    if (!user) return;
 
-    const { data: profile, error } = await supabase
+    const { data: profile } = await supabase
       .from("users")
       .select("nickname, avatar")
       .eq("id", user.id)
       .single();
 
-    const nickname = profile?.nickname || "User";
-    const avatar = profile?.avatar || "/avatars/default.png";
-
     const newChat = {
-  user_id: user.id,
-  avatar,
-  nickname,
-  message: newMessage,
-  timestamp: Date.now(),
-};
+      user_id: user.id,
+      nickname: profile?.nickname || "User",
+      avatar: profile?.avatar || "/avatars/default.png",
+      message: newMessage,
+      timestamp: Date.now(),
+    };
 
-
-    const { error: insertError } = await supabase.from("chat_messages").insert([newChat]);
-
-    if (!insertError) {
-      setNewMessage("");
-    }
+    const { error } = await supabase.from("chat_messages").insert([newChat]);
+    if (!error) setNewMessage("");
   };
 
   return (
@@ -124,7 +141,6 @@ export default function CherryChat() {
                   width={32}
                   height={32}
                   className="rounded-full"
-                  onError={(e) => (e.currentTarget.src = "/avatars/default.png")}
                 />
                 <div>
                   <p className="text-sm text-pink-300 font-semibold">{msg.nickname}</p>
