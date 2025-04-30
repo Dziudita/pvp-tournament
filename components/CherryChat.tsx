@@ -12,49 +12,45 @@ export default function CherryChat() {
   const [userInfo, setUserInfo] = useState({ nickname: "User", avatar: "/avatars/default.png" });
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch user info + messages
   useEffect(() => {
     const fetchUserAndMessages = async () => {
       const { data: userData } = await supabase.auth.getUser();
       const userId = userData?.user?.id;
 
-      let nickname = localStorage.getItem("cherzi-nick") || "User";
-      let avatar = localStorage.getItem("cherzi-avatar") || "/avatars/default.png";
-
-      if (userId) {
-        const { data: profile } = await supabase
-          .from("users")
-          .select("nickname, avatar")
-          .eq("id", userId)
-          .single();
-
-        if (profile) {
-          nickname = profile.nickname || nickname;
-          avatar = profile.avatar || avatar;
-
-          // Saugojimas į localStorage
-          localStorage.setItem("cherzi-nick", nickname);
-          localStorage.setItem("cherzi-avatar", avatar);
-        }
+      if (!userId) {
+        console.warn("⛔ Vartotojas neprisijungęs – chat'as tik readonly.");
+        return;
       }
+
+      const { data: profile, error } = await supabase
+        .from("users")
+        .select("nickname, avatar")
+        .eq("id", userId)
+        .single();
+
+      const nickname = profile?.nickname || "User";
+      const avatar = profile?.avatar || "/avatars/default.png";
+
+      // Saugojimas į localStorage (jei nori naudoti kitur)
+      localStorage.setItem("cherzi-nick", nickname);
+      localStorage.setItem("cherzi-avatar", avatar);
 
       setUserInfo({ nickname, avatar });
 
       // Fetch messages
-      const { data: chatData, error } = await supabase
+      const { data: chatData, error: msgError } = await supabase
         .from("chat_messages")
         .select("*")
         .order("timestamp", { ascending: true });
 
-      if (!error) setMessages(chatData || []);
+      if (!msgError) setMessages(chatData || []);
     };
 
     fetchUserAndMessages();
 
-    // Realtime - tik DB changes
     const subscription = supabase
-      .channel('chat-realtime')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
+      .channel("chat-realtime")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (payload) => {
         setMessages((prev) => [...prev, payload.new]);
       })
       .subscribe();
@@ -64,50 +60,44 @@ export default function CherryChat() {
     };
   }, []);
 
-  // Scroll į apačią
   useEffect(() => {
     if (chatOpen) {
       scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, chatOpen]);
 
-  // Siunčiam žinutę į Supabase
-const handleSend = async () => {
-  if (newMessage.trim() === "") return;
+  const handleSend = async () => {
+    if (newMessage.trim() === "") return;
 
-  const { data: { user } } = await supabase.auth.getUser();
-  console.log("Auth user:", user);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      alert("❌ You must be logged in to send messages.");
+      return;
+    }
 
-  if (!user) return;
+    const { data: profile, error } = await supabase
+      .from("users")
+      .select("nickname, avatar")
+      .eq("id", user.id)
+      .single();
 
-  const { data: profile, error } = await supabase
-    .from("users")
-    .select("nickname, avatar")
-    .eq("id", user.id)
-    .single();
+    const nickname = profile?.nickname || "User";
+    const avatar = profile?.avatar || "/avatars/default.png";
 
-  console.log("Profile from DB:", profile);
-  console.log("DB error:", error);
+    const newChat = {
+      avatar,
+      nickname,
+      message: newMessage,
+      timestamp: Date.now(),
+    };
 
-  const nickname = profile?.nickname || "User";
-  const avatar = profile?.avatar || "/avatars/default.png";
+    const { error: insertError } = await supabase.from("chat_messages").insert([newChat]);
 
-  const newChat = {
-    avatar,
-    nickname,
-    message: newMessage,
-    timestamp: Date.now(),
+    if (!insertError) {
+      setMessages((prev) => [...prev, newChat]);
+      setNewMessage("");
+    }
   };
-
-  const { error: insertError } = await supabase.from("chat_messages").insert([newChat]);
-
-  if (!insertError) {
-    setMessages((prev) => [...prev, newChat]);
-    setNewMessage("");
-  }
-};
-
-
 
   return (
     <>
@@ -125,9 +115,16 @@ const handleSend = async () => {
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
-            {messages.map((msg) => (
-              <div key={msg.timestamp} className="flex items-start gap-3">
-                <Image src={msg.avatar} alt="avatar" width={32} height={32} className="rounded-full" />
+            {messages.map((msg, i) => (
+              <div key={msg.timestamp + i} className="flex items-start gap-3">
+                <Image
+                  src={msg.avatar || "/avatars/default.png"}
+                  alt="avatar"
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                  onError={(e) => (e.currentTarget.src = "/avatars/default.png")}
+                />
                 <div>
                   <p className="text-sm text-pink-300 font-semibold">{msg.nickname}</p>
                   <div className="bg-zinc-800 px-3 py-2 rounded-xl text-sm text-white max-w-[240px] break-words">
