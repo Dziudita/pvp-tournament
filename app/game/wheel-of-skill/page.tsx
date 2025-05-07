@@ -164,8 +164,8 @@ export default function WheelGame() {
         <Image
   src="/assets/wheel.png"
   alt="Cherry Center"
-  width={120}
-  height={120}
+  width={160}
+  height={160}
   className="drop-shadow-[0_0_10px_rgba(255,0,255,0.6)]"
 />
 
