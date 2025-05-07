@@ -1,5 +1,3 @@
-Pereiti prie turinio
-Pasakėte:
 'use client';
 
 import React from 'react';
