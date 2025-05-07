@@ -125,8 +125,24 @@ export default function WheelGame() {
       setSpeed(getSpinSpeed());
       setSpinning(true);
     } else if (!slowingDown) {
-      setSlowingDown(true);
-    }
+    // IŠKART SUSTABDO IR ĮVERTINA
+    setSpinning(false);
+    setSlowingDown(false);
+    setSpeed(0);
+
+    const currentAngle = angle % (2 * Math.PI);
+    const diff = Math.abs(currentAngle - targetAngle);
+    const distance = Math.min(diff, 2 * Math.PI - diff);
+    const hitTolerance = getHitTolerance();
+
+    const message =
+      (distance < hitTolerance ? '🎯 HIT!' : '💨 Miss') +
+      `\nOffset: ${distance.toFixed(2)} rad\nLevel: ${difficulty.toUpperCase()}`;
+
+    setResultMessage(message);
+    setTimeout(() => setResultMessage(null), 3000);
+  }
+
   };
 
   return (
