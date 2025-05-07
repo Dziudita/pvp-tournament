@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function WheelGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+
   const [spinning, setSpinning] = useState(false);
   const [slowingDown, setSlowingDown] = useState(false);
   const [angle, setAngle] = useState(0);
@@ -17,19 +19,24 @@ export default function WheelGame() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    ctxRef.current = ctx;
+
     function drawWheel() {
+      if (!ctxRef.current || !canvasRef.current) return;
+
+      const ctx = ctxRef.current;
+      const canvas = canvasRef.current;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.save();
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(angle);
 
-      // Wheel
       ctx.beginPath();
       ctx.arc(0, 0, 150, 0, 2 * Math.PI);
       ctx.fillStyle = '#333';
       ctx.fill();
 
-      // Pointer
       ctx.beginPath();
       ctx.moveTo(0, -140);
       ctx.lineTo(10, -150);
@@ -40,7 +47,6 @@ export default function WheelGame() {
 
       ctx.restore();
 
-      // Target (red dot)
       const targetX = canvas.width / 2 + 150 * Math.cos(targetAngle);
       const targetY = canvas.height / 2 + 150 * Math.sin(targetAngle);
       ctx.beginPath();
