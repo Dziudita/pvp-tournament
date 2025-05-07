@@ -12,16 +12,22 @@ type TournamentRoom = {
   created_at: string;
 };
 
+interface DailyTournamentRoomsProps {
+  rooms?: TournamentRoom[];
+  onBack?: () => void;
+  tournamentType: string;
+}
+
 export default function DailyTournamentRooms({
   rooms = [],
   onBack = () => {},
-}: {
-  rooms?: TournamentRoom[];
-  onBack?: () => void;
-}) {
+  tournamentType,
+}: DailyTournamentRoomsProps) {
   return (
     <div className="text-center p-6 border border-pink-500 rounded-xl bg-black text-white max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-pink-400">🏆 Daily Tournament Rooms</h2>
+      <h2 className="text-2xl font-bold mb-4 text-pink-400">
+        🏆 {tournamentType} Tournament Rooms
+      </h2>
 
       {rooms.length > 0 ? (
         <div className="space-y-4">
