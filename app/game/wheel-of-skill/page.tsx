@@ -11,6 +11,7 @@ export default function WheelGame() {
   const [angle, setAngle] = useState(0);
   const [targetAngle, setTargetAngle] = useState(Math.random() * 2 * Math.PI);
   const [speed, setSpeed] = useState(0);
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -18,12 +19,10 @@ export default function WheelGame() {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
     ctxRef.current = ctx;
 
     function drawWheel() {
       if (!ctxRef.current || !canvasRef.current) return;
-
       const ctx = ctxRef.current;
       const canvas = canvasRef.current;
 
@@ -32,11 +31,13 @@ export default function WheelGame() {
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(angle);
 
+      // Wheel
       ctx.beginPath();
       ctx.arc(0, 0, 150, 0, 2 * Math.PI);
       ctx.fillStyle = '#333';
       ctx.fill();
 
+      // Pointer
       ctx.beginPath();
       ctx.moveTo(0, -140);
       ctx.lineTo(10, -150);
@@ -47,6 +48,7 @@ export default function WheelGame() {
 
       ctx.restore();
 
+      // Target
       const targetX = canvas.width / 2 + 150 * Math.cos(targetAngle);
       const targetY = canvas.height / 2 + 150 * Math.sin(targetAngle);
       ctx.beginPath();
@@ -75,7 +77,12 @@ export default function WheelGame() {
               const currentAngle = angle % (2 * Math.PI);
               const diff = Math.abs(currentAngle - targetAngle);
               const distance = Math.min(diff, 2 * Math.PI - diff);
-              alert((distance < 0.15 ? '🎯 HIT!' : '💨 Miss') + `\nOffset: ${distance.toFixed(2)} rad`);
+              const hitTolerance = getHitTolerance();
+
+              alert(
+                (distance < hitTolerance ? '🎯 HIT!' : '💨 Miss') +
+                  `\nOffset: ${distance.toFixed(2)} rad\nLevel: ${difficulty.toUpperCase()}`
+              );
               return 0;
             }
             return newSpeed;
@@ -91,12 +98,28 @@ export default function WheelGame() {
     }
 
     return () => cancelAnimationFrame(animationId);
-  }, [spinning, angle, targetAngle, speed, slowingDown]);
+  }, [spinning, angle, targetAngle, speed, slowingDown, difficulty]);
+
+  const getSpinSpeed = () => {
+    switch (difficulty) {
+      case 'easy': return 0.2;
+      case 'medium': return 0.35;
+      case 'hard': return 0.55;
+    }
+  };
+
+  const getHitTolerance = () => {
+    switch (difficulty) {
+      case 'easy': return 0.3;
+      case 'medium': return 0.15;
+      case 'hard': return 0.07;
+    }
+  };
 
   const handleSpin = () => {
     if (!spinning) {
       setTargetAngle(Math.random() * 2 * Math.PI);
-      setSpeed(0.3);
+      setSpeed(getSpinSpeed());
       setSpinning(true);
     } else if (!slowingDown) {
       setSlowingDown(true);
@@ -105,7 +128,25 @@ export default function WheelGame() {
 
   return (
     <div className="text-center p-6 min-h-screen bg-gradient-to-b from-black to-zinc-900">
-      <h1 className="text-3xl font-bold mb-6 text-pink-400">🎯 Wheel of Skill</h1>
+      <h1 className="text-3xl font-bold mb-4 text-pink-400">🎯 Wheel of Skill</h1>
+
+      {/* Difficulty selector */}
+      <div className="flex justify-center gap-4 mb-6">
+        {['easy', 'medium', 'hard'].map((level) => (
+          <button
+            key={level}
+            onClick={() => setDifficulty(level as 'easy' | 'medium' | 'hard')}
+            className={`px-4 py-2 rounded font-bold border ${
+              difficulty === level
+                ? 'bg-pink-600 text-white border-pink-400'
+                : 'bg-zinc-800 text-zinc-300 border-zinc-500'
+            }`}
+          >
+            {level.toUpperCase()}
+          </button>
+        ))}
+      </div>
+
       <canvas
         ref={canvasRef}
         width={400}
