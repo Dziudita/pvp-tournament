@@ -12,8 +12,10 @@ export default function WheelGame() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-  const ctx = canvas!.getContext('2d')!;
-    if (!canvas || !ctx) return;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     function drawWheel() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -21,11 +23,13 @@ export default function WheelGame() {
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(angle);
 
+      // Wheel
       ctx.beginPath();
       ctx.arc(0, 0, 150, 0, 2 * Math.PI);
       ctx.fillStyle = '#333';
       ctx.fill();
 
+      // Pointer
       ctx.beginPath();
       ctx.moveTo(0, -140);
       ctx.lineTo(10, -150);
@@ -36,6 +40,7 @@ export default function WheelGame() {
 
       ctx.restore();
 
+      // Target (red dot)
       const targetX = canvas.width / 2 + 150 * Math.cos(targetAngle);
       const targetY = canvas.height / 2 + 150 * Math.sin(targetAngle);
       ctx.beginPath();
