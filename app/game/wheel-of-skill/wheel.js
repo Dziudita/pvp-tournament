@@ -4,13 +4,14 @@ const btn = document.getElementById('spinBtn');
 
 let angle = 0;
 let spinning = false;
-let targetAngle = Math.random() * 2 * Math.PI;
-let speed = 0.1;
+let targetAngle = 0;
+let speed = 0;
+let slowingDown = false;
 
 function drawWheel() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
-  ctx.translate(200, 200);
+  ctx.translate(canvas.width / 2, canvas.height / 2);
   ctx.rotate(angle);
 
   // Ratas
@@ -30,9 +31,9 @@ function drawWheel() {
 
   ctx.restore();
 
-  // Tikslas
-  const targetX = 200 + 150 * Math.cos(targetAngle);
-  const targetY = 200 + 150 * Math.sin(targetAngle);
+  // Tikslas (raudonas taškas)
+  const targetX = canvas.width / 2 + 150 * Math.cos(targetAngle);
+  const targetY = canvas.height / 2 + 150 * Math.sin(targetAngle);
   ctx.beginPath();
   ctx.arc(targetX, targetY, 10, 0, 2 * Math.PI);
   ctx.fillStyle = 'red';
@@ -40,28 +41,44 @@ function drawWheel() {
 }
 
 function animate() {
-  if (spinning) {
-    angle += speed;
-    angle %= 2 * Math.PI;
-    drawWheel();
-    requestAnimationFrame(animate);
+  if (!spinning) return;
+
+  angle += speed;
+  angle %= 2 * Math.PI;
+
+  if (slowingDown) {
+    speed *= 0.98; // ease-out efektas
+    if (speed < 0.002) {
+      spinning = false;
+      slowingDown = false;
+      btn.textContent = "Start";
+
+      const diff = Math.abs((angle % (2 * Math.PI)) - targetAngle);
+      const distance = Math.min(diff, 2 * Math.PI - diff); // trumpiausias atstumas
+
+      const result = distance < 0.15 ? "🎯 HIT!" : "💨 Miss";
+      alert(`${result}\nOffset: ${distance.toFixed(2)} rad`);
+      return;
+    }
   }
+
+  drawWheel();
+  requestAnimationFrame(animate);
 }
 
 btn.onclick = () => {
   if (!spinning) {
+    // Start
     targetAngle = Math.random() * 2 * Math.PI;
-    speed = 0.2;
+    angle = 0;
+    speed = 0.3;
     spinning = true;
     btn.textContent = "Stop";
+    drawWheel();
     animate();
-  } else {
-    spinning = false;
-    btn.textContent = "Start";
-
-    // Tikslumo įvertinimas
-    const diff = Math.abs((angle % (2 * Math.PI)) - targetAngle);
-    const result = diff < 0.1 ? "HIT!" : "Miss";
-    alert(result + ` Offset: ${diff.toFixed(2)} rad`);
+  } else if (!slowingDown) {
+    // Stop
+    slowingDown = true;
+    btn.textContent = "Slowing...";
   }
 };
