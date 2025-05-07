@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export default function WheelGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -149,13 +150,28 @@ export default function WheelGame() {
         ))}
       </div>
 
-      <canvas
-        ref={canvasRef}
-        width={400}
-        height={400}
-        className="bg-black rounded-full mx-auto mb-6 shadow-lg"
-      />
+      {/* Canvas */}
+      <div className="relative w-[400px] h-[400px] mx-auto mb-6">
+        <canvas
+          ref={canvasRef}
+          width={400}
+          height={400}
+          className="bg-black rounded-full shadow-lg"
+        />
 
+        {/* Cherry icon center */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+          <Image
+            src="/assets/wheel.png"
+            alt="Cherry Center"
+            width={80}
+            height={80}
+            className="drop-shadow-[0_0_10px_rgba(255,0,255,0.6)]"
+          />
+        </div>
+      </div>
+
+      {/* Spin button */}
       <button
         onClick={handleSpin}
         className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded shadow-md"
