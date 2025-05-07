@@ -18,6 +18,8 @@ export default function GameHub() {
 
       {/* 🎲 Žaidimų pasirinkimas */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        
+        {/* 🎯 Lucky Squares */}
         <Link
           href="/game/lucky-squares"
           className="rounded-xl bg-zinc-800 border border-pink-500 p-6 hover:bg-zinc-700 transition shadow-lg hover:shadow-pink-500/20"
@@ -28,7 +30,18 @@ export default function GameHub() {
           </p>
         </Link>
 
-        {/* 🔒 Kiti žaidimai vėliau */}
+        {/* 🌀 Wheel of Skill */}
+        <Link
+          href="/game/wheel"
+          className="rounded-xl bg-zinc-800 border border-blue-500 p-6 hover:bg-zinc-700 transition shadow-lg hover:shadow-blue-500/20"
+        >
+          <h2 className="text-2xl font-bold text-blue-300 mb-2">🌀 Wheel of Skill</h2>
+          <p className="text-sm text-zinc-300">
+            Spin the wheel and try to hit the red marker. Precision matters!
+          </p>
+        </Link>
+
+        {/* 🔒 Coin Flip */}
         <Link
           href="#"
           className="rounded-xl bg-zinc-800 border border-zinc-600 p-6 opacity-40 cursor-not-allowed"
