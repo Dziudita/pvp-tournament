@@ -12,6 +12,7 @@ export default function WheelGame() {
   const [targetAngle, setTargetAngle] = useState(Math.random() * 2 * Math.PI);
   const [speed, setSpeed] = useState(0);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
+  const [resultMessage, setResultMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -79,10 +80,11 @@ export default function WheelGame() {
               const distance = Math.min(diff, 2 * Math.PI - diff);
               const hitTolerance = getHitTolerance();
 
-              alert(
+              const message =
                 (distance < hitTolerance ? '🎯 HIT!' : '💨 Miss') +
-                  `\nOffset: ${distance.toFixed(2)} rad\nLevel: ${difficulty.toUpperCase()}`
-              );
+                `\nOffset: ${distance.toFixed(2)} rad\nLevel: ${difficulty.toUpperCase()}`;
+              setResultMessage(message);
+              setTimeout(() => setResultMessage(null), 3000);
               return 0;
             }
             return newSpeed;
@@ -127,7 +129,7 @@ export default function WheelGame() {
   };
 
   return (
-    <div className="text-center p-6 min-h-screen bg-gradient-to-b from-black to-zinc-900">
+    <div className="text-center p-6 min-h-screen bg-gradient-to-b from-black to-zinc-900 relative">
       <h1 className="text-3xl font-bold mb-4 text-pink-400">🎯 Wheel of Skill</h1>
 
       {/* Difficulty selector */}
@@ -136,7 +138,7 @@ export default function WheelGame() {
           <button
             key={level}
             onClick={() => setDifficulty(level as 'easy' | 'medium' | 'hard')}
-            className={`px-4 py-2 rounded font-bold border ${
+            className={`px-4 py-2 rounded font-bold border transition ${
               difficulty === level
                 ? 'bg-pink-600 text-white border-pink-400'
                 : 'bg-zinc-800 text-zinc-300 border-zinc-500'
@@ -153,12 +155,20 @@ export default function WheelGame() {
         height={400}
         className="bg-black rounded-full mx-auto mb-6 shadow-lg"
       />
+
       <button
         onClick={handleSpin}
         className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded shadow-md"
       >
         {spinning ? (slowingDown ? 'Slowing...' : 'Stop') : 'Spin'}
       </button>
+
+      {/* Result message */}
+      {resultMessage && (
+        <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 bg-zinc-800 border border-pink-500 text-white px-6 py-4 rounded-xl shadow-lg animate-fade-in">
+          <pre className="whitespace-pre text-sm font-mono text-pink-300">{resultMessage}</pre>
+        </div>
+      )}
     </div>
   );
 }
