@@ -5,14 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wheel of Skill</title>
   <style>
-    canvas { background: #111; display: block; margin: 20px auto; border-radius: 50%; }
-    button { display: block; margin: auto; padding: 10px 20px; font-size: 16px; }
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    canvas {
+      background: #111;
+      display: block;
+      margin: 40px auto;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+    }
+    button {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #ff00aa;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #e60099;
+    }
   </style>
 </head>
 <body>
+  <h1>🎯 Wheel of Skill</h1>
   <canvas id="wheel" width="400" height="400"></canvas>
-  <button id="spinBtn">Start</button>
+  <button id="spinBtn">🎰 Spin the Wheel</button>
 
-  <script src="wheel.js"></script>
+  <script src="wheel.js" defer></script>
 </body>
 </html>
