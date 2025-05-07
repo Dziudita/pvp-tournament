@@ -50,14 +50,20 @@ export default function WheelGame() {
 
       ctx.restore();
 
-      // Target
-      const targetX = canvas.width / 2 + 150 * Math.cos(targetAngle);
-      const targetY = canvas.height / 2 + 150 * Math.sin(targetAngle);
-      ctx.beginPath();
-      ctx.arc(targetX, targetY, 10, 0, 2 * Math.PI);
-      ctx.fillStyle = 'red';
-      ctx.fill();
-    }
+// Fake markers + real target
+const fakeCount = 8;
+for (let i = 0; i < fakeCount; i++) {
+  const angleStep = (2 * Math.PI) / fakeCount;
+  const fakeAngle = i * angleStep;
+  const x = canvas.width / 2 + 150 * Math.cos(fakeAngle);
+  const y = canvas.height / 2 + 150 * Math.sin(fakeAngle);
+
+  ctx.beginPath();
+  ctx.arc(x, y, 7, 0, 2 * Math.PI);
+  ctx.fillStyle = Math.abs(fakeAngle - targetAngle) < 0.01 ? 'red' : 'white';
+  ctx.fill();
+}
+
 
     let animationId: number;
 
