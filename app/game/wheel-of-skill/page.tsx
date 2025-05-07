@@ -12,7 +12,7 @@ export default function WheelGame() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
+  const ctx = canvas!.getContext('2d')!;
     if (!canvas || !ctx) return;
 
     function drawWheel() {
