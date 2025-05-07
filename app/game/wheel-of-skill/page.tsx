@@ -9,10 +9,13 @@ export default function WheelGame() {
 
   const [spinning, setSpinning] = useState(false);
   const [angle, setAngle] = useState(0);
-  const [targetAngle, setTargetAngle] = useState(Math.random() * 2 * Math.PI);
+  const [targetIndex, setTargetIndex] = useState(Math.floor(Math.random() * 8));
   const [speed, setSpeed] = useState(0);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [resultMessage, setResultMessage] = useState<string | null>(null);
+
+  const fakeCount = 8;
+  const angleStep = (2 * Math.PI) / fakeCount;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -39,7 +42,18 @@ export default function WheelGame() {
       ctx.fillStyle = '#333';
       ctx.fill();
 
-      ctx.restore(); // stop rotation
+      // Draw markers while rotated
+      for (let i = 0; i < fakeCount; i++) {
+        const a = i * angleStep;
+        const x = 150 * Math.cos(a);
+        const y = 150 * Math.sin(a);
+        ctx.beginPath();
+        ctx.arc(x, y, 7, 0, 2 * Math.PI);
+        ctx.fillStyle = i === targetIndex ? 'red' : 'white';
+        ctx.fill();
+      }
+
+      ctx.restore();
 
       // 2. Neon pointer (fixed)
       ctx.save();
@@ -49,33 +63,10 @@ export default function WheelGame() {
       ctx.lineTo(canvas.width / 2 - 14, canvas.height / 2 - 130);
       ctx.closePath();
       ctx.fillStyle = 'black';
-      ctx.fill();
       ctx.shadowColor = 'magenta';
       ctx.shadowBlur = 20;
       ctx.fill();
       ctx.restore();
-
-      // 3. Fake white markers
-      const fakeCount = 8;
-      for (let i = 0; i < fakeCount; i++) {
-        const angleStep = (2 * Math.PI) / fakeCount;
-        const fakeAngle = angle + i * angleStep;
-        const x = canvas.width / 2 + 150 * Math.cos(fakeAngle);
-        const y = canvas.height / 2 + 150 * Math.sin(fakeAngle);
-
-        ctx.beginPath();
-        ctx.arc(x, y, 7, 0, 2 * Math.PI);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
-
-      // 4. Real red target
-      const realX = canvas.width / 2 + 150 * Math.cos(angle + targetAngle);
-      const realY = canvas.height / 2 + 150 * Math.sin(angle + targetAngle);
-      ctx.beginPath();
-      ctx.arc(realX, realY, 10, 0, 2 * Math.PI);
-      ctx.fillStyle = 'red';
-      ctx.fill();
     }
 
     let animationId: number;
@@ -93,7 +84,7 @@ export default function WheelGame() {
     }
 
     return () => cancelAnimationFrame(animationId);
-  }, [spinning, angle, targetAngle, speed]);
+  }, [spinning, angle, speed, targetIndex]);
 
   const getSpinSpeed = () => {
     switch (difficulty) {
@@ -113,21 +104,22 @@ export default function WheelGame() {
 
   const handleSpin = () => {
     if (!spinning) {
-      setTargetAngle(Math.random() * 2 * Math.PI);
+      const newIndex = Math.floor(Math.random() * fakeCount);
+      setTargetIndex(newIndex);
       setSpeed(getSpinSpeed());
       setSpinning(true);
     } else {
       setSpinning(false);
       setSpeed(0);
 
-      const currentAngle = angle % (2 * Math.PI);
-      const diff = Math.abs(currentAngle - targetAngle);
-      const distance = Math.min(diff, 2 * Math.PI - diff);
-      const hitTolerance = getHitTolerance();
+      const normalizedAngle = angle % (2 * Math.PI);
+      const landedIndex = Math.round((fakeCount - (normalizedAngle / angleStep)) % fakeCount);
+
+      const isHit = landedIndex === targetIndex;
 
       const message =
-        (distance < hitTolerance ? '🎯 HIT!' : '💨 Miss') +
-        `\nOffset: ${distance.toFixed(2)} rad\nLevel: ${difficulty.toUpperCase()}`;
+        (isHit ? '🎯 HIT!' : '💨 Miss') +
+        `\nYou stopped at: ${landedIndex}\nTarget was: ${targetIndex}\nLevel: ${difficulty.toUpperCase()}`;
 
       setResultMessage(message);
       setTimeout(() => setResultMessage(null), 3000);
