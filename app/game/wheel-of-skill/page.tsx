@@ -33,7 +33,7 @@ export default function WheelGame() {
       ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate(angle);
 
-      // Wheel
+      // Main wheel
       ctx.beginPath();
       ctx.arc(0, 0, 150, 0, 2 * Math.PI);
       ctx.fillStyle = '#333';
@@ -50,20 +50,20 @@ export default function WheelGame() {
 
       ctx.restore();
 
-// Fake markers + real target
-const fakeCount = 8;
-for (let i = 0; i < fakeCount; i++) {
-  const angleStep = (2 * Math.PI) / fakeCount;
-  const fakeAngle = i * angleStep;
-  const x = canvas.width / 2 + 150 * Math.cos(fakeAngle);
-  const y = canvas.height / 2 + 150 * Math.sin(fakeAngle);
+      // Fake markers + red target
+      const fakeCount = 8;
+      for (let i = 0; i < fakeCount; i++) {
+        const angleStep = (2 * Math.PI) / fakeCount;
+        const fakeAngle = i * angleStep;
+        const x = canvas.width / 2 + 150 * Math.cos(fakeAngle);
+        const y = canvas.height / 2 + 150 * Math.sin(fakeAngle);
 
-  ctx.beginPath();
-  ctx.arc(x, y, 7, 0, 2 * Math.PI);
-  ctx.fillStyle = Math.abs(fakeAngle - targetAngle) < 0.01 ? 'red' : 'white';
-  ctx.fill();
-}
-
+        ctx.beginPath();
+        ctx.arc(x, y, 7, 0, 2 * Math.PI);
+        ctx.fillStyle = Math.abs(fakeAngle - targetAngle) < 0.01 ? 'red' : 'white';
+        ctx.fill();
+      }
+    }
 
     let animationId: number;
 
@@ -82,16 +82,7 @@ for (let i = 0; i < fakeCount; i++) {
             if (newSpeed < 0.002) {
               setSpinning(false);
               setSlowingDown(false);
-              const currentAngle = angle % (2 * Math.PI);
-              const diff = Math.abs(currentAngle - targetAngle);
-              const distance = Math.min(diff, 2 * Math.PI - diff);
-              const hitTolerance = getHitTolerance();
-
-              const message =
-                (distance < hitTolerance ? '🎯 HIT!' : '💨 Miss') +
-                `\nOffset: ${distance.toFixed(2)} rad\nLevel: ${difficulty.toUpperCase()}`;
-              setResultMessage(message);
-              setTimeout(() => setResultMessage(null), 3000);
+              evaluateResult();
               return 0;
             }
             return newSpeed;
@@ -125,17 +116,7 @@ for (let i = 0; i < fakeCount; i++) {
     }
   };
 
-  const handleSpin = () => {
-    if (!spinning) {
-      setTargetAngle(Math.random() * 2 * Math.PI);
-      setSpeed(getSpinSpeed());
-      setSpinning(true);
-    } else if (!slowingDown) {
-    // IŠKART SUSTABDO IR ĮVERTINA
-    setSpinning(false);
-    setSlowingDown(false);
-    setSpeed(0);
-
+  const evaluateResult = () => {
     const currentAngle = angle % (2 * Math.PI);
     const diff = Math.abs(currentAngle - targetAngle);
     const distance = Math.min(diff, 2 * Math.PI - diff);
@@ -147,15 +128,32 @@ for (let i = 0; i < fakeCount; i++) {
 
     setResultMessage(message);
     setTimeout(() => setResultMessage(null), 3000);
-  }
+  };
 
+  const handleSpin = () => {
+    if (!spinning) {
+      // Choose one of 8 fixed positions
+      const fakeCount = 8;
+      const index = Math.floor(Math.random() * fakeCount);
+      const step = (2 * Math.PI) / fakeCount;
+      const newTarget = index * step;
+      setTargetAngle(newTarget);
+      setSpeed(getSpinSpeed());
+      setSpinning(true);
+    } else if (!slowingDown) {
+      // Instant stop mode
+      setSpinning(false);
+      setSlowingDown(false);
+      setSpeed(0);
+      evaluateResult();
+    }
   };
 
   return (
     <div className="text-center p-6 min-h-screen bg-gradient-to-b from-black to-zinc-900 relative">
       <h1 className="text-3xl font-bold mb-4 text-pink-400">🎯 Wheel of Skill</h1>
 
-      {/* Difficulty selector */}
+      {/* Difficulty buttons */}
       <div className="flex justify-center gap-4 mb-6">
         {['easy', 'medium', 'hard'].map((level) => (
           <button
@@ -172,7 +170,7 @@ for (let i = 0; i < fakeCount; i++) {
         ))}
       </div>
 
-      {/* Canvas */}
+      {/* Wheel + center image */}
       <div className="relative w-[400px] h-[400px] mx-auto mb-6">
         <canvas
           ref={canvasRef}
@@ -180,21 +178,18 @@ for (let i = 0; i < fakeCount; i++) {
           height={400}
           className="bg-black rounded-full shadow-lg"
         />
-
-        {/* Cherry icon center */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <Image
-  src="/assets/wheel.png"
-  alt="Cherry Center"
-  width={160}
-  height={160}
-  className="drop-shadow-[0_0_10px_rgba(255,0,255,0.6)]"
-/>
-
+          <Image
+            src="/assets/wheel.png"
+            alt="Cherry Center"
+            width={160}
+            height={160}
+            className="drop-shadow-[0_0_10px_rgba(255,0,255,0.6)]"
+          />
         </div>
       </div>
 
-      {/* Spin button */}
+      {/* Spin/Stop Button */}
       <button
         onClick={handleSpin}
         className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded shadow-md"
@@ -202,7 +197,7 @@ for (let i = 0; i < fakeCount; i++) {
         {spinning ? (slowingDown ? 'Slowing...' : 'Stop') : 'Spin'}
       </button>
 
-      {/* Result message */}
+      {/* Result */}
       {resultMessage && (
         <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 bg-zinc-800 border border-pink-500 text-white px-6 py-4 rounded-xl shadow-lg animate-fade-in">
           <pre className="whitespace-pre text-sm font-mono text-pink-300">{resultMessage}</pre>
