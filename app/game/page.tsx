@@ -21,7 +21,7 @@ export default function GameHub() {
         
         {/* 🎯 Lucky Squares */}
         <Link
-          href="/game/lucky-squares"
+         href="/game/wheel-of-skill"
           className="rounded-xl bg-zinc-800 border border-pink-500 p-6 hover:bg-zinc-700 transition shadow-lg hover:shadow-pink-500/20"
         >
           <h2 className="text-2xl font-bold text-pink-300 mb-2">🎯 Lucky Squares</h2>
