@@ -1,7 +1,7 @@
 // game/token-tower/PlayerControls.tsx
 
 import React from 'react';
-import { BlockType } from './TowerLogic';
+import type { BlockType } from './TowerLogic';
 
 interface PlayerControlsProps {
   currentPlayer: number;
@@ -11,17 +11,17 @@ interface PlayerControlsProps {
 const PlayerControls: React.FC<PlayerControlsProps> = ({ currentPlayer, onMove }) => {
   return (
     <div className="mt-6 flex flex-col items-center">
-      <p className="mb-4 text-lg">🎮 Player {currentPlayer}'s turn</p>
+      <p className="mb-4 text-lg font-medium">🎮 Player {currentPlayer}'s Turn</p>
       <div className="flex gap-4">
         <button
           onClick={() => onMove('stable')}
-          className="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg shadow font-semibold"
+          className="px-6 py-3 rounded bg-green-600 hover:bg-green-700 text-white font-semibold shadow"
         >
           🧱 Stable Block
         </button>
         <button
           onClick={() => onMove('risky')}
-          className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg shadow font-semibold"
+          className="px-6 py-3 rounded bg-red-600 hover:bg-red-700 text-white font-semibold shadow"
         >
           💣 Risky Block
         </button>
