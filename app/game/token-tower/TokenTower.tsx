@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import { createInitialTower, placeBlock, TowerState, BlockType } from './TowerLogic';
 import PlayerControls from './PlayerControls';
 import TowerVisualizer from './TowerVisualizer';
+import CherryExplosion from './CherryExplosion';
+
 
 const TokenTower: React.FC = () => {
   const [tower, setTower] = useState<TowerState>(createInitialTower());
@@ -23,6 +25,10 @@ const TokenTower: React.FC = () => {
       <h1 className="text-4xl font-bold mb-6">🗼 Token Tower</h1>
 
       <TowerVisualizer blocks={tower.blocks} />
+{tower.gameOver && tower.winner !== null && tower.blocks.at(-1)?.collapsed && (
+  <CherryExplosion />
+)}
+
 
       {tower.gameOver ? (
         <div className="mt-6 flex flex-col items-center gap-4">
