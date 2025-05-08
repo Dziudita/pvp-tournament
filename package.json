@@ -15,7 +15,8 @@
     "lucide-react": "^0.321.0",
     "@supabase/supabase-js": "^2.39.5",
 "ethers": "^5.7.2",
-    "clsx": "^2.1.0"
+    "clsx": "^2.1.0",
+    "framer-motion": "^11.0.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1",
