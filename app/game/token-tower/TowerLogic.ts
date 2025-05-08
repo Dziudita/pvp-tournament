@@ -30,7 +30,7 @@ export function createInitialTower(): TowerState {
 }
 
 export function placeBlock(tower: TowerState, type: BlockType): TowerState {
-  if (tower.gameOver) return tower;
+  if (tower.gameOver || tower.blocks.length >= 10) return tower;
 
   const chance = collapseChances[type];
   const collapsed = Math.random() < chance;
@@ -42,8 +42,33 @@ export function placeBlock(tower: TowerState, type: BlockType): TowerState {
   };
 
   const newBlocks = [...tower.blocks, newBlock];
-  const gameOver = collapsed;
-  const winner = collapsed ? (tower.currentPlayer === 0 ? 1 : 0) : null;
+
+  let gameOver = false;
+  let winner: number | null = null;
+
+  if (collapsed) {
+    gameOver = true;
+    winner = tower.currentPlayer === 0 ? 1 : 0;
+  } else if (newBlocks.length >= 10) {
+    gameOver = true;
+
+    // Skaičiuojam kiek kiekvienas žaidėjas turi "stable" blokų
+    const playerStableCounts = [0, 0];
+
+    newBlocks.forEach((b) => {
+      if (!b.collapsed && b.type === 'stable') {
+        playerStableCounts[b.player]++;
+      }
+    });
+
+    if (playerStableCounts[0] > playerStableCounts[1]) {
+      winner = 0;
+    } else if (playerStableCounts[1] > playerStableCounts[0]) {
+      winner = 1;
+    } else {
+      winner = null; // lygiosios
+    }
+  }
 
   return {
     blocks: newBlocks,
