@@ -41,6 +41,18 @@ export default function GameHub() {
           </p>
         </Link>
 
+{/* 🗼 Token Tower */}
+<Link
+  href="/game/token-tower"
+  className="rounded-xl bg-zinc-800 border border-purple-500 p-6 hover:bg-zinc-700 transition shadow-lg hover:shadow-purple-500/20"
+>
+  <h2 className="text-2xl font-bold text-purple-300 mb-2">🗼 Token Tower</h2>
+  <p className="text-sm text-zinc-300">
+    Take turns stacking blocks... but beware of collapse! A PvP bluffing game.
+  </p>
+</Link>
+
+
         {/* 🔒 Coin Flip */}
         <Link
           href="#"
