@@ -33,6 +33,33 @@ const TokenTower: React.FC = () => {
     setTower(updatedTower);
   };
 
+  const handleStop = () => {
+    const updatedTower = { ...tower };
+
+    if (tower.currentPlayer === 1) {
+      updatedTower.player1Stopped = true;
+    } else {
+      updatedTower.player2Stopped = true;
+    }
+
+    const p1Healthy = updatedTower.player1Blocks.filter(b => !b.collapsed).length;
+    const p2Healthy = updatedTower.player2Blocks.filter(b => !b.collapsed).length;
+
+    if (updatedTower.player1Stopped && updatedTower.player2Stopped) {
+      updatedTower.gameOver = true;
+      updatedTower.winner =
+        p1Healthy > p2Healthy
+          ? 1
+          : p2Healthy > p1Healthy
+          ? 2
+          : null;
+    } else {
+      updatedTower.currentPlayer = tower.currentPlayer === 1 ? 2 : 1;
+    }
+
+    setTower(updatedTower);
+  };
+
   const restartGame = () => {
     setTower(createInitialTower());
   };
@@ -44,26 +71,28 @@ const TokenTower: React.FC = () => {
       (tower.currentPlayer === 2 && tower.player2Blocks.at(-1)?.collapsed)
     );
 
+  const currentPlayerStopped =
+    (tower.currentPlayer === 1 && tower.player1Stopped) ||
+    (tower.currentPlayer === 2 && tower.player2Stopped);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-b from-black to-gray-900 text-white">
       <h1 className="text-4xl font-bold mb-6">🗼 Token Tower Duel</h1>
 
       {/* Bokštai */}
       <div className="flex flex-row gap-12">
-        {/* Player 1 (raudonas) */}
         <div className="flex flex-col items-center">
           <h2 className="text-red-400 font-semibold mb-2">Player 1</h2>
           <TowerVisualizer blocks={tower.player1Blocks} player={1} />
         </div>
 
-        {/* Player 2 (mėlynas) */}
         <div className="flex flex-col items-center">
           <h2 className="text-blue-400 font-semibold mb-2">Player 2</h2>
           <TowerVisualizer blocks={tower.player2Blocks} player={2} />
         </div>
       </div>
 
-      {/* 💥 Sprogimo animacija jei griuvo */}
+      {/* 💥 Animacija */}
       {isCollapse && <CherryExplosion />}
 
       {/* Veiksmų zona */}
@@ -72,7 +101,9 @@ const TokenTower: React.FC = () => {
           <div className="text-xl font-semibold text-green-300">
             {isCollapse
               ? `💥 Player ${tower.winner} wins by collapse!`
-              : `🏆 Player ${tower.winner} wins by reaching 6 blocks!`}
+              : tower.winner
+              ? `🏆 Player ${tower.winner} wins by score!`
+              : `🤝 It's a draw!`}
           </div>
           <button
             onClick={restartGame}
@@ -84,12 +115,27 @@ const TokenTower: React.FC = () => {
       ) : (
         <div className="mt-6 text-center">
           <p className="mb-3 text-lg">👉 Player {tower.currentPlayer}'s turn</p>
-          <button
-            onClick={handleMove}
-            className="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-lg font-semibold shadow"
-          >
-            ➕ Add Block
-          </button>
+
+          {!currentPlayerStopped && (
+            <>
+              <button
+                onClick={handleMove}
+                className="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-lg font-semibold shadow"
+              >
+                ➕ Add Block
+              </button>
+              <button
+                onClick={handleStop}
+                className="mt-2 px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-black rounded-lg font-semibold shadow"
+              >
+                🛑 Stop Turn
+              </button>
+            </>
+          )}
+
+          {currentPlayerStopped && (
+            <p className="text-sm text-gray-400 mt-2">Player {tower.currentPlayer} has stopped</p>
+          )}
         </div>
       )}
     </div>
