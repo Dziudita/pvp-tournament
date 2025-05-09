@@ -7,18 +7,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface TowerVisualizerProps {
   blocks: Block[];
+  player: 1 | 2;
 }
 
-const TowerVisualizer: React.FC<TowerVisualizerProps> = ({ blocks }) => {
+const TowerVisualizer: React.FC<TowerVisualizerProps> = ({ blocks, player }) => {
   return (
     <div className="flex flex-col-reverse items-center gap-1 mt-4">
       <AnimatePresence initial={false}>
         {blocks.map((block, index) => {
-          const imageSrc = block.collapsed
-            ? "/images/cherry-broken.png"
-            : block.type === "stable"
-            ? "/images/cherry-stable.png"
-            : "/images/cherry-risky.png";
+          let imageSrc = "/images/cherry-stable.png"; // default
+
+          if (block.collapsed) {
+            imageSrc = "/images/cherry-broken.png";
+          } else if (player === 1) {
+            imageSrc = "/images/cherry-stable.png"; // raudona
+          } else if (player === 2) {
+            imageSrc = "/images/cherry-risky.png"; // mėlyna
+          }
 
           return (
             <motion.div
@@ -32,7 +37,9 @@ const TowerVisualizer: React.FC<TowerVisualizerProps> = ({ blocks }) => {
               <img
                 src={imageSrc}
                 alt="Cherry Block"
-                className="w-full h-full object-contain drop-shadow-xl"
+                className={`w-full h-full object-contain ${
+                  block.collapsed ? 'animate-pulse' : ''
+                }`}
               />
             </motion.div>
           );
