@@ -1,5 +1,3 @@
-// game/token-tower/TokenTower.tsx
-
 'use client';
 import React, { useState } from 'react';
 import {
@@ -19,14 +17,13 @@ const TokenTower: React.FC = () => {
 
     const updatedTower = placeBlock(tower);
 
-    // Paskutinis blokas (tikrinimui ar griuvo)
-    const last =
+    const lastBlock =
       tower.currentPlayer === 1
         ? updatedTower.player1Blocks.at(-1)
         : updatedTower.player2Blocks.at(-1);
 
     if (updatedTower.gameOver) {
-      if (last?.collapsed) {
+      if (lastBlock?.collapsed) {
         playSound('/sounds/collapse.mp3');
       } else {
         playSound('/sounds/win.mp3');
@@ -39,6 +36,13 @@ const TokenTower: React.FC = () => {
   const restartGame = () => {
     setTower(createInitialTower());
   };
+
+  const isCollapse =
+    tower.gameOver &&
+    (
+      (tower.currentPlayer === 1 && tower.player1Blocks.at(-1)?.collapsed) ||
+      (tower.currentPlayer === 2 && tower.player2Blocks.at(-1)?.collapsed)
+    );
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-b from-black to-gray-900 text-white">
@@ -60,17 +64,15 @@ const TokenTower: React.FC = () => {
       </div>
 
       {/* 💥 Sprogimo animacija jei griuvo */}
-      {tower.gameOver &&
-        ((tower.currentPlayer === 1 && tower.player1Blocks.at(-1)?.collapsed) ||
-         (tower.currentPlayer === 2 && tower.player2Blocks.at(-1)?.collapsed)) && (
-          <CherryExplosion />
-        )}
+      {isCollapse && <CherryExplosion />}
 
       {/* Veiksmų zona */}
       {tower.gameOver ? (
         <div className="mt-6 flex flex-col items-center gap-4">
           <div className="text-xl font-semibold text-green-300">
-            🎉 Player {tower.winner} wins!
+            {isCollapse
+              ? `💥 Player ${tower.winner} wins by collapse!`
+              : `🏆 Player ${tower.winner} wins by reaching 6 blocks!`}
           </div>
           <button
             onClick={restartGame}
