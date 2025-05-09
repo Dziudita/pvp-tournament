@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   createInitialTower,
   placeBlock,
@@ -11,10 +11,12 @@ import { playSound } from '@/utils/playSound';
 
 const TokenTower: React.FC = () => {
   const [tower, setTower] = useState<TowerState>(createInitialTower());
+  const [round, setRound] = useState(1);
+  const [score, setScore] = useState({ p1: 0, p2: 0 });
+  const [matchOver, setMatchOver] = useState(false);
 
   const handleMove = () => {
     playSound('/sounds/place.mp3');
-
     const updatedTower = placeBlock(tower);
 
     const lastBlock =
@@ -60,9 +62,37 @@ const TokenTower: React.FC = () => {
     setTower(updatedTower);
   };
 
-  const restartGame = () => {
+  const restartMatch = () => {
     setTower(createInitialTower());
+    setScore({ p1: 0, p2: 0 });
+    setRound(1);
+    setMatchOver(false);
   };
+
+  const handleRoundEnd = (winner: 1 | 2 | null) => {
+    if (winner === 1) {
+      setScore(prev => ({ ...prev, p1: prev.p1 + 1 }));
+    } else if (winner === 2) {
+      setScore(prev => ({ ...prev, p2: prev.p2 + 1 }));
+    }
+
+    const nextRound = round + 1;
+
+    if ((winner && (score.p1 === 1 || score.p2 === 1)) || nextRound > 3) {
+      setMatchOver(true);
+    } else {
+      setRound(nextRound);
+      setTower(createInitialTower());
+    }
+  };
+
+  useEffect(() => {
+    if (tower.gameOver && !matchOver) {
+      setTimeout(() => {
+        handleRoundEnd(tower.winner);
+      }, 2000);
+    }
+  }, [tower.gameOver]);
 
   const isCollapse =
     tower.gameOver &&
@@ -77,7 +107,12 @@ const TokenTower: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-b from-black to-gray-900 text-white">
-      <h1 className="text-4xl font-bold mb-6">🗼 Token Tower Duel</h1>
+      <h1 className="text-4xl font-bold mb-4">🗼 Token Tower Duel</h1>
+
+      {/* Rodyti raundą ir rezultatą */}
+      <h2 className="text-lg text-white mb-4">
+        Round {round} of 3 — Score: 🟥 {score.p1} : {score.p2} 🟦
+      </h2>
 
       {/* Bokštai */}
       <div className="flex flex-row gap-12">
@@ -92,25 +127,28 @@ const TokenTower: React.FC = () => {
         </div>
       </div>
 
-      {/* 💥 Animacija */}
+      {/* 💥 Animacija jei griuvo */}
       {isCollapse && <CherryExplosion />}
 
-      {/* Veiksmų zona */}
-      {tower.gameOver ? (
-        <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="text-xl font-semibold text-green-300">
-            {isCollapse
-              ? `💥 Player ${tower.winner} wins by collapse!`
-              : tower.winner
-              ? `🏆 Player ${tower.winner} wins by score!`
-              : `🤝 It's a draw!`}
-          </div>
+      {/* Pergalė visame mače */}
+      {matchOver ? (
+        <div className="mt-6 text-center text-2xl text-green-400 font-bold">
+          🎉 Match Over! Winner: Player {score.p1 > score.p2 ? 1 : 2}
+          <br />
           <button
-            onClick={restartGame}
-            className="px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold shadow"
+            onClick={restartMatch}
+            className="mt-4 px-5 py-3 bg-green-600 hover:bg-green-700 rounded text-white"
           >
-            🔄 Restart Game
+            🔁 Play Again
           </button>
+        </div>
+      ) : tower.gameOver ? (
+        <div className="mt-6 text-xl text-green-300 font-semibold">
+          {isCollapse
+            ? `💥 Player ${tower.winner} wins by collapse!`
+            : tower.winner
+            ? `🏆 Player ${tower.winner} wins by score!`
+            : `🤝 It's a draw!`}
         </div>
       ) : (
         <div className="mt-6 text-center">
