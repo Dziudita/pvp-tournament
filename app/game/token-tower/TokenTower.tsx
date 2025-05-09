@@ -6,13 +6,25 @@ import { createInitialTower, placeBlock, TowerState, BlockType } from './TowerLo
 import PlayerControls from './PlayerControls';
 import TowerVisualizer from './TowerVisualizer';
 import CherryExplosion from './CherryExplosion';
-
+import { playSound } from '@/utils/playSound';
 
 const TokenTower: React.FC = () => {
   const [tower, setTower] = useState<TowerState>(createInitialTower());
 
   const handleMove = (type: BlockType) => {
+    playSound('/sounds/place.mp3'); // 🎵 garsas kai pastatoma kaladėlė
+
     const updatedTower = placeBlock(tower, type);
+
+    if (updatedTower.gameOver) {
+      const last = updatedTower.blocks.at(-1);
+      if (last?.collapsed) {
+        playSound('/sounds/collapse.mp3'); // 💥 garsas griuvimui
+      } else if (updatedTower.winner !== null) {
+        playSound('/sounds/win.mp3'); // 🏆 pergalės garsas
+      }
+    }
+
     setTower(updatedTower);
   };
 
@@ -25,15 +37,16 @@ const TokenTower: React.FC = () => {
       <h1 className="text-4xl font-bold mb-6">🗼 Token Tower</h1>
 
       <TowerVisualizer blocks={tower.blocks} />
-{tower.gameOver && tower.winner !== null && tower.blocks.at(-1)?.collapsed && (
-  <CherryExplosion />
-)}
 
+      {/* 💥 Cherry explosion jei žaidimas baigtas dėl griuvimo */}
+      {tower.gameOver && tower.winner !== null && tower.blocks.at(-1)?.collapsed && (
+        <CherryExplosion />
+      )}
 
       {tower.gameOver ? (
         <div className="mt-6 flex flex-col items-center gap-4">
           <div className="text-xl font-semibold text-red-400">
-            💥 Player {tower.winner} wins!
+            💥 Player {tower.winner !== null ? tower.winner : '🤝 Draw'} wins!
           </div>
           <button
             onClick={restartGame}
