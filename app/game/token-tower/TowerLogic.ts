@@ -1,95 +1,69 @@
-// game/token-tower/TokenTower.tsx
+// TowerLogic.ts
 
-'use client';
-import React, { useState } from 'react';
-import {
-  createInitialTower,
-  placeBlock,
-  TowerState,
-} from './TowerLogic';
-import TowerVisualizer from './TowerVisualizer';
-import CherryExplosion from './CherryExplosion';
-import { playSound } from '@/utils/playSound';
+export type BlockType = 'stable' | 'risky';
 
-const TokenTower: React.FC = () => {
-  const [tower, setTower] = useState<TowerState>(createInitialTower());
+export interface Block {
+  type: BlockType;
+  collapsed: boolean;
+}
 
-  const handleMove = () => {
-    playSound('/sounds/place.mp3');
-    const updatedTower = placeBlock(tower);
+export interface TowerState {
+  player1Blocks: Block[];
+  player2Blocks: Block[];
+  currentPlayer: 1 | 2;
+  gameOver: boolean;
+  winner: 1 | 2 | null;
+}
 
-    if (updatedTower.gameOver) {
-      const last =
-        tower.currentPlayer === 1
-          ? updatedTower.player1Blocks.at(-1)
-          : updatedTower.player2Blocks.at(-1);
+const collapseChance = 0.25; // 25% šansas kad blokas grius
 
-      if (last?.collapsed) {
-        playSound('/sounds/collapse.mp3');
-      } else {
-        playSound('/sounds/win.mp3');
-      }
-    }
+export function createInitialTower(): TowerState {
+  return {
+    player1Blocks: [],
+    player2Blocks: [],
+    currentPlayer: 1,
+    gameOver: false,
+    winner: null,
+  };
+}
 
-    setTower(updatedTower);
+export function placeBlock(tower: TowerState): TowerState {
+  if (tower.gameOver) return tower;
+
+  const collapsed = Math.random() < collapseChance;
+
+  const newBlock: Block = {
+    type: tower.currentPlayer === 1 ? 'stable' : 'risky',
+    collapsed,
   };
 
-  const restartGame = () => {
-    setTower(createInitialTower());
+  const updatedPlayer1 = tower.currentPlayer === 1
+    ? [...tower.player1Blocks, newBlock]
+    : tower.player1Blocks;
+
+  const updatedPlayer2 = tower.currentPlayer === 2
+    ? [...tower.player2Blocks, newBlock]
+    : tower.player2Blocks;
+
+  let gameOver = false;
+  let winner: 1 | 2 | null = null;
+
+  if (collapsed) {
+    gameOver = true;
+    winner = tower.currentPlayer === 1 ? 2 : 1;
+  } else if (
+    updatedPlayer1.length === 6 ||
+    updatedPlayer2.length === 6
+  ) {
+    gameOver = true;
+    winner = updatedPlayer1.length === 6 ? 1 : 2;
+  }
+
+  return {
+    player1Blocks: updatedPlayer1,
+    player2Blocks: updatedPlayer2,
+    currentPlayer: tower.currentPlayer === 1 ? 2 : 1,
+    gameOver,
+    winner,
   };
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-b from-black to-gray-900 text-white">
-      <h1 className="text-4xl font-bold mb-6">🗼 Token Tower Duel</h1>
-
-      {/* Bokštai */}
-      <div className="flex flex-row gap-12">
-        {/* Player 1 (raudonas) */}
-        <div className="flex flex-col items-center">
-          <h2 className="text-red-400 font-semibold mb-2">Player 1</h2>
-          <TowerVisualizer blocks={tower.player1Blocks} player={1} />
-        </div>
-
-        {/* Player 2 (mėlynas) */}
-        <div className="flex flex-col items-center">
-          <h2 className="text-blue-400 font-semibold mb-2">Player 2</h2>
-          <TowerVisualizer blocks={tower.player2Blocks} player={2} />
-        </div>
-      </div>
-
-      {/* 💥 Animacija jei griuvo */}
-      {tower.gameOver &&
-        ((tower.currentPlayer === 1 && tower.player1Blocks.at(-1)?.collapsed) ||
-         (tower.currentPlayer === 2 && tower.player2Blocks.at(-1)?.collapsed)) && (
-          <CherryExplosion />
-        )}
-
-      {/* Būsenos valdymas */}
-      {tower.gameOver ? (
-        <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="text-xl font-semibold text-green-300">
-            🎉 Player {tower.winner} wins!
-          </div>
-          <button
-            onClick={restartGame}
-            className="px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold shadow"
-          >
-            🔄 Restart Game
-          </button>
-        </div>
-      ) : (
-        <div className="mt-6 text-center">
-          <p className="mb-3 text-lg">👉 Player {tower.currentPlayer}'s turn</p>
-          <button
-            onClick={handleMove}
-            className="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-lg font-semibold shadow"
-          >
-            ➕ Add Block
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default TokenTower;
+}
