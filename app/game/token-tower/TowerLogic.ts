@@ -4,75 +4,65 @@ export type BlockType = 'stable' | 'risky';
 
 export interface Block {
   type: BlockType;
-  player: number; // 0 or 1
   collapsed: boolean;
 }
 
 export interface TowerState {
-  blocks: Block[];
-  currentPlayer: number; // 0 or 1
+  player1Blocks: Block[];
+  player2Blocks: Block[];
+  currentPlayer: 1 | 2;
   gameOver: boolean;
-  winner: number | null;
+  winner: 1 | 2 | null;
 }
 
-const collapseChances: Record<BlockType, number> = {
-  stable: 0.01, // 1% šansas
-  risky: 0.3,   // 30% šansas
-};
+const collapseChance = 0.25; // 25% šansas kad blokas grius
 
 export function createInitialTower(): TowerState {
   return {
-    blocks: [],
-    currentPlayer: 0,
+    player1Blocks: [],
+    player2Blocks: [],
+    currentPlayer: 1,
     gameOver: false,
     winner: null,
   };
 }
 
-export function placeBlock(tower: TowerState, type: BlockType): TowerState {
-  if (tower.gameOver || tower.blocks.length >= 10) return tower;
+export function placeBlock(tower: TowerState): TowerState {
+  if (tower.gameOver) return tower;
 
-  const chance = collapseChances[type];
-  const collapsed = Math.random() < chance;
+  const collapsed = Math.random() < collapseChance;
 
   const newBlock: Block = {
-    type,
-    player: tower.currentPlayer,
+    type: tower.currentPlayer === 1 ? 'stable' : 'risky',
     collapsed,
   };
 
-  const newBlocks = [...tower.blocks, newBlock];
+  const updatedPlayer1 = tower.currentPlayer === 1
+    ? [...tower.player1Blocks, newBlock]
+    : tower.player1Blocks;
+
+  const updatedPlayer2 = tower.currentPlayer === 2
+    ? [...tower.player2Blocks, newBlock]
+    : tower.player2Blocks;
 
   let gameOver = false;
-  let winner: number | null = null;
+  let winner: 1 | 2 | null = null;
 
   if (collapsed) {
     gameOver = true;
-    winner = tower.currentPlayer === 0 ? 1 : 0;
-  } else if (newBlocks.length >= 10) {
+    winner = tower.currentPlayer === 1 ? 2 : 1;
+  } else if (
+    updatedPlayer1.length === 6 ||
+    updatedPlayer2.length === 6
+  ) {
     gameOver = true;
-
-    // Skaičiuojam kiek kiekvienas žaidėjas turi "stable" blokų
-    const playerStableCounts = [0, 0];
-
-    newBlocks.forEach((b) => {
-      if (!b.collapsed && b.type === 'stable') {
-        playerStableCounts[b.player]++;
-      }
-    });
-
-    if (playerStableCounts[0] > playerStableCounts[1]) {
-      winner = 0;
-    } else if (playerStableCounts[1] > playerStableCounts[0]) {
-      winner = 1;
-    } else {
-      winner = null; // lygiosios
-    }
+    winner = updatedPlayer1.length === 6 ? 1 : 2;
   }
 
   return {
-    blocks: newBlocks,
-    currentPlayer: gameOver ? tower.currentPlayer : (tower.currentPlayer === 0 ? 1 : 0),
+    player1Blocks: updatedPlayer1,
+    player2Blocks: updatedPlayer2,
+    currentPlayer: tower.currentPlayer === 1 ? 2 : 1,
     gameOver,
     winner,
   };
