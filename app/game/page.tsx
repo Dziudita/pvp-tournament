@@ -32,7 +32,7 @@ export default function GameHub() {
 
 {/* 🍒 Cherry Doors */}
 <Link
-  href="/games/cherry-doors"
+  href="/game/cherry-doors"
   className="rounded-xl bg-zinc-800 border border-red-500 p-6 hover:bg-zinc-700 transition shadow-lg hover:shadow-red-500/20"
 >
   <h2 className="text-2xl font-bold text-red-300 mb-2">🍒 Cherry Doors</h2>
