@@ -7,7 +7,7 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 const doorLabels = ['Door 1', 'Door 2', 'Door 3', 'Door 4', 'Door 5'];
 
 export default function VaultDoorsGame() {
-  const [step, setStep] = useState(0); // 0=start, 1=player1, 2=player2, 3=result
+  const [step, setStep] = useState(0);
   const [playerOneChoice, setPlayerOneChoice] = useState<number | null>(null);
   const [playerTwoChoice, setPlayerTwoChoice] = useState<number | null>(null);
   const [winnerDoor, setWinnerDoor] = useState<number | null>(null);
@@ -35,7 +35,6 @@ export default function VaultDoorsGame() {
   };
 
   const handleDoorClick = (index: number) => {
-    clickSoundRef.current?.currentTime = 0;
     clickSoundRef.current?.play();
 
     if (step === 1) {
@@ -47,7 +46,6 @@ export default function VaultDoorsGame() {
       setWinnerDoor(newWinner);
 
       setTimeout(() => {
-        openSoundRef.current?.currentTime = 0;
         openSoundRef.current?.play();
       }, 300);
 
@@ -55,7 +53,6 @@ export default function VaultDoorsGame() {
       setConfettiEnabled(true);
       setTimeout(() => setConfettiEnabled(false), 5000);
 
-      // Evaluate result
       if (playerOneChoice === newWinner && index === newWinner) {
         setResultMessage('BOOOOM both players WON!');
       } else if (playerOneChoice === newWinner) {
@@ -70,17 +67,14 @@ export default function VaultDoorsGame() {
 
   return (
     <div className="w-full flex flex-col items-center mt-24 relative">
-      {/* Confetti */}
       {confettiEnabled && <Confetti width={width} height={height} numberOfPieces={250} />}
 
-      {/* Boom Message */}
       {step === 3 && resultMessage && (
         <div className="fixed top-10 z-50 text-4xl font-extrabold text-yellow-300 animate-bounce drop-shadow-xl">
           {resultMessage}
         </div>
       )}
 
-      {/* Start or Restart Button */}
       {(step === 0 || step === 3) && (
         <button
           onClick={handleStart}
@@ -90,13 +84,11 @@ export default function VaultDoorsGame() {
         </button>
       )}
 
-      {/* Info Text */}
       {step === 1 && <p className="mb-4 text-white">🎮 Player One, choose a door</p>}
       {step === 2 && <p className="mb-4 text-white">⏳ Waiting for Player Two to choose...</p>}
 
-      {/* Doors */}
       <div className="flex gap-10 justify-center items-end mb-2">
-        {doorLabels.map((label, index) => (
+        {doorLabels.map((_, index) => (
           <button
             key={index}
             onClick={() => handleDoorClick(index)}
@@ -125,7 +117,6 @@ export default function VaultDoorsGame() {
         ))}
       </div>
 
-      {/* Vault chest */}
       <img
         src="/assets/cherry-doors/vault.png"
         alt="Vault"
