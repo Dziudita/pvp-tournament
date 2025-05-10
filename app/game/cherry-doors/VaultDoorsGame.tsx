@@ -32,39 +32,39 @@ export default function VaultDoorsGame() {
 
       // Evaluate result
       if (playerOneChoice === newWinner && index === newWinner) {
-        setResultMessage('BOOOOM abu laimėjo!');
+        setResultMessage('BOOOOM both players WON!');
       } else if (playerOneChoice === newWinner) {
-        setResultMessage('BOOOOM laimėjo pirmasis žaidėjas!');
+        setResultMessage('BOOOOM Player One WINS!');
       } else if (index === newWinner) {
-        setResultMessage('BOOOOM laimėjo antrasis žaidėjas!');
+        setResultMessage('BOOOOM Player Two WINS!');
       } else {
-        setResultMessage('BOOOOM abu pralaimėjo!');
+        setResultMessage('BOOOOM both players LOST!');
       }
     }
   };
 
   return (
     <div className="w-full flex flex-col items-center mt-24 relative">
-      {/* Start Button */}
-      {step === 0 && (
-        <button
-          onClick={handleStart}
-          className="mb-10 px-8 py-3 bg-green-500 text-white text-xl rounded shadow-lg hover:bg-green-600"
-        >
-          START
-        </button>
-      )}
-
       {/* Boom Message */}
       {step === 3 && resultMessage && (
-        <div className="absolute top-10 text-4xl font-extrabold text-yellow-300 animate-bounce drop-shadow-xl">
+        <div className="fixed top-10 z-50 text-4xl font-extrabold text-yellow-300 animate-bounce drop-shadow-xl">
           {resultMessage}
         </div>
       )}
 
+      {/* Start or Restart Button */}
+      {(step === 0 || step === 3) && (
+        <button
+          onClick={handleStart}
+          className="mb-10 px-8 py-3 bg-green-500 text-white text-xl rounded shadow-lg hover:bg-green-600"
+        >
+          {step === 0 ? 'START' : 'RESTART'}
+        </button>
+      )}
+
       {/* Info Text */}
-      {step === 1 && <p className="mb-4 text-white">🎮 Pirmasis žaidėjas renkasi duris</p>}
-      {step === 2 && <p className="mb-4 text-white">⏳ Laukiame antrojo žaidėjo pasirinkimo...</p>}
+      {step === 1 && <p className="mb-4 text-white">🎮 Player One, choose a door</p>}
+      {step === 2 && <p className="mb-4 text-white">⏳ Waiting for Player Two to choose...</p>}
 
       {/* Doors */}
       <div className="flex gap-10 justify-center items-end mb-2">
