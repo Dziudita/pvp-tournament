@@ -12,17 +12,22 @@ export default function VaultDoorsGame() {
   const [winnerDoor, setWinnerDoor] = useState<number | null>(null);
   const [result, setResult] = useState<string>("");
   const [vault, setVault] = useState<number>(0);
-  const [goldKeyChance, setGoldKeyChance] = useState<number>(Math.floor(Math.random() * 10)); // 1/10 chance
+  const [goldKeyChance, setGoldKeyChance] = useState<number>(Math.floor(Math.random() * 10));
   const [showDuel, setShowDuel] = useState(false);
   const [duelWinner, setDuelWinner] = useState<"player" | "opponent" | null>(null);
+  const [opened, setOpened] = useState<boolean[]>([false, false, false, false, false]);
 
   const startGame = () => {
-    const newWinnerDoor = Math.floor(Math.random() * 5); // 0 to 4
+    const newWinnerDoor = Math.floor(Math.random() * 5);
     const newOpponentChoice = Math.floor(Math.random() * 5);
     const goldKeyDrop = Math.floor(Math.random() * 10) === goldKeyChance;
 
     setWinnerDoor(newWinnerDoor);
     setOpponentChoice(newOpponentChoice);
+
+    const newOpened = [false, false, false, false, false];
+    newOpened[newWinnerDoor] = true;
+    setOpened(newOpened);
 
     if (playerChoice === null) return;
 
@@ -38,7 +43,7 @@ export default function VaultDoorsGame() {
     }
 
     if (goldKeyDrop && playerChoice !== null) {
-      const opponentAlsoGetsGold = Math.random() < 0.5; // 50% chance
+      const opponentAlsoGetsGold = Math.random() < 0.5;
 
       if (opponentAlsoGetsGold) {
         setShowDuel(true);
@@ -48,6 +53,11 @@ export default function VaultDoorsGame() {
         setVault(0);
       }
     }
+
+    setTimeout(() => {
+      setOpened([false, false, false, false, false]);
+      setPlayerChoice(null);
+    }, 3000);
   };
 
   return (
@@ -55,13 +65,19 @@ export default function VaultDoorsGame() {
       <h1 className="text-xl font-bold mb-4">Vault Doors Game</h1>
       <div className="grid grid-cols-5 gap-4 mb-4">
         {doorLabels.map((label, index) => (
-          <button
+          <div
             key={index}
             onClick={() => setPlayerChoice(index)}
-            className={`p-4 border rounded ${playerChoice === index ? "bg-green-300" : "bg-gray-200"}`}
+            className={`cursor-pointer transition-transform transform hover:scale-105 ${
+              playerChoice === index ? "ring-4 ring-green-400" : ""
+            }`}
           >
-            {label}
-          </button>
+            <img
+              src={opened[index] ? "/assets/cherry-doors/door-open.png" : "/assets/cherry-doors/door.png"}
+              alt={label}
+              className="w-24 h-36 object-cover rounded shadow"
+            />
+          </div>
         ))}
       </div>
       <button
