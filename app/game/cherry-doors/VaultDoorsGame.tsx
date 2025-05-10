@@ -51,8 +51,7 @@ export default function VaultDoorsGame() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <h1 className="text-xl font-bold mb-4">Vault Doors Game</h1>
+    <div className="w-full flex flex-col items-center mt-12">
       <div className="flex gap-10 justify-center items-end mb-6">
         {doorLabels.map((label, index) => (
           <button
