@@ -55,7 +55,7 @@ export default function VaultDoorsGame() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center mt-24">
+    <div className="w-full flex flex-col items-center mt-24 relative">
       <button
         onClick={startGame}
         disabled={playerChoice === null || isWaiting}
@@ -113,6 +113,13 @@ export default function VaultDoorsGame() {
           }}
         />
       )}
+
+      {/* Jackpot Vault Image */}
+      <img
+        src="/assets/cherry-doors/vault.png"
+        alt="Vault"
+        className="absolute right-10 bottom-0 w-24 h-auto drop-shadow-xl"
+      />
     </div>
   );
 }
