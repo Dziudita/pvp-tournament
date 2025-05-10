@@ -114,13 +114,11 @@ export default function VaultDoorsGame() {
         />
       )}
 
-  {/* Jackpot Vault Image */}
 <img
   src="/assets/cherry-doors/vault.png"
   alt="Vault"
-  className="absolute top-0 left-1/2 -translate-x-1/2 w-44 h-auto drop-shadow-2xl animate-pulse"
+  className="absolute top-[-40px] right-10 w-56 h-auto drop-shadow-2xl animate-pulse"
 />
-
 
     </div>
   );
