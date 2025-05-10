@@ -1,84 +1,90 @@
 // VaultDoorsGame.tsx
 'use client';
 
-import React, { useState } from "react";
-import VaultDuel from "./VaultDuel";
+import React, { useState } from 'react';
 
-const doorLabels = ["Door 1", "Door 2", "Door 3", "Door 4", "Door 5"];
+const doorLabels = ['Door 1', 'Door 2', 'Door 3', 'Door 4', 'Door 5'];
 
 export default function VaultDoorsGame() {
-  const [playerChoice, setPlayerChoice] = useState<number | null>(null);
-  const [opponentChoice, setOpponentChoice] = useState<number | null>(null);
+  const [step, setStep] = useState(0); // 0=start, 1=player1, 2=player2, 3=result
+  const [playerOneChoice, setPlayerOneChoice] = useState<number | null>(null);
+  const [playerTwoChoice, setPlayerTwoChoice] = useState<number | null>(null);
   const [winnerDoor, setWinnerDoor] = useState<number | null>(null);
-  const [result, setResult] = useState<string>("");
-  const [vault, setVault] = useState<number>(0);
-  const [goldKeyChance, setGoldKeyChance] = useState<number>(Math.floor(Math.random() * 10));
-  const [showDuel, setShowDuel] = useState(false);
-  const [duelWinner, setDuelWinner] = useState<"player" | "opponent" | null>(null);
-  const [isWaiting, setIsWaiting] = useState(false);
+  const [resultMessage, setResultMessage] = useState('');
 
-  const startGame = () => {
-    if (playerChoice === null) return;
-    setIsWaiting(true);
-    setTimeout(() => {
-      const newWinnerDoor = Math.floor(Math.random() * 5);
-      const newOpponentChoice = Math.floor(Math.random() * 5);
-      const goldKeyDrop = Math.floor(Math.random() * 10) === goldKeyChance;
+  const handleStart = () => {
+    setStep(1);
+    setPlayerOneChoice(null);
+    setPlayerTwoChoice(null);
+    setWinnerDoor(null);
+    setResultMessage('');
+  };
 
-      setWinnerDoor(newWinnerDoor);
-      setOpponentChoice(newOpponentChoice);
-      setIsWaiting(false);
+  const handleDoorClick = (index: number) => {
+    if (step === 1) {
+      setPlayerOneChoice(index);
+      setStep(2);
+    } else if (step === 2) {
+      setPlayerTwoChoice(index);
+      const newWinner = Math.floor(Math.random() * 5);
+      setWinnerDoor(newWinner);
+      setStep(3);
 
-      if (playerChoice !== newWinnerDoor && newOpponentChoice !== newWinnerDoor) {
-        setVault(vault + 2);
-        setResult("Both lost. Vault increased!");
-      } else if (playerChoice === newWinnerDoor && newOpponentChoice === newWinnerDoor) {
-        setResult("Both chose the winner! You both get your stake back.");
-      } else if (playerChoice === newWinnerDoor) {
-        setResult("You win the match and take the pot!");
-      } else if (newOpponentChoice === newWinnerDoor) {
-        setResult("Opponent wins this round.");
+      // Evaluate result
+      if (playerOneChoice === newWinner && index === newWinner) {
+        setResultMessage('BOOOOM abu laimėjo!');
+      } else if (playerOneChoice === newWinner) {
+        setResultMessage('BOOOOM laimėjo pirmasis žaidėjas!');
+      } else if (index === newWinner) {
+        setResultMessage('BOOOOM laimėjo antrasis žaidėjas!');
+      } else {
+        setResultMessage('BOOOOM abu pralaimėjo!');
       }
-
-      if (goldKeyDrop && playerChoice !== null) {
-        const opponentAlsoGetsGold = Math.random() < 0.5;
-
-        if (opponentAlsoGetsGold) {
-          setShowDuel(true);
-          setResult("Both players got a GOLD KEY! Starting puzzle duel...");
-        } else {
-          setResult("🎉 You got the GOLD KEY and unlocked the Vault! You win " + vault + " USDC!");
-          setVault(0);
-        }
-      }
-    }, 3000);
+    }
   };
 
   return (
     <div className="w-full flex flex-col items-center mt-24 relative">
-      <button
-        onClick={startGame}
-        disabled={playerChoice === null || isWaiting}
-        className="mb-6 px-6 py-2 bg-blue-500 text-white rounded"
-      >
-        Confirm Choice
-      </button>
+      {/* Start Button */}
+      {step === 0 && (
+        <button
+          onClick={handleStart}
+          className="mb-10 px-8 py-3 bg-green-500 text-white text-xl rounded shadow-lg hover:bg-green-600"
+        >
+          START
+        </button>
+      )}
 
-      <div className="flex gap-10 justify-center items-end mb-0">
+      {/* Boom Message */}
+      {step === 3 && resultMessage && (
+        <div className="absolute top-10 text-4xl font-extrabold text-yellow-300 animate-bounce drop-shadow-xl">
+          {resultMessage}
+        </div>
+      )}
+
+      {/* Info Text */}
+      {step === 1 && <p className="mb-4 text-white">🎮 Pirmasis žaidėjas renkasi duris</p>}
+      {step === 2 && <p className="mb-4 text-white">⏳ Laukiame antrojo žaidėjo pasirinkimo...</p>}
+
+      {/* Doors */}
+      <div className="flex gap-10 justify-center items-end mb-2">
         {doorLabels.map((label, index) => (
           <button
             key={index}
-            onClick={() => setPlayerChoice(index)}
-            disabled={isWaiting}
-            className={`h-[280px] w-auto transition-transform transform hover:scale-105 ${
-              playerChoice === index ? "scale-110" : ""
-            }`}
+            onClick={() => handleDoorClick(index)}
+            disabled={
+              (step === 1 && playerOneChoice !== null) ||
+              (step === 2 && playerTwoChoice !== null) ||
+              step === 0 ||
+              step === 3
+            }
+            className={`h-[280px] w-auto transition-transform transform hover:scale-105`}
           >
             <img
               src={
                 winnerDoor !== null && winnerDoor === index
-                  ? "/assets/cherry-doors/door-open.png"
-                  : "/assets/cherry-doors/door.png"
+                  ? '/assets/cherry-doors/door-open.png'
+                  : '/assets/cherry-doors/door.png'
               }
               alt={`Door ${index + 1}`}
               className="h-full drop-shadow-lg"
@@ -87,40 +93,12 @@ export default function VaultDoorsGame() {
         ))}
       </div>
 
-      {isWaiting && (
-        <div className="text-yellow-300 text-xl font-semibold mt-4 animate-pulse">
-          ⏳ Waiting for your opponent to choose...
-        </div>
-      )}
-
-      {result && !isWaiting && (
-        <div className="mt-4 p-4 border rounded bg-yellow-100 text-black">
-          <p><strong>Result:</strong> {result}</p>
-        </div>
-      )}
-
-      {showDuel && (
-        <VaultDuel
-          onComplete={(winner) => {
-            setDuelWinner(winner);
-            setShowDuel(false);
-            if (winner === "player") {
-              setResult("🏆 You won the puzzle duel and claimed " + vault + " USDC from the Vault!");
-            } else {
-              setResult("😢 Opponent was faster. You lost the Vault Duel.");
-            }
-            setVault(0);
-          }}
-        />
-      )}
-
-<img
-  src="/assets/cherry-doors/vault.png"
-  alt="Vault"
-  className="absolute top-[-160px] right-10 w-56 h-auto drop-shadow-2xl animate-pulse"
-/>
-
-
+      {/* Vault chest at top right */}
+      <img
+        src="/assets/cherry-doors/vault.png"
+        alt="Vault"
+        className="absolute top-[-160px] right-10 w-56 h-auto drop-shadow-2xl animate-pulse"
+      />
     </div>
   );
 }
