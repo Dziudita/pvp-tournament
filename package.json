@@ -18,7 +18,7 @@
   "clsx": "^2.1.0",
   "framer-motion": "^11.0.0",
   "react-confetti": "^6.1.0",
-  "react-use": "^17.4.0"
+  "react-use": "^17.4.0",
 },
 
   "devDependencies": {
