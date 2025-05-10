@@ -1,5 +1,6 @@
 // VaultDoorsGame.tsx
 import React, { useState } from "react";
+import VaultDuel from "./VaultDuel";
 
 const doorLabels = ["Door 1", "Door 2", "Door 3", "Door 4", "Door 5"];
 
@@ -10,6 +11,8 @@ export default function VaultDoorsGame() {
   const [result, setResult] = useState<string>("");
   const [vault, setVault] = useState<number>(0);
   const [goldKeyChance, setGoldKeyChance] = useState<number>(Math.floor(Math.random() * 10)); // 1/10 chance
+  const [showDuel, setShowDuel] = useState(false);
+  const [duelWinner, setDuelWinner] = useState<"player" | "opponent" | null>(null);
 
   const startGame = () => {
     const newWinnerDoor = Math.floor(Math.random() * 5); // 0 to 4
@@ -21,27 +24,27 @@ export default function VaultDoorsGame() {
 
     if (playerChoice === null) return;
 
-    // Both players chose wrong
     if (playerChoice !== newWinnerDoor && newOpponentChoice !== newWinnerDoor) {
-      setVault(vault + 2); // both lost their 1 USDC
+      setVault(vault + 2);
       setResult("Both lost. Vault increased!");
-    }
-    // Both chose correctly
-    else if (playerChoice === newWinnerDoor && newOpponentChoice === newWinnerDoor) {
+    } else if (playerChoice === newWinnerDoor && newOpponentChoice === newWinnerDoor) {
       setResult("Both chose the winner! You both get your stake back.");
-    }
-    // You won
-    else if (playerChoice === newWinnerDoor) {
+    } else if (playerChoice === newWinnerDoor) {
       setResult("You win the match and take the pot!");
-    }
-    // Opponent won
-    else if (newOpponentChoice === newWinnerDoor) {
+    } else if (newOpponentChoice === newWinnerDoor) {
       setResult("Opponent wins this round.");
     }
 
     if (goldKeyDrop && playerChoice !== null) {
-      setResult((prev) => prev + " \nGOLD KEY DROPPED! You can unlock the Vault!");
-      // Implement Vault unlock logic here
+      const opponentAlsoGetsGold = Math.random() < 0.5; // 50% chance
+
+      if (opponentAlsoGetsGold) {
+        setShowDuel(true);
+        setResult("Both players got a GOLD KEY! Starting puzzle duel...");
+      } else {
+        setResult("🎉 You got the GOLD KEY and unlocked the Vault! You win " + vault + " USDC!");
+        setVault(0);
+      }
     }
   };
 
@@ -71,6 +74,21 @@ export default function VaultDoorsGame() {
         <div className="mt-4 p-4 border rounded bg-yellow-100">
           <p><strong>Result:</strong> {result}</p>
         </div>
+      )}
+
+      {showDuel && (
+        <VaultDuel
+          onComplete={(winner) => {
+            setDuelWinner(winner);
+            setShowDuel(false);
+            if (winner === "player") {
+              setResult("🏆 You won the puzzle duel and claimed " + vault + " USDC from the Vault!");
+            } else {
+              setResult("😢 Opponent was faster. You lost the Vault Duel.");
+            }
+            setVault(0);
+          }}
+        />
       )}
 
       <div className="mt-4 text-lg">
