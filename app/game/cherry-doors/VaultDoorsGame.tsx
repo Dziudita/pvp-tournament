@@ -15,7 +15,6 @@ export default function VaultDoorsGame() {
   const [goldKeyChance, setGoldKeyChance] = useState<number>(Math.floor(Math.random() * 10));
   const [showDuel, setShowDuel] = useState(false);
   const [duelWinner, setDuelWinner] = useState<"player" | "opponent" | null>(null);
-  const [opened, setOpened] = useState<boolean[]>([false, false, false, false, false]);
 
   const startGame = () => {
     const newWinnerDoor = Math.floor(Math.random() * 5);
@@ -24,10 +23,6 @@ export default function VaultDoorsGame() {
 
     setWinnerDoor(newWinnerDoor);
     setOpponentChoice(newOpponentChoice);
-
-    const newOpened = [false, false, false, false, false];
-    newOpened[newWinnerDoor] = true;
-    setOpened(newOpened);
 
     if (playerChoice === null) return;
 
@@ -53,33 +48,33 @@ export default function VaultDoorsGame() {
         setVault(0);
       }
     }
-
-    setTimeout(() => {
-      setOpened([false, false, false, false, false]);
-      setPlayerChoice(null);
-    }, 3000);
   };
 
   return (
-    <div className="p-4">
+    <div className="w-full flex flex-col items-center">
       <h1 className="text-xl font-bold mb-4">Vault Doors Game</h1>
-      <div className="grid grid-cols-5 gap-4 mb-4">
+      <div className="flex gap-10 justify-center items-end mb-6">
         {doorLabels.map((label, index) => (
-          <div
+          <button
             key={index}
             onClick={() => setPlayerChoice(index)}
-            className={`cursor-pointer transition-transform transform hover:scale-105 ${
-              playerChoice === index ? "ring-4 ring-green-400" : ""
+            className={`h-40 w-auto transition-transform transform hover:scale-105 ${
+              playerChoice === index ? "scale-110" : ""
             }`}
           >
             <img
-              src={opened[index] ? "/assets/cherry-doors/door-open.png" : "/assets/cherry-doors/door.png"}
-              alt={label}
-              className="w-24 h-36 object-cover rounded shadow"
+              src={
+                winnerDoor !== null && winnerDoor === index
+                  ? "/assets/cherry-doors/door-open.png"
+                  : "/assets/cherry-doors/door.png"
+              }
+              alt={`Door ${index + 1}`}
+              className="h-full drop-shadow-lg"
             />
-          </div>
+          </button>
         ))}
       </div>
+
       <button
         onClick={startGame}
         disabled={playerChoice === null}
@@ -89,7 +84,7 @@ export default function VaultDoorsGame() {
       </button>
 
       {result && (
-        <div className="mt-4 p-4 border rounded bg-yellow-100">
+        <div className="mt-4 p-4 border rounded bg-yellow-100 text-black">
           <p><strong>Result:</strong> {result}</p>
         </div>
       )}
