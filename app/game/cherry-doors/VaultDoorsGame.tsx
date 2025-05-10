@@ -1,4 +1,6 @@
 // VaultDoorsGame.tsx
+'use client';
+
 import React, { useState } from "react";
 import VaultDuel from "./VaultDuel";
 
