@@ -5,6 +5,10 @@ import React, { useState } from 'react';
 
 const doorLabels = ['Door 1', 'Door 2', 'Door 3', 'Door 4', 'Door 5'];
 
+// Garso failai
+const clickSound = new Audio('/sounds/click-door.mp3');
+const openSound = new Audio('/sounds/open-door.mp3');
+
 export default function VaultDoorsGame() {
   const [step, setStep] = useState(0); // 0=start, 1=player1, 2=player2, 3=result
   const [playerOneChoice, setPlayerOneChoice] = useState<number | null>(null);
@@ -21,6 +25,10 @@ export default function VaultDoorsGame() {
   };
 
   const handleDoorClick = (index: number) => {
+    // Paleidžiam click garsą
+    clickSound.currentTime = 0;
+    clickSound.play();
+
     if (step === 1) {
       setPlayerOneChoice(index);
       setStep(2);
@@ -28,6 +36,13 @@ export default function VaultDoorsGame() {
       setPlayerTwoChoice(index);
       const newWinner = Math.floor(Math.random() * 5);
       setWinnerDoor(newWinner);
+
+      // Paleidžiam open door garsą po trumpos pauzės (durims "atidaryti")
+      setTimeout(() => {
+        openSound.currentTime = 0;
+        openSound.play();
+      }, 300);
+
       setStep(3);
 
       // Evaluate result
