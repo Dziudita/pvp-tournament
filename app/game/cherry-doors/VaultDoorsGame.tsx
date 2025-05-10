@@ -50,7 +50,14 @@ export default function VaultDoorsGame() {
       }, 300);
 
       setStep(3);
-      setConfettiEnabled(true);
+    if (
+  (playerOneChoice === newWinner && index === newWinner) ||
+  playerOneChoice === newWinner ||
+  index === newWinner
+) {
+  setConfettiEnabled(true);
+}
+
       setTimeout(() => setConfettiEnabled(false), 5000);
 
       if (playerOneChoice === newWinner && index === newWinner) {
@@ -69,11 +76,13 @@ export default function VaultDoorsGame() {
     <div className="w-full flex flex-col items-center mt-24 relative">
       {confettiEnabled && <Confetti width={width} height={height} numberOfPieces={250} />}
 
-      {step === 3 && resultMessage && (
-        <div className="fixed top-10 z-50 text-4xl font-extrabold text-yellow-300 animate-bounce drop-shadow-xl">
-          {resultMessage}
-        </div>
-      )}
+     {/* Result message po pavadinimu */}
+{step === 3 && resultMessage && (
+  <div className="text-2xl font-bold text-yellow-300 mt-4 text-center">
+    {resultMessage}
+  </div>
+)}
+
 
       {(step === 0 || step === 3) && (
         <button
