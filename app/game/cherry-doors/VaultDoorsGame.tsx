@@ -64,13 +64,13 @@ export default function VaultDoorsGame() {
         Confirm Choice
       </button>
 
-      <div className="flex gap-10 justify-center items-end mb-2">
+      <div className="flex gap-10 justify-center items-end mb-0">
         {doorLabels.map((label, index) => (
           <button
             key={index}
             onClick={() => setPlayerChoice(index)}
             disabled={isWaiting}
-            className={`h-60 w-auto transition-transform transform hover:scale-105 ${
+            className={`h-[280px] w-auto transition-transform transform hover:scale-105 ${
               playerChoice === index ? "scale-110" : ""
             }`}
           >
@@ -118,7 +118,7 @@ export default function VaultDoorsGame() {
       <img
         src="/assets/cherry-doors/vault.png"
         alt="Vault"
-        className="absolute right-10 bottom-2 w-28 h-auto drop-shadow-xl"
+        className="absolute right-10 bottom-0 w-36 h-auto drop-shadow-xl"
       />
     </div>
   );
