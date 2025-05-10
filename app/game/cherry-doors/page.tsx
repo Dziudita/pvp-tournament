@@ -1,4 +1,4 @@
-// app/games/cherry-doors/page.tsx
+// app/game/cherry-doors/page.tsx
 
 import React from "react";
 import VaultDoorsGame from "./VaultDoorsGame";
