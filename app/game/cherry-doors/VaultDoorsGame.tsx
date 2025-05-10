@@ -78,7 +78,7 @@ export default function VaultDoorsGame() {
 
      {/* Result message po pavadinimu */}
 {step === 3 && resultMessage && (
-  <div className="text-2xl font-bold text-yellow-300 mt-4 text-center">
+  <div className="text-2xl font-bold text-yellow-300 mt-2 text-center">
     {resultMessage}
   </div>
 )}
