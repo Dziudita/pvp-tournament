@@ -117,8 +117,9 @@ export default function VaultDoorsGame() {
 <img
   src="/assets/cherry-doors/vault.png"
   alt="Vault"
-  className="absolute top-[-100px] right-10 w-56 h-auto drop-shadow-2xl animate-pulse"
+  className="absolute top-[-160px] right-10 w-56 h-auto drop-shadow-2xl animate-pulse"
 />
+
 
     </div>
   );
