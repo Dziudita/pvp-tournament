@@ -50,13 +50,14 @@ export default function VaultDoorsGame() {
       }, 300);
 
       setStep(3);
-    if (
-  (playerOneChoice === newWinner && index === newWinner) ||
-  playerOneChoice === newWinner ||
-  index === newWinner
-) {
-  setConfettiEnabled(true);
-}
+
+      if (
+        (playerOneChoice === newWinner && index === newWinner) ||
+        playerOneChoice === newWinner ||
+        index === newWinner
+      ) {
+        setConfettiEnabled(true);
+      }
 
       setTimeout(() => setConfettiEnabled(false), 5000);
 
@@ -73,30 +74,32 @@ export default function VaultDoorsGame() {
   };
 
   return (
-    <div className="w-full flex flex-col items-center mt-24 relative">
+    <div className="w-full flex flex-col items-center mt-4 relative">
       {confettiEnabled && <Confetti width={width} height={height} numberOfPieces={250} />}
 
-     {/* Result message po pavadinimu */}
-{step === 3 && resultMessage && (
-  <div className="text-2xl font-bold text-yellow-300 mt-2 text-center">
-    {resultMessage}
-  </div>
-)}
+      {/* Result Message */}
+      {step === 3 && resultMessage && (
+        <div className="text-2xl font-bold text-yellow-300 mt-4 mb-2 text-center">
+          {resultMessage}
+        </div>
+      )}
 
-
-      {(step === 0 || step === 3) && (
+      {/* Restart button only when step === 3 */}
+      {step === 3 && (
         <button
           onClick={handleStart}
-          className="mb-10 px-8 py-3 bg-green-500 text-white text-xl rounded shadow-lg hover:bg-green-600"
+          className="mb-6 px-8 py-3 bg-green-500 text-white text-xl rounded shadow-lg hover:bg-green-600"
         >
-          {step === 0 ? 'START' : 'RESTART'}
+          RESTART
         </button>
       )}
 
+      {/* Player instructions */}
       {step === 1 && <p className="mb-4 text-white">🎮 Player One, choose a door</p>}
       {step === 2 && <p className="mb-4 text-white">⏳ Waiting for Player Two to choose...</p>}
 
-      <div className="flex gap-10 justify-center items-end mb-2">
+      {/* Doors */}
+      <div className="flex gap-10 justify-center items-end mt-4 mb-2">
         {doorLabels.map((_, index) => (
           <button
             key={index}
@@ -126,6 +129,7 @@ export default function VaultDoorsGame() {
         ))}
       </div>
 
+      {/* Vault chest */}
       <img
         src="/assets/cherry-doors/vault.png"
         alt="Vault"
