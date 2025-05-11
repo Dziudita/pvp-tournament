@@ -11,7 +11,12 @@ export default function CherryDoorsPage() {
         backgroundImage: "url('/assets/cherry-doors/palace-bg.png')"
       }}
     >
-      <h1 className="text-4xl font-bold text-red-500 mb-6">🍒 Cherry Doors</h1>
+      <img
+  src="/assets/cherry-doors/cherry-doors-logo.png"
+  alt="Cherry Doors Logo"
+  className="w-64 h-auto mb-4"
+/>
+
       <VaultDoorsGame />
     </main>
   );
