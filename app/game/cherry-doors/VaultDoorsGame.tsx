@@ -99,7 +99,7 @@ export default function VaultDoorsGame() {
       {step === 2 && <p className="mb-4 text-white">⏳ Waiting for Player Two to choose...</p>}
 
       {/* Doors */}
-      <div className="flex gap-10 justify-center items-end mt-4 mb-2">
+      <div className="flex gap-10 justify-center items-end mt-0 mb-2">
         {doorLabels.map((_, index) => (
           <button
             key={index}
@@ -110,7 +110,7 @@ export default function VaultDoorsGame() {
               step === 0 ||
               step === 3
             }
-            className="h-[280px] w-auto transition-transform transform hover:scale-105"
+          className="h-[320px] w-auto transition-transform transform hover:scale-110 border-2 border-red-500 rounded-xl shadow-[0_0_20px_rgba(255,0,0,0.5)]"
           >
             <img
               src={
