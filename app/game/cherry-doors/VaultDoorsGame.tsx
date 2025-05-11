@@ -102,32 +102,35 @@ export default function VaultDoorsGame() {
     <div className="flex gap-10 justify-center items-end mt-[-20px] mb-2">
 
         {doorLabels.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleDoorClick(index)}
-            disabled={
-              (step === 1 && playerOneChoice !== null) ||
-              (step === 2 && playerTwoChoice !== null) ||
-              step === 0 ||
-              step === 3
-            }
-            className="h-[320px] w-auto transition-transform transform hover:scale-110 drop-shadow-[0_0_60px_rgba(255,0,0,1)]"
-          >
-            <img
-              src={
-                winnerDoor !== null && winnerDoor === index
-                  ? '/assets/cherry-doors/door-open.png'
-                  : '/assets/cherry-doors/door.png'
-              }
-              alt={`Door ${index + 1}`}
-              className={`h-full drop-shadow-[0_0_25px_rgba(255,0,80,0.9)] ${
-                winnerDoor === index
-                  ? 'animate-pulse shadow-[0_0_35px_rgba(255,255,0,0.8)]'
-                  : ''
-              }`}
-            />
-          </button>
-        ))}
+  <button
+    key={index}
+    onClick={() => handleDoorClick(index)}
+    disabled={
+      (step === 1 && playerOneChoice !== null) ||
+      (step === 2 && playerTwoChoice !== null) ||
+      step === 0 ||
+      step === 3
+    }
+    className="h-[320px] w-auto transition-transform transform hover:scale-110 relative"
+  >
+    {/* Švytėjimo sluoksnis – tik atidarytoms durims */}
+    {winnerDoor === index && (
+      <div className="absolute inset-0 bg-yellow-400 opacity-50 blur-lg rounded-lg animate-pulse z-0" />
+    )}
+
+    {/* Durų vaizdas virš švytėjimo */}
+    <img
+      src={
+        winnerDoor !== null && winnerDoor === index
+          ? '/assets/cherry-doors/door-open.png'
+          : '/assets/cherry-doors/door.png'
+      }
+      alt={`Door ${index + 1}`}
+      className="h-full relative z-10 drop-shadow-[0_0_25px_rgba(255,0,80,0.9)]"
+    />
+  </button>
+))}
+
       </div>
 
       {/* Vault chest */}
