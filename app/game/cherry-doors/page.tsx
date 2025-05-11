@@ -17,10 +17,11 @@ export default function CherryDoorsPage() {
       {/* Visa kita – durys, logotipas, ir pan. */}
       <div className="relative z-10 flex flex-col items-center mt-2">
         <img
-          src="/assets/cherry-doors/cherry-doors-logo.png"
-          alt="Cherry Doors Logo"
-          className="w-64 h-auto mb-2"
-        />
+  src="/assets/cherry-doors/cherry-doors-logo.png"
+  alt="Cherry Doors Logo"
+  className="w-64 h-auto mb-1"
+/>
+
 
         <VaultDoorsGame />
       </div>
