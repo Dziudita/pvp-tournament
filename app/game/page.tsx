@@ -29,6 +29,11 @@ export default function GameHub() {
             Pick a square and hope you’re lucky! Hit the golden square to win!
           </p>
         </Link>
+<audio autoPlay loop hidden id="background-music">
+  <source src="/sounds/bg-music.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+
 
 {/* 🍒 Cherry Doors */}
 <Link
