@@ -101,32 +101,32 @@ export default function VaultDoorsGame() {
       {/* Doors */}
       <div className="flex gap-10 justify-center items-end mt-0 mb-2">
         {doorLabels.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleDoorClick(index)}
-            disabled={
-              (step === 1 && playerOneChoice !== null) ||
-              (step === 2 && playerTwoChoice !== null) ||
-              step === 0 ||
-              step === 3
-            }
-          className="h-[320px] w-auto transition-transform transform hover:scale-110 rounded-xl shadow-[0_0_30px_rgba(255,0,0,0.6)]"
+         <button
+  key={index}
+  onClick={() => handleDoorClick(index)}
+  disabled={
+    (step === 1 && playerOneChoice !== null) ||
+    (step === 2 && playerTwoChoice !== null) ||
+    step === 0 ||
+    step === 3
+  }
+  className="h-[320px] w-auto transition-transform transform hover:scale-110"
+>
+  <img
+    src={
+      winnerDoor !== null && winnerDoor === index
+        ? '/assets/cherry-doors/door-open.png'
+        : '/assets/cherry-doors/door.png'
+    }
+    alt={`Door ${index + 1}`}
+    className={`h-full drop-shadow-[0_0_25px_rgba(255,0,80,0.9)] ${
+      winnerDoor === index
+        ? 'animate-pulse shadow-[0_0_35px_rgba(255,255,0,0.8)]'
+        : ''
+    }`}
+  />
+</button>
 
-          >
-            <img
-              src={
-                winnerDoor !== null && winnerDoor === index
-                  ? '/assets/cherry-doors/door-open.png'
-                  : '/assets/cherry-doors/door.png'
-              }
-              alt={`Door ${index + 1}`}
-              className={`h-full drop-shadow-lg ${
-                winnerDoor === index
-                  ? 'animate-pulse shadow-[0_0_25px_rgba(255,255,0,0.8)]'
-                  : ''
-              }`}
-            />
-          </button>
         ))}
       </div>
 
