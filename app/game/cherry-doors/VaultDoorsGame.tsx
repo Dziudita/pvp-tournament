@@ -77,21 +77,21 @@ export default function VaultDoorsGame() {
     <div className="w-full flex flex-col items-center mt-4 relative">
       {confettiEnabled && <Confetti width={width} height={height} numberOfPieces={250} />}
 
-      {/* Result Message */}
-      {step === 3 && resultMessage && (
-        <div className="text-2xl font-bold text-yellow-300 mt-4 mb-2 text-center">
-          {resultMessage}
-        </div>
-      )}
-
-      {/* Restart button only when step === 3 */}
-      {step === 3 && (
+      {/* Neon START/RESTART button */}
+      {(step === 0 || step === 3) && (
         <button
           onClick={handleStart}
-          className="mb-6 px-8 py-3 bg-green-500 text-white text-xl rounded shadow-lg hover:bg-green-600"
+          className="mt-4 mb-6 px-10 py-3 text-2xl font-extrabold text-pink-500 border border-pink-500 rounded-full shadow-[0_0_25px_rgba(255,0,200,0.7)] hover:bg-pink-500 hover:text-black transition-all duration-300"
         >
-          RESTART
+          {step === 0 ? 'START' : 'RESTART'}
         </button>
+      )}
+
+      {/* Result message */}
+      {step === 3 && resultMessage && (
+        <div className="text-2xl font-bold text-yellow-300 mt-2 mb-2 text-center">
+          {resultMessage}
+        </div>
       )}
 
       {/* Player instructions */}
@@ -101,33 +101,31 @@ export default function VaultDoorsGame() {
       {/* Doors */}
       <div className="flex gap-10 justify-center items-end mt-0 mb-2">
         {doorLabels.map((_, index) => (
-         <button
-  key={index}
-  onClick={() => handleDoorClick(index)}
-  disabled={
-    (step === 1 && playerOneChoice !== null) ||
-    (step === 2 && playerTwoChoice !== null) ||
-    step === 0 ||
-    step === 3
-  }
- className="h-[320px] w-auto transition-transform transform hover:scale-110 drop-shadow-[0_0_60px_rgba(255,0,0,1)]"
-
->
-  <img
-    src={
-      winnerDoor !== null && winnerDoor === index
-        ? '/assets/cherry-doors/door-open.png'
-        : '/assets/cherry-doors/door.png'
-    }
-    alt={`Door ${index + 1}`}
-    className={`h-full drop-shadow-[0_0_25px_rgba(255,0,80,0.9)] ${
-      winnerDoor === index
-        ? 'animate-pulse shadow-[0_0_35px_rgba(255,255,0,0.8)]'
-        : ''
-    }`}
-  />
-</button>
-
+          <button
+            key={index}
+            onClick={() => handleDoorClick(index)}
+            disabled={
+              (step === 1 && playerOneChoice !== null) ||
+              (step === 2 && playerTwoChoice !== null) ||
+              step === 0 ||
+              step === 3
+            }
+            className="h-[320px] w-auto transition-transform transform hover:scale-110 drop-shadow-[0_0_60px_rgba(255,0,0,1)]"
+          >
+            <img
+              src={
+                winnerDoor !== null && winnerDoor === index
+                  ? '/assets/cherry-doors/door-open.png'
+                  : '/assets/cherry-doors/door.png'
+              }
+              alt={`Door ${index + 1}`}
+              className={`h-full drop-shadow-[0_0_25px_rgba(255,0,80,0.9)] ${
+                winnerDoor === index
+                  ? 'animate-pulse shadow-[0_0_35px_rgba(255,255,0,0.8)]'
+                  : ''
+              }`}
+            />
+          </button>
         ))}
       </div>
 
