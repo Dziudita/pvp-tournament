@@ -28,7 +28,6 @@ export default function VaultDoorsGame() {
   }, []);
 
   const handleStart = () => {
-    // Start music if not muted
     if (bgMusicRef.current && !isMuted) {
       bgMusicRef.current.play();
     }
@@ -96,10 +95,8 @@ export default function VaultDoorsGame() {
 
   return (
     <div className="w-full flex flex-col items-center mt-4 relative">
-      {/* Background Music */}
       <audio ref={bgMusicRef} src="/sounds/bg-music.mp3" loop />
 
-      {/* Mute/Unmute Button */}
       <button
         onClick={toggleMute}
         className="absolute top-4 right-4 text-yellow-400 text-2xl z-50 hover:scale-110 transition"
@@ -110,7 +107,6 @@ export default function VaultDoorsGame() {
 
       {confettiEnabled && <Confetti width={width} height={height} numberOfPieces={250} />}
 
-      {/* START/RESTART button */}
       {(step === 0 || step === 3) && (
         <button
           onClick={handleStart}
@@ -120,18 +116,15 @@ export default function VaultDoorsGame() {
         </button>
       )}
 
-      {/* Result message */}
       {step === 3 && resultMessage && (
         <div className="text-2xl font-bold text-yellow-300 mt-2 mb-2 text-center">
           {resultMessage}
         </div>
       )}
 
-      {/* Player instructions */}
       {step === 1 && <p className="mb-4 text-white">🎮 Player One, choose a door</p>}
       {step === 2 && <p className="mb-4 text-white">⏳ Waiting for Player Two to choose...</p>}
 
-      {/* Doors */}
       <div className="flex gap-10 justify-center items-end mt-[-20px] mb-2">
         {doorLabels.map((_, index) => (
           <button
@@ -145,12 +138,10 @@ export default function VaultDoorsGame() {
             }
             className="h-[320px] w-auto transition-transform transform hover:scale-110 relative"
           >
-            {/* Švytėjimo sluoksnis – tik atidarytoms durims */}
             {winnerDoor === index && (
               <div className="absolute inset-0 bg-yellow-400 opacity-50 blur-lg rounded-lg animate-pulse z-0" />
             )}
 
-            {/* Durų vaizdas virš švytėjimo */}
             <img
               src={
                 winnerDoor !== null && winnerDoor === index
@@ -164,7 +155,6 @@ export default function VaultDoorsGame() {
         ))}
       </div>
 
-      {/* Vault chest */}
       <img
         src="/assets/cherry-doors/vault.png"
         alt="Vault"
