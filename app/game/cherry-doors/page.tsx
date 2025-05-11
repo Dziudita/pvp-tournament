@@ -19,7 +19,7 @@ export default function CherryDoorsPage() {
         <img
   src="/assets/cherry-doors/cherry-doors-logo.png"
   alt="Cherry Doors Logo"
-  className="w-64 h-auto mb-2 mt-[-20px]"
+  className="w-64 h-auto mb-1 -mt-2"
 />
 
 
