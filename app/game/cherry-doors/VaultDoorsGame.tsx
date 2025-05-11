@@ -6,6 +6,36 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 
 const doorLabels = ['Door 1', 'Door 2', 'Door 3', 'Door 4', 'Door 5'];
 
+function generateMathQuestion() {
+  const operations = ['+', '-', '*', '/'];
+  const op = operations[Math.floor(Math.random() * operations.length)];
+  let a = Math.floor(Math.random() * 10) + 1;
+  let b = Math.floor(Math.random() * 10) + 1;
+
+  if (op === '/') {
+    a = a * b; // kad rezultatas būtų sveikas
+  }
+
+  let correct;
+  switch (op) {
+    case '+': correct = a + b; break;
+    case '-': correct = a - b; break;
+    case '*': correct = a * b; break;
+    case '/': correct = a / b; break;
+  }
+
+  const incorrect1 = correct + Math.floor(Math.random() * 5 + 1);
+  const incorrect2 = correct - Math.floor(Math.random() * 3 + 1);
+
+  const answers = [correct, incorrect1, incorrect2].sort(() => Math.random() - 0.5);
+
+  return {
+    question: `${a} ${op} ${b} = ?`,
+    answers,
+    correct
+  };
+}
+
 export default function VaultDoorsGame() {
   const [step, setStep] = useState(0);
   const [playerOneChoice, setPlayerOneChoice] = useState<number | null>(null);
@@ -14,6 +44,9 @@ export default function VaultDoorsGame() {
   const [resultMessage, setResultMessage] = useState('');
   const [confettiEnabled, setConfettiEnabled] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [round, setRound] = useState(1);
+  const [mathQuestion, setMathQuestion] = useState<{ question: string; answers: number[]; correct: number } | null>(null);
+  const [timeLeft, setTimeLeft] = useState(10);
 
   const { width, height } = useWindowSize();
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -27,12 +60,24 @@ export default function VaultDoorsGame() {
     }
   }, []);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (round === 2 && timeLeft > 0) {
+      timer = setTimeout(() => setTimeLeft((t) => t - 1), 1000);
+    } else if (round === 2 && timeLeft === 0) {
+      setResultMessage('⏱️ Time is up! You failed the quiz.');
+      setStep(3);
+    }
+    return () => clearTimeout(timer);
+  }, [round, timeLeft]);
+
   const handleStart = () => {
     if (bgMusicRef.current && !isMuted) {
       bgMusicRef.current.play();
     }
 
     setStep(1);
+    setRound(1);
     setPlayerOneChoice(null);
     setPlayerTwoChoice(null);
     setWinnerDoor(null);
@@ -59,28 +104,32 @@ export default function VaultDoorsGame() {
         }
       }, 300);
 
-      setStep(3);
-
       if (
         (playerOneChoice === newWinner && index === newWinner) ||
         playerOneChoice === newWinner ||
         index === newWinner
       ) {
-        setConfettiEnabled(true);
+        const q = generateMathQuestion();
+        setMathQuestion(q);
+        setTimeLeft(10);
+        setRound(2);
+        setStep(4);
+        return;
       }
 
-      setTimeout(() => setConfettiEnabled(false), 5000);
-
-      if (playerOneChoice === newWinner && index === newWinner) {
-        setResultMessage('BOOOOM both players WON!');
-      } else if (playerOneChoice === newWinner) {
-        setResultMessage('BOOOOM Player One WINS!');
-      } else if (index === newWinner) {
-        setResultMessage('BOOOOM Player Two WINS!');
-      } else {
-        setResultMessage('BOOOOM both players LOST!');
-      }
+      setResultMessage('BOOOOM both players LOST!');
+      setStep(3);
     }
+  };
+
+  const handleAnswer = (ans: number) => {
+    if (mathQuestion && ans === mathQuestion.correct) {
+      setResultMessage('🎉 Correct! You win this round!');
+      setConfettiEnabled(true);
+    } else {
+      setResultMessage('❌ Wrong answer. You lose.');
+    }
+    setStep(3);
   };
 
   const toggleMute = () => {
@@ -125,35 +174,55 @@ export default function VaultDoorsGame() {
       {step === 1 && <p className="mb-4 text-white">🎮 Player One, choose a door</p>}
       {step === 2 && <p className="mb-4 text-white">⏳ Waiting for Player Two to choose...</p>}
 
-      <div className="flex gap-10 justify-center items-end mt-[-20px] mb-2">
-        {doorLabels.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleDoorClick(index)}
-            disabled={
-              (step === 1 && playerOneChoice !== null) ||
-              (step === 2 && playerTwoChoice !== null) ||
-              step === 0 ||
-              step === 3
-            }
-            className="h-[320px] w-auto transition-transform transform hover:scale-110 relative"
-          >
-            {winnerDoor === index && (
-              <div className="absolute inset-0 bg-yellow-400 opacity-50 blur-lg rounded-lg animate-pulse z-0" />
-            )}
-
-            <img
-              src={
-                winnerDoor !== null && winnerDoor === index
-                  ? '/assets/cherry-doors/door-open.png'
-                  : '/assets/cherry-doors/door.png'
+      {step < 3 && (
+        <div className="flex gap-10 justify-center items-end mt-[-20px] mb-2">
+          {doorLabels.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => handleDoorClick(index)}
+              disabled={
+                (step === 1 && playerOneChoice !== null) ||
+                (step === 2 && playerTwoChoice !== null) ||
+                step === 0 ||
+                step === 3
               }
-              alt={`Door ${index + 1}`}
-              className="h-full relative z-10 drop-shadow-[0_0_25px_rgba(255,0,80,0.9)]"
-            />
-          </button>
-        ))}
-      </div>
+              className="h-[320px] w-auto transition-transform transform hover:scale-110 relative"
+            >
+              {winnerDoor === index && (
+                <div className="absolute inset-0 bg-yellow-400 opacity-50 blur-lg rounded-lg animate-pulse z-0" />
+              )}
+
+              <img
+                src={
+                  winnerDoor !== null && winnerDoor === index
+                    ? '/assets/cherry-doors/door-open.png'
+                    : '/assets/cherry-doors/door.png'
+                }
+                alt={`Door ${index + 1}`}
+                className="h-full relative z-10 drop-shadow-[0_0_25px_rgba(255,0,80,0.9)]"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {step === 4 && mathQuestion && (
+        <div className="bg-black/60 p-6 rounded-lg shadow-lg text-white text-center mt-4">
+          <p className="text-xl mb-2">🧠 Solve the quiz in {timeLeft}s:</p>
+          <p className="text-2xl font-bold mb-4">{mathQuestion.question}</p>
+          <div className="flex gap-6 justify-center">
+            {mathQuestion.answers.map((ans, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleAnswer(ans)}
+                className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-6 py-3 rounded-lg shadow-md"
+              >
+                {ans}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <img
         src="/assets/cherry-doors/vault.png"
