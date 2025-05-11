@@ -110,7 +110,8 @@ export default function VaultDoorsGame() {
               step === 0 ||
               step === 3
             }
-          className="h-[320px] w-auto transition-transform transform hover:scale-110 border-2 border-red-500 rounded-xl shadow-[0_0_20px_rgba(255,0,0,0.5)]"
+          className="h-[320px] w-auto transition-transform transform hover:scale-110 rounded-xl shadow-[0_0_30px_rgba(255,0,0,0.6)]"
+
           >
             <img
               src={
