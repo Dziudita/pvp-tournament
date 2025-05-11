@@ -81,7 +81,7 @@ export default function VaultDoorsGame() {
       {(step === 0 || step === 3) && (
         <button
           onClick={handleStart}
-          className="mt-4 mb-6 px-10 py-3 text-2xl font-extrabold text-pink-500 border border-pink-500 rounded-full shadow-[0_0_25px_rgba(255,0,200,0.7)] hover:bg-pink-500 hover:text-black transition-all duration-300"
+          className="mt-2 mb-6 px-10 py-3 text-2xl font-extrabold text-pink-500 border border-pink-500 rounded-full shadow-[0_0_25px_rgba(255,0,200,0.7)] hover:bg-pink-500 hover:text-black transition-all duration-300"
         >
           {step === 0 ? 'START' : 'RESTART'}
         </button>
@@ -99,7 +99,7 @@ export default function VaultDoorsGame() {
       {step === 2 && <p className="mb-4 text-white">⏳ Waiting for Player Two to choose...</p>}
 
       {/* Doors */}
-      <div className="flex gap-10 justify-center items-end mt-0 mb-2">
+     <div className="flex gap-10 justify-center items-end mt-[-20px] mb-2">
         {doorLabels.map((_, index) => (
           <button
             key={index}
