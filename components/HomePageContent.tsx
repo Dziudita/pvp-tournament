@@ -1,3 +1,4 @@
+// ✅ Taisyklingas, sujungtas dizainas
 "use client";
 
 import { useState } from "react";
@@ -16,19 +17,19 @@ export default function HomePageContent() {
   const { user } = useUser();
 
   return (
-    <div className="relative min-h-screen text-white">
-      {/* 🌸 Fonas – neryškus ir patamsintas */}
-     <div className="fixed inset-0 z-[-1]">
-  <Image
-    src="/assets/cherry-arena-bg.png"
-    alt="Cherry Arena Background"
-    fill
-    className="object-cover brightness-[0.4] saturate-125 contrast-110 blur-sm"
-    priority
-  />
-</div>
+    <div className="relative w-full min-h-screen text-white z-0">
+      {/* 🌸 Fonas */}
+      <div className="fixed inset-0 z-[-1]">
+        <Image
+          src="/assets/cherry-arena-bg.png"
+          alt="Cherry Arena Background"
+          fill
+          className="object-cover brightness-[0.4] saturate-125 contrast-110 blur-sm"
+          priority
+        />
+      </div>
 
-      {/* 🧱 Pagrindinis turinys */}
+      {/* 🎯 Turnyro mygtukas */}
       <div className="mt-8 flex justify-start">
         <Image
           src="/assets/tournament-button.png"
@@ -40,6 +41,7 @@ export default function HomePageContent() {
         />
       </div>
 
+      {/* 🏆 Dienos žaidėjas */}
       <div className="mt-12">
         <TopPlayerOfDay />
       </div>
@@ -63,7 +65,7 @@ export default function HomePageContent() {
         />
       )}
 
-      {/* 💬 Chatas – visada apačioje */}
+      {/* 💬 Chatas */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <CherryChat />
       </div>
