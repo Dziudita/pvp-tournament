@@ -1,12 +1,10 @@
-"use client";
-
-import AuthWrapper from "@/components/AuthWrapper";
+import Layout from "@/components/Layout";
 import HomePageContent from "@/components/HomePageContent";
 
 export default function Page() {
   return (
-    <AuthWrapper>
+    <Layout>
       <HomePageContent />
-    </AuthWrapper>
+    </Layout>
   );
 }
