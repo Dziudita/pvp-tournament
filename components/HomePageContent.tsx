@@ -18,7 +18,8 @@ export default function HomePageContent() {
   return (
     <div className="relative min-h-screen text-white">
       {/* 🌸 Fonas – neryškus ir patamsintas */}
-      <div className="fixed top-0 left-0 w-full h-full -z-10">
+      <div className="absolute inset-0 min-h-screen -z-10">
+
         <Image
           src="/assets/cherry-arena-bg.png"
           alt="Cherry Arena Background"
