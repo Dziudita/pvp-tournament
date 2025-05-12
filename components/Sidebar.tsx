@@ -38,12 +38,14 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
 
   return (
     <>
-    <aside
+  <aside
   className={`${collapsed ? "w-14" : "w-40"} 
-  bg-zinc-900 bg-opacity-90 border-r border-pink-500 text-white shadow-xl 
-  transition-all duration-300 overflow-hidden 
-  shadow-[0_0_15px_rgba(255,0,255,0.3)]`}
+    bg-zinc-900 bg-opacity-90 border-r border-pink-500 text-white shadow-xl 
+    transition-all duration-300 overflow-hidden 
+    shadow-[0_0_15px_rgba(255,0,255,0.3)] 
+    mt-16`}
 >
+
 
         {/* Sidebar collapse button */}
         <div className="flex justify-end p-2">
