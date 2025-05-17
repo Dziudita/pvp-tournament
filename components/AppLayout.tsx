@@ -24,11 +24,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Topbar collapsed={collapsed} />
 
       {/* 🧱 Turinys – paslinktas priklausomai nuo sidebar būsenos */}
-      <main
-        className={`pt-16 pb-24 px-6 w-full transition-all duration-300 ${
-          collapsed ? "ml-14" : "ml-48"
-        }`}
-      >
+     <main
+  className={`pt-16 pb-24 px-6 w-full transition-all duration-300 bg-transparent ${
+    collapsed ? "ml-14" : "ml-48"
+  }`}
+>
+
         {children}
       </main>
     </div>
