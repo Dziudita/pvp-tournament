@@ -6,9 +6,9 @@ import Topbar from "@/components/Topbar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
-  const [mounted, setMounted] = useState(false); // Fix for hydration mismatches
+  const [mounted, setMounted] = useState(false);
 
-  // ⏳ Ensure component renders only on client
+  // ⏳ Fix hydration issue (SSR)
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -16,20 +16,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   if (!mounted) return null;
 
   return (
-    <div className="relative flex min-h-screen text-white bg-black overflow-hidden">
-      {/* 🔻 Sidebar (fiksuota) */}
+    <div className="relative flex min-h-screen text-white overflow-hidden">
+      {/* 🔻 Sidebar */}
       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
 
-      {/* 🔝 Topbar (fiksuota viršuje) */}
+      {/* 🔝 Topbar */}
       <Topbar collapsed={collapsed} />
 
-      {/* 🧱 Turinys – paslinktas priklausomai nuo sidebar būsenos */}
-     <main
-  className={`pt-16 pb-24 px-6 w-full transition-all duration-300 bg-transparent ${
-    collapsed ? "ml-14" : "ml-48"
-  }`}
->
-
+      {/* 🧱 Turinys */}
+      <main
+        className={`pt-16 pb-24 px-6 w-full transition-all duration-300 bg-transparent ${
+          collapsed ? "ml-14" : "ml-48"
+        }`}
+      >
         {children}
       </main>
     </div>
