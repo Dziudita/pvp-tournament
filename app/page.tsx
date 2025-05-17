@@ -6,8 +6,8 @@ import Image from "next/image";
 
 export default function Page() {
   return (
-    <div className="relative w-full min-h-screen text-white overflow-x-hidden">
-      {/* ✅ Fonas */}
+    <div className="relative w-full min-h-screen text-white overflow-hidden">
+      {/* 🌸 Fonas fiksuotas, visas ekranas */}
       <div className="fixed inset-0 z-[-1]">
         <Image
           src="/assets/cherry-arena-bg.png"
@@ -18,7 +18,7 @@ export default function Page() {
         />
       </div>
 
-      {/* ✅ Turinys su Sidebar + Topbar */}
+      {/* 💎 Layout su Sidebar + Topbar */}
       <AppLayout>
         <HomePageContent />
       </AppLayout>
