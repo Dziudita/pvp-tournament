@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import UserDropdown from "./UserDropdown";
 import WalletModal from "@/components/WalletModal";
 
@@ -18,42 +19,43 @@ const avatars = [
   { src: "/avatars/0rankcrazy.png", name: "crazy" },
 ];
 
+const games = [
+  { name: "Mines", path: "/game/mines" },
+  { name: "Coinflip", path: "/game/coinflip" },
+  { name: "Cherry Doors", path: "/game/doors" },
+  { name: "Token Tower", path: "/game/tower" },
+];
+
 export default function Topbar({ collapsed }: { collapsed: boolean }) {
+  const router = useRouter();
   const [wallet, setWallet] = useState<string | null>(null);
   const [balance, setBalance] = useState("0.00");
   const [avatarURL, setAvatarURL] = useState("/avatars/default.png");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // ✅ FIXED balance fetch
-const refreshBalance = async () => {
-  if (!wallet) return;
+  const refreshBalance = async () => {
+    if (!wallet) return;
+    const { data, error } = await supabase
+      .from("wallet_balances")
+      .select("balance")
+      .eq("wallet", wallet)
+      .single();
+    if (error) {
+      console.error("❌ Klaida gaunant balansą:", error.message);
+      return;
+    }
+    if (data && typeof data.balance === "number") {
+      setBalance(data.balance.toFixed(2));
+    }
+  };
 
-  const { data, error }: { data: { balance: number } | null, error: any } = await supabase
-    .from("wallet_balances")
-    .select("balance")
-    .eq("wallet", wallet)
-    .single();
-
-  if (error) {
-    console.error("❌ Klaida gaunant balansą:", error.message);
-    return;
-  }
-
-  if (data && typeof data.balance === "number") {
-    setBalance(data.balance.toFixed(2));
-  } else {
-    console.warn("⚠️ Balansas nerastas arba neteisingas formatas.");
-  }
-};
-
-  // 🔄 Realtime balance listener
-  // 🔄 Realtime balance listener
   useEffect(() => {
     if (!wallet) return;
-
     const channel = supabase
       .channel("realtime-wallet-balance")
       .on(
@@ -72,14 +74,11 @@ const refreshBalance = async () => {
         }
       )
       .subscribe();
-
     return () => {
       supabase.removeChannel(channel);
     };
   }, [wallet]);
 
-
-  // 👤 Avatar + Wallet init
   useEffect(() => {
     const checkWallet = async () => {
       if ((window as any).ethereum) {
@@ -112,15 +111,12 @@ const refreshBalance = async () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
+        setShowDropdown(false);
       }
     };
-    if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isDropdownOpen]);
+  }, []);
 
   const handleSelectAvatar = async (avatarPath: string) => {
     setAvatarURL(avatarPath);
@@ -160,12 +156,12 @@ const refreshBalance = async () => {
 
   return (
     <>
-   <header className={`fixed top-0 ${collapsed ? "left-14" : "left-48"} right-0 h-16 
-  bg-black bg-opacity-50 backdrop-blur-md 
-  border-b border-zinc-700 flex items-center justify-between px-6 
-  z-40 transition-all duration-300`}>
-
-
+      <header
+        className={`fixed top-0 ${collapsed ? "left-14" : "left-48"} right-0 h-16 
+        bg-black bg-opacity-50 backdrop-blur-md 
+        border-b border-zinc-700 flex items-center justify-between px-6 
+        z-40 transition-all duration-300`}
+      >
         <div className="flex items-center gap-4">
           <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
           <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold px-3 py-1 rounded-lg shadow-md hover:opacity-90 transition text-sm">
@@ -174,11 +170,43 @@ const refreshBalance = async () => {
         </div>
 
         <div className="flex items-center gap-3 text-white relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
-          />
+          {/* 🔍 Search */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowDropdown(true);
+              }}
+              className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
+            />
+
+            {showDropdown && searchQuery && (
+              <ul className="absolute z-50 mt-1 bg-black bg-opacity-80 backdrop-blur-md border border-pink-500 rounded-md text-sm w-48 shadow-lg">
+                {games.filter(game => game.name.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 ? (
+                  games
+                    .filter(game => game.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .map((game) => (
+                      <li
+                        key={game.name}
+                        onClick={() => {
+                          setSearchQuery("");
+                          setShowDropdown(false);
+                          router.push(game.path);
+                        }}
+                        className="px-3 py-1 hover:bg-pink-500 hover:text-white cursor-pointer"
+                      >
+                        🎮 {game.name}
+                      </li>
+                    ))
+                ) : (
+                  <li className="px-3 py-1 text-pink-300">No games found</li>
+                )}
+              </ul>
+            )}
+          </div>
 
           <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
             <span>${balance}</span>
