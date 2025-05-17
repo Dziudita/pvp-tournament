@@ -38,13 +38,14 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
 
   return (
     <>
-  <aside
-  className={`${collapsed ? "w-14" : "w-40"} 
+ <aside
+  className={`fixed left-0 top-0 h-screen z-30 
+    ${collapsed ? "w-14" : "w-48"} 
     bg-zinc-900 bg-opacity-90 border-r border-pink-500 text-white shadow-xl 
-    transition-all duration-300 overflow-hidden 
-    shadow-[0_0_15px_rgba(255,0,255,0.3)] 
-    mt-16`}
+    transition-all duration-300 overflow-hidden
+    shadow-[0_0_15px_rgba(255,0,255,0.3)] pt-16`}
 >
+
 
 
         {/* Sidebar collapse button */}
