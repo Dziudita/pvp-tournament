@@ -172,16 +172,29 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
         <div className="flex items-center gap-3 text-white relative">
           {/* 🔍 Search */}
           <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setShowDropdown(true);
-              }}
-              className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
-            />
+         <input
+  type="text"
+  placeholder="Search..."
+  value={searchQuery}
+  onChange={(e) => {
+    setSearchQuery(e.target.value);
+    setShowDropdown(true);
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      const match = games.find((game) =>
+        game.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      if (match) {
+        setSearchQuery("");
+        setShowDropdown(false);
+        router.push(match.path);
+      }
+    }
+  }}
+  className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
+/>
+
 
             {showDropdown && searchQuery && (
               <ul className="absolute z-50 mt-1 bg-black bg-opacity-80 backdrop-blur-md border border-pink-500 rounded-md text-sm w-48 shadow-lg">
