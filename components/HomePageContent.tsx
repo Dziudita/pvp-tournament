@@ -1,12 +1,13 @@
 'use client';
 
+import AppLayout from "@/components/AppLayout";
 import HomePageContent from "@/components/HomePageContent";
 import Image from "next/image";
 
 export default function Page() {
   return (
     <div className="relative w-full min-h-screen text-white overflow-x-hidden">
-      {/* ✅ Vienas fonas – visam puslapiui */}
+      {/* ✅ Vienas fonas visam puslapiui */}
       <div className="fixed inset-0 z-[-1]">
         <Image
           src="/assets/cherry-arena-bg.png"
@@ -17,8 +18,10 @@ export default function Page() {
         />
       </div>
 
-      {/* ✅ Tik viena turinio dalis */}
-      <HomePageContent />
+      {/* ✅ Turinys su sidebar/topbar per layout */}
+      <AppLayout>
+        <HomePageContent />
+      </AppLayout>
     </div>
   );
 }
