@@ -172,19 +172,24 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
         <div className="flex items-center gap-3 text-white relative">
           {/* 🔍 Search */}
           <div className="relative">
-         <input
+        <input
   type="text"
   placeholder="Search..."
   value={searchQuery}
   onChange={(e) => {
     setSearchQuery(e.target.value);
     setShowDropdown(true);
+    setActiveIndex(0); // reset selection
   }}
   onKeyDown={(e) => {
-    if (e.key === "Enter") {
-      const match = games.find((game) =>
-        game.name.toLowerCase().includes(searchQuery.toLowerCase())
+    if (e.key === "ArrowDown") {
+      setActiveIndex((prev) => (prev + 1) % filteredGames.length);
+    } else if (e.key === "ArrowUp") {
+      setActiveIndex((prev) =>
+        prev === 0 ? filteredGames.length - 1 : prev - 1
       );
+    } else if (e.key === "Enter") {
+      const match = filteredGames[activeIndex];
       if (match) {
         setSearchQuery("");
         setShowDropdown(false);
@@ -195,31 +200,29 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
 />
 
-
-            {showDropdown && searchQuery && (
-              <ul className="absolute z-50 mt-1 bg-black bg-opacity-80 backdrop-blur-md border border-pink-500 rounded-md text-sm w-48 shadow-lg">
-                {games.filter(game => game.name.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 ? (
-                  games
-                    .filter(game => game.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                    .map((game) => (
-                      <li
-                        key={game.name}
-                        onClick={() => {
-                          setSearchQuery("");
-                          setShowDropdown(false);
-                          router.push(game.path);
-                        }}
-                        className="px-3 py-1 hover:bg-pink-500 hover:text-white cursor-pointer"
-                      >
-                        🎮 {game.name}
-                      </li>
-                    ))
-                ) : (
-                  <li className="px-3 py-1 text-pink-300">No games found</li>
-                )}
-              </ul>
-            )}
-          </div>
+{showDropdown && searchQuery && (
+  <ul className="absolute z-50 mt-1 bg-black bg-opacity-80 backdrop-blur-md border border-pink-500 rounded-md text-sm w-48 shadow-lg">
+    {filteredGames.length > 0 ? (
+      filteredGames.map((game, index) => (
+        <li
+          key={game.name}
+          onClick={() => {
+            setSearchQuery("");
+            setShowDropdown(false);
+            router.push(game.path);
+          }}
+          className={`px-3 py-1 cursor-pointer ${
+            index === activeIndex ? "bg-pink-500 text-white" : "hover:bg-pink-500 hover:text-white"
+          }`}
+        >
+          🎮 {game.name}
+        </li>
+      ))
+    ) : (
+      <li className="px-3 py-1 text-pink-300">No games found</li>
+    )}
+  </ul>
+)}
 
           <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
             <span>${balance}</span>
