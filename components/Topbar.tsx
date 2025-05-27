@@ -36,7 +36,12 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const filteredGames = games.filter((game) =>
+    game.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const refreshBalance = async () => {
     if (!wallet) return;
@@ -157,10 +162,7 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
   return (
     <>
       <header
-        className={`fixed top-0 ${collapsed ? "left-14" : "left-48"} right-0 h-16 
-        bg-black bg-opacity-50 backdrop-blur-md 
-        border-b border-zinc-700 flex items-center justify-between px-6 
-        z-40 transition-all duration-300`}
+        className={`fixed top-0 ${collapsed ? "left-14" : "left-48"} right-0 h-16 bg-black bg-opacity-50 backdrop-blur-md border-b border-zinc-700 flex items-center justify-between px-6 z-40 transition-all duration-300`}
       >
         <div className="flex items-center gap-4">
           <Image src="/assets/cherzi-arena-logo.png" alt="Cherzi Arena Logo" width={160} height={40} priority />
@@ -170,59 +172,61 @@ export default function Topbar({ collapsed }: { collapsed: boolean }) {
         </div>
 
         <div className="flex items-center gap-3 text-white relative">
-          {/* 🔍 Search */}
           <div className="relative">
-        <input
-  type="text"
-  placeholder="Search..."
-  value={searchQuery}
-  onChange={(e) => {
-    setSearchQuery(e.target.value);
-    setShowDropdown(true);
-    setActiveIndex(0); // reset selection
-  }}
-  onKeyDown={(e) => {
-    if (e.key === "ArrowDown") {
-      setActiveIndex((prev) => (prev + 1) % filteredGames.length);
-    } else if (e.key === "ArrowUp") {
-      setActiveIndex((prev) =>
-        prev === 0 ? filteredGames.length - 1 : prev - 1
-      );
-    } else if (e.key === "Enter") {
-      const match = filteredGames[activeIndex];
-      if (match) {
-        setSearchQuery("");
-        setShowDropdown(false);
-        router.push(match.path);
-      }
-    }
-  }}
-  className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
-/>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowDropdown(true);
+                setActiveIndex(0);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "ArrowDown") {
+                  setActiveIndex((prev) => (prev + 1) % filteredGames.length);
+                } else if (e.key === "ArrowUp") {
+                  setActiveIndex((prev) => (prev === 0 ? filteredGames.length - 1 : prev - 1));
+                } else if (e.key === "Enter") {
+                  const match = filteredGames[activeIndex];
+                  if (match) {
+                    setSearchQuery("");
+                    setShowDropdown(false);
+                    router.push(match.path);
+                  }
+                } else if (e.key === "Escape") {
+                  setShowDropdown(false);
+                }
+              }}
+              className="bg-zinc-800 text-white text-xs px-2 py-1 rounded-md outline-none placeholder-pink-300 border border-pink-500 shadow-inner w-32"
+            />
 
-{showDropdown && searchQuery && (
-  <ul className="absolute z-50 mt-1 bg-black bg-opacity-80 backdrop-blur-md border border-pink-500 rounded-md text-sm w-48 shadow-lg">
-    {filteredGames.length > 0 ? (
-      filteredGames.map((game, index) => (
-        <li
-          key={game.name}
-          onClick={() => {
-            setSearchQuery("");
-            setShowDropdown(false);
-            router.push(game.path);
-          }}
-          className={`px-3 py-1 cursor-pointer ${
-            index === activeIndex ? "bg-pink-500 text-white" : "hover:bg-pink-500 hover:text-white"
-          }`}
-        >
-          🎮 {game.name}
-        </li>
-      ))
-    ) : (
-      <li className="px-3 py-1 text-pink-300">No games found</li>
-    )}
-  </ul>
-)}
+            {showDropdown && searchQuery && (
+              <ul className="absolute z-50 mt-1 bg-black bg-opacity-80 backdrop-blur-md border border-pink-500 rounded-md text-sm w-48 shadow-lg">
+                {filteredGames.length > 0 ? (
+                  filteredGames.map((game, index) => (
+                    <li
+                      key={game.name}
+                      onClick={() => {
+                        setSearchQuery("");
+                        setShowDropdown(false);
+                        router.push(game.path);
+                      }}
+                      className={`px-3 py-1 cursor-pointer ${
+                        index === activeIndex
+                          ? "bg-pink-500 text-white"
+                          : "hover:bg-pink-500 hover:text-white"
+                      }`}
+                    >
+                      🎮 {game.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className="px-3 py-1 text-pink-300">No games found</li>
+                )}
+              </ul>
+            )}
+          </div>
 
           <div className="bg-zinc-800 px-4 py-1 rounded-lg text-white text-sm shadow-inner">
             <span>${balance}</span>
